@@ -36,6 +36,7 @@ export default class Scene {
       [shaderSource['base-vs.glsl'], shaderSource['base-fs.glsl']]);
     const arrays = {
       position: { numComponents: 3, data: [0.0, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0] },
+      vertColor: { numComponents: 3, data: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0] },
     };
 
     this.bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
