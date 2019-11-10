@@ -1,10 +1,10 @@
 import * as twgl from '../lib/twgl-full.module.js';
-import * as glm from '../lib/gl-matrix-min.js';
+import glMatrix from './helpers/glm.js';
 
 export default class Scene {
   constructor(gl) {
-    this.gl = gl;
     console.log(glMatrix);
+    this.gl = gl;
     this.firstPass();
   }
 
@@ -24,7 +24,21 @@ export default class Scene {
   draw() {
     const { gl } = this;
     gl.useProgram(this.programInfo.program);
+
+    const mWorld = new Float32Array(16);
+    const mView = new Float32Array(16);
+    const mProj = new Float32Array(16);
+
+    glMatrix.mat4.identity(mWorld);
+    glMatrix.mat4.identity(mView);
+    glMatrix.mat4.identity(mProj);
+    // glMatrix.lookAt(mView, [0, 0, -5], [0,0,0], [0,1,0]);
+    // glMatrix.mat4.perspective(mProj );
+
+    const uniforms = { mWorld, mView, mProj };
+
     twgl.setBuffersAndAttributes(gl, this.programInfo, this.bufferInfo);
+    twgl.setUniforms(this.programInfo, uniforms);
     twgl.drawBufferInfo(gl, this.bufferInfo);
   }
 
