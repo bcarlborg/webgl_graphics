@@ -9,7 +9,7 @@ export default class App {
     if (this.gl === null) throw new Error('Browser does not support WebGL2');
 
     this.gl.pendingResources = {};
-    this.scene = new Scene(this.gl);
+    this.scene = new Scene(this.gl, this.canvas);
     this.resize();
   }
 
@@ -26,7 +26,7 @@ export default class App {
 
   update() {
     this.scene.update();
-    this.scene.draw(this.canvas);
+    this.scene.draw();
     window.requestAnimationFrame(() => this.update());
   }
 }

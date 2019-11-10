@@ -6,6 +6,7 @@
     "strict": "off",
     "import/extensions": 0,
     "no-control-regex": "off",
+    "no-mixed-operators": "off",
     "no-plusplus": "off",
     "import/prefer-default-export": "off"
   }
