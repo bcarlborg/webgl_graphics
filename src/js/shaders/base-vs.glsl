@@ -1,11 +1,11 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
-  // an attribute is an input (in) to a vertex shader.
-  // It will receive data from a buffer
-  in vec4 a_position;
+  in vec3 position;
+  in vec4 a_vertColor;
 
-  // all shaders have a main function
+  out vec4 fragmentColor;
+
   void main() {
-    // Multiply the position by the matrix.
-    gl_Position = a_position;
+    fragmentColor = a_vertColor;
+    gl_Position = vec4(position, 1.0);
   }
 `;

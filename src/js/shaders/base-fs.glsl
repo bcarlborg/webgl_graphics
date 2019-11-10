@@ -1,12 +1,11 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
   precision mediump float;
-
   uniform vec4 u_color;
+  in vec4 fragmentColor;
 
-  // we need to declare an output for the fragment shader
   out vec4 outColor;
 
   void main() {
-    outColor = u_color;
+    outColor = fragmentColor;
   }
 `;
