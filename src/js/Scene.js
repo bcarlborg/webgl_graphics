@@ -1,9 +1,10 @@
 import * as twgl from '../lib/twgl-full.module.js';
+import * as glm from '../lib/gl-matrix-min.js';
 
 export default class Scene {
   constructor(gl) {
     this.gl = gl;
-
+    console.log(glMatrix);
     this.firstPass();
   }
 
