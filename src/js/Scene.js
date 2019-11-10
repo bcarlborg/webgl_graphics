@@ -21,7 +21,7 @@ export default class Scene {
     this.clearBackground();
   }
 
-  draw() {
+  draw(canvas) {
     const { gl } = this;
     gl.useProgram(this.programInfo.program);
 
@@ -32,8 +32,10 @@ export default class Scene {
     glMatrix.mat4.identity(mWorld);
     glMatrix.mat4.identity(mView);
     glMatrix.mat4.identity(mProj);
-    // glMatrix.lookAt(mView, [0, 0, -5], [0,0,0], [0,1,0]);
-    // glMatrix.mat4.perspective(mProj );
+    glMatrix.mat4.lookAt(mView, [0, 0, -5], [0, 0, 0], [0, 1, 0]);
+    glMatrix.mat4.perspective(
+      mProj, glMatrix.glMatrix.toRadian(45), canvas.width / canvas.height, 0.1, 1000.0,
+    );
 
     const uniforms = { mWorld, mView, mProj };
 

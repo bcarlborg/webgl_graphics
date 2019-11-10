@@ -26,7 +26,7 @@ export default class App {
 
   update() {
     this.scene.update();
-    this.scene.draw();
+    this.scene.draw(this.canvas);
     window.requestAnimationFrame(() => this.update());
   }
 }
