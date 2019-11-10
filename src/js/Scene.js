@@ -48,6 +48,9 @@ export default class Scene {
       [shaderSource['base-vs.glsl'], shaderSource['base-fs.glsl']]);
 
     const cubeStuff = twgl.primitives.createCubeVertices(0.5);
+    console.log(cubeStuff);
+    cubeStuff.vertColor = { numComponents: 4, data:[] };
+    cubeStuff.position.forEach(() => { cubeStuff.vertColor.data.push(Math.random(), Math.random(), Math.random(), 1.0); });
     this.bufferInfo = twgl.createBufferInfoFromArrays(gl, cubeStuff);
 
     const mWorld = new Float32Array(16);
