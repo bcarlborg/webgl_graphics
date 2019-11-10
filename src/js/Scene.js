@@ -34,6 +34,9 @@ export default class Scene {
       0.1, 1000.0,
     );
 
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+
     twgl.setBuffersAndAttributes(gl, this.programInfo, this.bufferInfo);
     twgl.setUniforms(this.programInfo, this.uniforms);
     twgl.drawBufferInfo(gl, this.bufferInfo);
