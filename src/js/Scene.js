@@ -26,7 +26,7 @@ export default class Scene {
     gl.useProgram(this.programInfo.program);
 
     this.angle = new Date() / 1000 / 6 * 2 * Math.PI;
-    glMatrix.mat4.rotate(this.uniforms.mWorld, this.identity, this.angle, [0, 1, 0]);
+    glMatrix.mat4.rotate(this.uniforms.mWorld, this.identity, this.angle, [1, 1, 0]);
     glMatrix.mat4.perspective(
       this.uniforms.mProj,
       glMatrix.glMatrix.toRadian(45),
@@ -46,12 +46,9 @@ export default class Scene {
     const shaderSource = ShaderSource.source;
     this.programInfo = twgl.createProgramInfo(gl,
       [shaderSource['base-vs.glsl'], shaderSource['base-fs.glsl']]);
-    const arrays = {
-      position: { numComponents: 3, data: [0.0, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0] },
-      vertColor: { numComponents: 3, data: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0] },
-    };
 
-    this.bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+    const cubeStuff = twgl.primitives.createCubeVertices(0.5);
+    this.bufferInfo = twgl.createBufferInfoFromArrays(gl, cubeStuff);
 
     const mWorld = new Float32Array(16);
     const mView = new Float32Array(16);
