@@ -1,10 +1,13 @@
 import * as twgl from '../lib/twgl-full.module.js';
 import glMatrix from './helpers/glm.js';
+import GameEntity from './GameEntity.js';
+import Mesh from './Mesh.js';
 
 export default class Scene {
   constructor(gl, canvas) {
     this.canvas = canvas;
     this.gl = gl;
+    this.GameObjects = [];
     this.init(canvas);
   }
 
@@ -22,24 +25,7 @@ export default class Scene {
   }
 
   draw() {
-    const { gl } = this;
-    gl.useProgram(this.programInfo.program);
-
-    this.angle = new Date() / 1000 / 6 * 2 * Math.PI;
-    glMatrix.mat4.rotate(this.uniforms.mWorld, this.identity, this.angle, [1, 1, 0]);
-    glMatrix.mat4.perspective(
-      this.uniforms.mProj,
-      glMatrix.glMatrix.toRadian(45),
-      this.canvas.width / this.canvas.height,
-      0.1, 1000.0,
-    );
-
-    gl.enable(gl.DEPTH_TEST);
-    gl.enable(gl.CULL_FACE);
-
-    twgl.setBuffersAndAttributes(gl, this.programInfo, this.bufferInfo);
-    twgl.setUniforms(this.programInfo, this.uniforms);
-    twgl.drawBufferInfo(gl, this.bufferInfo);
+    this.GameObjects.forEach((object) => object.draw());
   }
 
   init() {
@@ -47,14 +33,16 @@ export default class Scene {
 
     // eslint-disable-next-line
     const shaderSource = ShaderSource.source;
-    this.programInfo = twgl.createProgramInfo(gl,
+    const programInfo = twgl.createProgramInfo(gl,
       [shaderSource['base-vs.glsl'], shaderSource['base-fs.glsl']]);
 
-    const cubeStuff = twgl.primitives.createCubeVertices(0.5);
-    console.log(cubeStuff);
-    cubeStuff.vertColor = { numComponents: 4, data:[] };
-    cubeStuff.position.forEach(() => { cubeStuff.vertColor.data.push(Math.random(), Math.random(), Math.random(), 1.0); });
-    this.bufferInfo = twgl.createBufferInfoFromArrays(gl, cubeStuff);
+    const cubeGeometry = twgl.primitives.createCubeVertices(0.5);
+    cubeGeometry.vertColor = { numComponents: 4, data: [] };
+    cubeGeometry.position.forEach(() => {
+      cubeGeometry.vertColor.data.push(Math.random(), Math.random(), Math.random(), 1.0);
+    });
+
+    const mesh = new Mesh(gl, programInfo, cubeGeometry);
 
     const mWorld = new Float32Array(16);
     const mView = new Float32Array(16);
@@ -66,13 +54,13 @@ export default class Scene {
 
     glMatrix.mat4.lookAt(mView, [0, 0, -5], [0, 0, 0], [0, 1, 0]);
     glMatrix.mat4.perspective(
-      mProj, glMatrix.glMatrix.toRadian(45), this.canvas.width / this.canvas.height, 0.1, 1000.0,
+      mProj, glMatrix.glMatrix.toRadian(45), this.canvas.height / this.canvas.width, 0.1, 9000.0,
     );
+    const uniforms = { mWorld, mView, mProj };
 
-    this.uniforms = { mWorld, mView, mProj };
-    this.angle = performance.now() / 1000 / 6 * 2 * Math.pi;
+    const gameEntity = new GameEntity(this.gl, mesh);
+    gameEntity.setUniforms(uniforms);
 
-    this.identity = new Float32Array(16);
-    glMatrix.mat4.identity(this.identity);
+    this.GameObjects.push(gameEntity);
   }
 }
