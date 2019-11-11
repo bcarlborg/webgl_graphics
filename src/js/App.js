@@ -4,9 +4,11 @@ export default class App {
   constructor(canvas, overlay) {
     this.canvas = canvas;
     this.overlay = overlay;
-
     this.gl = canvas.getContext('webgl2', { alpha: false });
-    if (this.gl === null) throw new Error('Browser does not support WebGL2');
+
+    if (this.gl === null) {
+      throw new Error('Browser does not support WebGL2');
+    }
 
     this.gl.pendingResources = {};
     this.scene = new Scene(this.gl, this.canvas);
@@ -16,7 +18,12 @@ export default class App {
   resize() {
     this.canvas.width = this.canvas.clientWidth;
     this.canvas.height = this.canvas.clientHeight;
-    this.scene.resize(this.gl, this.canvas);
+    this.gl.viewport(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
+  }
+
+  clearBackground() {
+    this.gl.clearColor(0.1, 0.14, 0.1, 0);
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
   }
 
   registerEventHandlers() {
@@ -25,6 +32,7 @@ export default class App {
   }
 
   update() {
+    this.clearBackground();
     this.scene.update();
     this.scene.draw();
     window.requestAnimationFrame(() => this.update());

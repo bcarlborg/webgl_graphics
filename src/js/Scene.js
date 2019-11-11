@@ -11,17 +11,7 @@ export default class Scene {
     this.init(canvas);
   }
 
-  clearBackground() {
-    this.gl.clearColor(0.1, 0.14, 0.1, 0);
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-  }
-
-  resize(gl, canvas) {
-    gl.viewport(0, 0, canvas.width, canvas.height);
-  }
-
   update() {
-    this.clearBackground();
   }
 
   draw() {
