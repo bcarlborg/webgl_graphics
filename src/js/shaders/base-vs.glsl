@@ -2,7 +2,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec3 position;
   in vec4 vertColor;
 
-  uniform mat4 mWorld;
+  uniform mat4 worldMatrix;
   uniform mat4 mView;
   uniform mat4 mProj;
 
@@ -10,6 +10,6 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   void main() {
     fragmentColor = vertColor;
-    gl_Position = mProj * mView * mWorld * vec4(position, 1.0);
+    gl_Position = worldMatrix * vec4(position, 1.0);
   }
 `;

@@ -1,13 +1,9 @@
 import glMatrix from './helpers/glm.js';
+import GameEntity from './GameEntity.js';
 
-export default class GameNode {
-  // TODO -- implement materials
-  // TODO -- implement meshes
-  // TODO -- implement implement scene graph
-  // TODO -- implement camera
-  // TODO -- implement textures
-  // TODO -- implement barimetric coordinates
+export default class GameNode extends GameEntity {
   constructor(gl, mesh) {
+    super(gl, mesh);
     this.parent = null;
     this.drawable = Boolean(mesh);
     this.children = [];
@@ -41,10 +37,14 @@ export default class GameNode {
       glMatrix.mat4.copy(this.worldMatrix, this.localMatrix);
     }
 
+    this.setUniforms({ worldMatrix: this.worldMatrix });
+
     // update all children
     this.children.forEach((child) => child.update());
   }
 
   draw() {
+    super.draw();
+    this.children.forEach((child) => child.draw());
   }
 }
