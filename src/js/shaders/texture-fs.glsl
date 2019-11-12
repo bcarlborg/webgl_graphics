@@ -1,10 +1,11 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
   precision mediump float;
-  in vec4 fragmentColor;
 
+  in vec2 v_texcoord;
+  uniform sampler2D u_texture;
   out vec4 outColor;
 
   void main() {
-    outColor = fragmentColor;
+    outColor = texture(u_texture, v_texcoord);
   }
 `;
