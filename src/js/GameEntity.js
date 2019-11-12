@@ -18,8 +18,11 @@ export default class GameEntity {
     if (camera) {
       Object.assign(this.virtualUniforms, camera.virtualUniforms);
     }
-    this.mesh.prepareTodraw();
-    twgl.setUniforms(this.mesh.programInfo, this.virtualUniforms);
+    const meshUniforms = this.mesh.prepareTodraw();
+    if (meshUniforms) {
+      Object.assign(this.virtualUniforms, meshUniforms);
+    }
+    twgl.setUniforms(this.mesh.material.programInfo, this.virtualUniforms);
     this.mesh.draw();
   }
 }

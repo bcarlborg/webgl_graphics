@@ -2,10 +2,10 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   precision mediump float;
 
   in vec2 v_texcoord;
-  uniform sampler2D u_texture;
+  uniform sampler2D foo_texture;
   out vec4 outColor;
 
   void main() {
-    outColor = texture(u_texture, v_texcoord);
+    outColor = texture(foo_texture, v_texcoord);
   }
 `;
