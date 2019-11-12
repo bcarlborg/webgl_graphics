@@ -20,7 +20,7 @@ export default class ProgramBuilder {
     const shaderSource = ShaderSource.source;
     const programInfo = twgl.createProgramInfo(
       this.gl,
-      [shaderSource['base-vs.glsl'], shaderSource['base-fs.glsl']],
+      [shaderSource[vsName], shaderSource[fsName]],
     );
 
     this.addProgram(vsName, fsName, programInfo);
