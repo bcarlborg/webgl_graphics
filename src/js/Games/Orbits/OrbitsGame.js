@@ -15,10 +15,15 @@ export default class OrbitsGame extends Game {
   initObjects() {
     const progBuilder = new ProgramBuilder(this.gl);
     const programInfo = progBuilder.buildProgram('base-vs.glsl', 'base-fs.glsl');
-    const cubeGeometry = primitiveBuilders.buildColoredCube(0.5, [0.1, 0.7, 0.7]);
-    const mesh = new Mesh(this.gl, programInfo, cubeGeometry);
+    const cubeGeometry1 = primitiveBuilders.buildColoredCube(0.5, [0.1, 0.7, 0.7]);
+    const mesh1 = new Mesh(this.gl, programInfo, cubeGeometry1);
 
-    const planet = new Planet(this.gl, mesh);
+    const planet = new Planet(this.gl, mesh1);
     this.gameObjects.push(planet);
+
+    const cubeGeometry2 = primitiveBuilders.buildColoredCube(0.5, [0.1, 0.3, 0.7]);
+    const mesh2 = new Mesh(this.gl, programInfo, cubeGeometry2);
+    const orbiting = new Planet(this.gl, mesh2);
+    orbiting.setParent(planet);
   }
 }

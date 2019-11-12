@@ -10,6 +10,12 @@ export default class App {
       throw new Error('Browser does not support WebGL2');
     }
 
+    this.backgroundColor = [];
+    this.backgroundColor.push(Math.random());
+    this.backgroundColor.push(Math.random());
+    this.backgroundColor.push(Math.random());
+    this.backgroundColor.push(0);
+
     this.gl.pendingResources = {};
     this.scene = new Scene(this.gl, this.canvas);
     this.resize();
@@ -22,7 +28,7 @@ export default class App {
   }
 
   clearBackground() {
-    this.gl.clearColor(0.1, 0.14, 0.1, 0);
+    this.gl.clearColor(...this.backgroundColor);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
   }
 

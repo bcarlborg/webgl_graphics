@@ -15,8 +15,18 @@ export default class Planet extends GameNode {
     this.rotation += this.rotationDelta;
   }
 
+  orbit() {
+    if (this.parent) {
+      const parentTrans = glMatrix.vec3.create();
+      glMatrix.mat4.getTranslation(parentTrans, this.parent.worldMatrix);
+      glMatrix.mat4.fromTranslation(this.localMatrix, parentTrans);
+      glMatrix.mat4.fromTranslation(this.localMatrix, [0, 3, 0]);
+    }
+  }
+
   update() {
     this.rotate();
+    this.orbit();
     super.update();
   }
 }

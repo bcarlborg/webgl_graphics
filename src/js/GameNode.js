@@ -11,8 +11,11 @@ export default class GameNode extends GameEntity {
     this.localMatrix = glMatrix.mat4.create();
   }
 
+  // should use child.setParent(parent) rather than
+  // parent.addChild(child)
   setParent(parent) {
     this.parent = parent;
+    this.parent.addChild(this);
   }
 
   addChild(child) {
