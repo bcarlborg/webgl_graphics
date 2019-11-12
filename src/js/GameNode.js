@@ -43,8 +43,8 @@ export default class GameNode extends GameEntity {
     this.children.forEach((child) => child.update());
   }
 
-  draw() {
-    super.draw();
-    this.children.forEach((child) => child.draw());
+  draw(camera) {
+    super.draw(camera);
+    this.children.forEach((child) => child.draw(camera));
   }
 }

@@ -1,18 +1,16 @@
-// import * as twgl from '../lib/twgl-full.module.js';
-// import glMatrix from './helpers/glm.js';
-// import GameEntity from './GameEntity.js';
-// import Mesh from './Mesh.js';
-
+import Camera from './Camera.js';
 import OrbitsGame from './games/orbits/OrbitsGame.js';
 
 export default class Scene {
   constructor(gl, canvas) {
     this.canvas = canvas;
     this.gl = gl;
+    this.camera = new Camera(this.canvas);
     this.game = new OrbitsGame(this.gl);
   }
 
   update() {
+    this.camera.update();
     this.game.objectsToUpdate().forEach((object) => {
       object.update();
     });
@@ -20,7 +18,7 @@ export default class Scene {
 
   draw() {
     this.game.objectsToDraw().forEach((object) => {
-      object.draw();
+      object.draw(this.camera);
     });
   }
 }

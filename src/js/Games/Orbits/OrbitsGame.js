@@ -15,7 +15,7 @@ export default class OrbitsGame extends Game {
   initObjects() {
     const progBuilder = new ProgramBuilder(this.gl);
     const programInfo = progBuilder.buildProgram('base-vs.glsl', 'base-fs.glsl');
-    const cubeGeometry = primitiveBuilders.buildColoredCube(0.5, [0.1, 0.7, 0.3]);
+    const cubeGeometry = primitiveBuilders.buildColoredCube(0.5, [0.1, 0.7, 0.7]);
     const mesh = new Mesh(this.gl, programInfo, cubeGeometry);
 
     const planet = new Planet(this.gl, mesh);

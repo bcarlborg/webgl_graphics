@@ -14,7 +14,10 @@ export default class GameEntity {
   update() {
   }
 
-  draw() {
+  draw(camera) {
+    if (camera) {
+      Object.assign(this.virtualUniforms, camera.virtualUniforms);
+    }
     this.mesh.prepareTodraw();
     twgl.setUniforms(this.mesh.programInfo, this.virtualUniforms);
     this.mesh.draw();
