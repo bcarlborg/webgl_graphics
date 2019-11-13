@@ -9,7 +9,7 @@ export default class Camera {
     };
   }
 
-  update() {
+  initCameraPos() {
     const { viewMatrix, projectionMatrix } = this.virtualUniforms;
     glMatrix.mat4.lookAt(
       viewMatrix,
@@ -23,6 +23,19 @@ export default class Camera {
       this.canvas.width / this.canvas.height,
       0.1, // frustrum near
       1000.0, // frustrum far
+    );
+  }
+
+  update() {
+    glMatrix.mat4.lookAt(
+      this.virtualUniforms.viewMatrix,
+      [
+        7 * Math.cos(new Date()),
+        7 * Math.sin(new Date()),
+        0,
+      ], // location of camera
+      [0, 0], // point looking at
+      [0, 1, 0], // up for camera
     );
   }
 }

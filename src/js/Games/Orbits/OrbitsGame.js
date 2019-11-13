@@ -14,15 +14,15 @@ export default class OrbitsGame extends Game {
   }
 
   initObjects() {
-    const skyBoxMat = new Material(this.gl);
-    skyBoxMat.setToSkyBoxMaterial([
-      'interstellar_px.jpg',
-      'interstellar_nx.jpg',
-      'interstellar_py.jpg',
-      'interstellar_ny.jpg',
-      'interstellar_pz.jpg',
-      'interstellar_nz.jpg',
-    ]);
+    // const skyBoxMat = new Material(this.gl);
+    // skyBoxMat.setToSkyBoxMaterial([
+    //   'interstellar_px.jpg',
+    //   'interstellar_nx.jpg',
+    //   'interstellar_py.jpg',
+    //   'interstellar_ny.jpg',
+    //   'interstellar_pz.jpg',
+    //   'interstellar_nz.jpg',
+    // ]);
     // const skyBoxGeometry = primitiveBuilders.buildCube(100);
     // const skyBoxMesh = new Mesh(this.gl, skyBoxMat, skyBoxGeometry);
     // const skyBox = new SkyBox(this.gl, skyBoxMesh);
