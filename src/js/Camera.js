@@ -13,6 +13,7 @@ export default class Camera {
     this.cameraPositionInfo = {
       cameraPos: glMatrix.vec3.fromValues(0, 0, 10),
       cameraFront: glMatrix.vec3.fromValues(0, 0, -1),
+      cameraFrontOld: glMatrix.vec3.fromValues(0, 0, -1),
       cameraLookAt: glMatrix.vec3.create(),
       cameraUp: glMatrix.vec3.fromValues(0, 1, 0),
     };
@@ -22,19 +23,23 @@ export default class Camera {
       inverseView: glMatrix.mat4.create(),
       clickRay: glMatrix.vec4.create(),
       clickRayWorld: glMatrix.vec3.create(),
+      dragInitialRay: glMatrix.vec3.create(),
+      dragCurrRay: glMatrix.vec3.create(),
+      dragDiffRay: glMatrix.vec3.create(),
+      lastUpdateWasDrag: false,
     };
 
     this.initializeCamera();
   }
 
-  setClickRayWorld(screenPoint) {
+  screenToRayInWorld(outVec, screenVec) {
     const {
       inverseProjection, inverseView, clickRay, clickRayWorld,
     } = this.clickRayData;
 
     // ray clip
     glMatrix.vec4.set(
-      clickRay, screenPoint[0], screenPoint[1], -1.0, 1.0,
+      clickRay, screenVec[0], screenVec[1], -1.0, 1.0,
     );
     glMatrix.mat4.invert(
       inverseProjection, this.virtualUniforms.projectionMatrix,
@@ -53,47 +58,36 @@ export default class Camera {
       clickRay, clickRay, inverseView,
     );
     glMatrix.vec3.set(
-      clickRayWorld, clickRay[0], clickRay[1], clickRay[2],
+      outVec, clickRay[0], clickRay[1], clickRay[2],
     );
-    glMatrix.vec3.normalize(clickRayWorld, clickRayWorld);
-    console.log('clickRayWorld', clickRayWorld);
+    glMatrix.vec3.normalize(outVec, outVec);
 
     glMatrix.vec3.copy(this.cameraPositionInfo.cameraFront, clickRayWorld);
   }
 
   processClick() {
     const { click, drag } = this.clickListener.info;
-    if (click.is) {
-      const {
-        inverseProjection, inverseView, clickRay, clickRayWorld,
-      } = this.clickRayData;
-      // ray clip
-      glMatrix.vec4.set(
-        clickRay, click.loc[0], click.loc[1], -1.0, 1.0,
-      );
-      glMatrix.mat4.invert(
-        inverseProjection, this.virtualUniforms.projectionMatrix,
-      );
-      // ray eye rayEye = inverse(projmatrix) * clickRay
-      glMatrix.vec4.transformMat4(
-        clickRay, clickRay, inverseProjection,
-      );
-      glMatrix.vec4.set(
-        clickRay, clickRay[0], clickRay[1], -1.0, 0.0,
-      );
-      glMatrix.mat4.invert(
-        inverseView, this.virtualUniforms.viewMatrix,
-      );
-      glMatrix.vec4.transformMat4(
-        clickRay, clickRay, inverseView,
-      );
-      glMatrix.vec3.set(
-        clickRayWorld, clickRay[0], clickRay[1], clickRay[2],
-      );
-      glMatrix.vec3.normalize(clickRayWorld, clickRayWorld);
-      console.log('clickRayWorld', clickRayWorld);
+    const { cameraFront, cameraFrontOld } = this.cameraPositionInfo;
+    const {
+      clickRayWorld, dragInitialRay, dragCurrRay, dragDiffRay,
+    } = this.clickRayData;
 
-      glMatrix.vec3.copy(this.cameraPositionInfo.cameraFront, clickRayWorld);
+    if (click.is) {
+      this.screenToRayInWorld(clickRayWorld, click.loc);
+      glMatrix.vec3.copy(cameraFrontOld, clickRayWorld);
+      glMatrix.vec3.copy(cameraFront, clickRayWorld);
+    } else if (drag.is) {
+      this.clickRayData.lastUpdateWasDrag = true;
+      this.screenToRayInWorld(dragInitialRay, drag.initial);
+      this.screenToRayInWorld(dragCurrRay, drag.curr);
+
+      glMatrix.vec3.subtract(dragDiffRay, dragCurrRay, dragInitialRay);
+      console.log('dragDiffRay', dragDiffRay);
+      console.log('cameraFrontOld', cameraFrontOld);
+      glMatrix.vec3.add(cameraFront, dragDiffRay, cameraFrontOld);
+    } else if (this.clickRayData.lastUpdateWasDrag) {
+      this.clickRayData.lastUpdateWasDrag = false;
+      glMatrix.vec3.copy(cameraFrontOld, cameraFront);
     }
   }
 

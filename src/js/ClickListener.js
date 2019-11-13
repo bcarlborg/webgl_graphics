@@ -83,7 +83,6 @@ export default class ClickListener {
           drag.curr,
           drag.initial,
         );
-        console.log('drag!', drag);
       }
     }
   }
@@ -144,6 +143,8 @@ export default class ClickListener {
 
   resetInfoForNextUpdate() {
     this.infoForNextUpdate.click.is = false;
-    this.infoForNextUpdate.drag.is = false;
+    if (!this.internalInfo.mouseDown.is) {
+      this.infoForNextUpdate.drag.is = false;
+    }
   }
 }
