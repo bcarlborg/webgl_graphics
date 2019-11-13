@@ -10,7 +10,7 @@ export default class Planet extends GameNode {
   }
 
   rotate() {
-    glMatrix.mat4.rotate(this.localMatrix, this.identityBase, this.rotation, [1, 0, 0]);
+    glMatrix.mat4.rotate(this.localMatrix, this.identityBase, this.rotation, [0, 1, 0]);
     // glMatrix.mat4.rotate(this.localMatrix, this.localMatrix, this.rotation, [0, 1, 0]);
     this.rotation += this.rotationDelta;
   }
@@ -20,7 +20,7 @@ export default class Planet extends GameNode {
       const parentTrans = glMatrix.vec3.create();
       glMatrix.mat4.getTranslation(parentTrans, this.parent.worldMatrix);
       glMatrix.mat4.fromTranslation(this.localMatrix, parentTrans);
-      glMatrix.mat4.fromTranslation(this.localMatrix, [0, 3, 0]);
+      glMatrix.mat4.fromTranslation(this.localMatrix, [3, 0, 0]);
     }
   }
 
