@@ -66,8 +66,6 @@ export default class Camera {
       outVec, clickRay[0], clickRay[1], clickRay[2],
     );
     glMatrix.vec3.normalize(outVec, outVec);
-
-    glMatrix.vec3.copy(this.cameraPositionInfo.cameraFront, clickRayWorld);
   }
 
   processClick() {
@@ -86,9 +84,7 @@ export default class Camera {
       this.screenToRayInWorld(dragInitialRay, drag.initial);
       this.screenToRayInWorld(dragCurrRay, drag.curr);
 
-      glMatrix.vec3.subtract(dragDiffRay, dragCurrRay, dragInitialRay);
-      console.log('dragDiffRay', dragDiffRay);
-      console.log('cameraFrontOld', cameraFrontOld);
+      glMatrix.vec3.subtract(dragDiffRay, dragInitialRay, dragCurrRay);
       glMatrix.vec3.add(cameraFront, dragDiffRay, cameraFrontOld);
     } else if (this.clickRayData.lastUpdateWasDrag) {
       this.clickRayData.lastUpdateWasDrag = false;
@@ -123,6 +119,15 @@ export default class Camera {
     const {
       cameraPos, cameraFront, cameraUp, cameraLookAt,
     } = this.cameraPositionInfo;
+
+    glMatrix.mat4.identity(this.virtualUniforms.projectionMatrix);
+    glMatrix.mat4.perspective(
+      this.virtualUniforms.projectionMatrix,
+      glMatrix.glMatrix.toRadian(45),
+      this.canvas.width / this.canvas.height,
+      0.01, // frustrum near
+      1000.0, // frustrum far
+    );
     glMatrix.vec3.add(cameraLookAt, cameraPos, cameraFront);
 
     this.processClick();
