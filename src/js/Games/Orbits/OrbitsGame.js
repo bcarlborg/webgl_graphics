@@ -1,6 +1,6 @@
 import Planet from './Planet.js';
 import Material from '../../Material.js';
-import SkyBox from '../../SkyBox.js';
+// import SkyBox from '../../SkyBox.js';
 import primitiveBuilders from '../../primitiveBuilders.js';
 import Mesh from '../../Mesh.js';
 
