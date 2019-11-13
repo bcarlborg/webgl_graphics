@@ -11,7 +11,7 @@ export default class Planet extends GameNode {
 
   rotate() {
     glMatrix.mat4.rotate(this.localMatrix, this.identityBase, this.rotation, [1, 0, 0]);
-    glMatrix.mat4.rotate(this.localMatrix, this.localMatrix, this.rotation, [0, 1, 0]);
+    // glMatrix.mat4.rotate(this.localMatrix, this.localMatrix, this.rotation, [0, 1, 0]);
     this.rotation += this.rotationDelta;
   }
 

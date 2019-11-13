@@ -19,8 +19,6 @@ export default class App {
     this.backgroundColor = palePurple;
     this.backgroundColor.push(0);
 
-    console.log(this.backgroundColor);
-
     this.gl.pendingResources = {};
     this.scene = new Scene(this.gl, this.canvas);
     this.resize();
