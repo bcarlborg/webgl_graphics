@@ -13,10 +13,15 @@ export default class Camera {
     this.cameraPositionInfo = {
       cameraPos: glMatrix.vec3.fromValues(0, 0, 10),
       cameraFront: glMatrix.vec3.fromValues(0, 0, -1),
-      cameraFrontOld: glMatrix.vec3.fromValues(0, 0, -1),
+      cameraFrontOld: glMatrix.vec3.create(),
       cameraLookAt: glMatrix.vec3.create(),
       cameraUp: glMatrix.vec3.fromValues(0, 1, 0),
     };
+
+    glMatrix.vec3.copy(
+      this.cameraPositionInfo.cameraFrontOld,
+      this.cameraPositionInfo.cameraFront,
+    );
 
     this.clickRayData = {
       inverseProjection: glMatrix.mat4.create(),
