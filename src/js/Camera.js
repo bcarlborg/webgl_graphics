@@ -39,7 +39,7 @@ export default class Camera {
 
   screenToRayInWorld(outVec, screenVec) {
     const {
-      inverseProjection, inverseView, clickRay, clickRayWorld,
+      inverseProjection, inverseView, clickRay,
     } = this.clickRayData;
 
     // ray clip
@@ -81,6 +81,9 @@ export default class Camera {
       glMatrix.vec3.copy(cameraFront, clickRayWorld);
     } else if (drag.is) {
       this.clickRayData.lastUpdateWasDrag = true;
+      // I think it is because I am continuously calling with drag initial even though
+      // that is no longer a correct value to call with
+      // need to adjust drag initial
       this.screenToRayInWorld(dragInitialRay, drag.initial);
       this.screenToRayInWorld(dragCurrRay, drag.curr);
 
