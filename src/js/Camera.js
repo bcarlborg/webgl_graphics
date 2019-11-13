@@ -13,8 +13,8 @@ export default class Camera {
     const { viewMatrix, projectionMatrix } = this.virtualUniforms;
     glMatrix.mat4.lookAt(
       viewMatrix,
-      [-3, 3, 0], // location of camera
-      [0, 0, 0], // point looking at
+      [-7, 7, 0], // location of camera
+      [0, 0], // point looking at
       [0, 1, 0], // up for camera
     );
     glMatrix.mat4.perspective(

@@ -21,6 +21,25 @@ export default class Material {
     ).computerTex;
   }
 
+  setToSkyBoxMaterial(textureFiles) {
+    this.programInfo = this.progBuilder.buildProgram('skybox-vs.glsl', 'skybox-fs.glsl');
+    this.texture = twgl.createTextures(
+      this.gl, {
+        skyboxTex: {
+          target: this.gl.TEXTURE_CUBE_MAP,
+          src: [
+            `../media/${textureFiles[0]}`,
+            `../media/${textureFiles[1]}`,
+            `../media/${textureFiles[2]}`,
+            `../media/${textureFiles[3]}`,
+            `../media/${textureFiles[4]}`,
+            `../media/${textureFiles[5]}`,
+          ],
+        },
+      },
+    ).skyboxTex;
+  }
+
   // return any uniforms to set
   prepareTodraw() {
     let uniforms = null;
