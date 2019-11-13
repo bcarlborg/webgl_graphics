@@ -27,8 +27,42 @@ export default class Camera {
     this.initializeCamera();
   }
 
+  setClickRayWorld(screenPoint) {
+    const {
+      inverseProjection, inverseView, clickRay, clickRayWorld,
+    } = this.clickRayData;
+
+    // ray clip
+    glMatrix.vec4.set(
+      clickRay, screenPoint[0], screenPoint[1], -1.0, 1.0,
+    );
+    glMatrix.mat4.invert(
+      inverseProjection, this.virtualUniforms.projectionMatrix,
+    );
+    // ray eye rayEye = inverse(projmatrix) * clickRay
+    glMatrix.vec4.transformMat4(
+      clickRay, clickRay, inverseProjection,
+    );
+    glMatrix.vec4.set(
+      clickRay, clickRay[0], clickRay[1], -1.0, 0.0,
+    );
+    glMatrix.mat4.invert(
+      inverseView, this.virtualUniforms.viewMatrix,
+    );
+    glMatrix.vec4.transformMat4(
+      clickRay, clickRay, inverseView,
+    );
+    glMatrix.vec3.set(
+      clickRayWorld, clickRay[0], clickRay[1], clickRay[2],
+    );
+    glMatrix.vec3.normalize(clickRayWorld, clickRayWorld);
+    console.log('clickRayWorld', clickRayWorld);
+
+    glMatrix.vec3.copy(this.cameraPositionInfo.cameraFront, clickRayWorld);
+  }
+
   processClick() {
-    const { click } = this.clickListener.info;
+    const { click, drag } = this.clickListener.info;
     if (click.is) {
       const {
         inverseProjection, inverseView, clickRay, clickRayWorld,
