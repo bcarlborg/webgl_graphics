@@ -9,6 +9,9 @@ export default class Camera {
     };
   }
 
+  // the camera can provide world related information for clicks if it
+  // needs to, but that isn't the job of the actual click listener
+
   update() {
     const { viewMatrix, projectionMatrix } = this.virtualUniforms;
     glMatrix.mat4.lookAt(
