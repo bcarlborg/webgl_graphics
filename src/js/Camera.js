@@ -7,6 +7,7 @@ export default class Camera {
     this.canvas = canvas;
     this.clickListener = new ClickListener();
     this.keyHandler = new KeyHandler();
+
     this.virtualUniforms = {
       viewMatrix: glMatrix.mat4.create(),
       projectionMatrix: glMatrix.mat4.create(),
@@ -15,30 +16,6 @@ export default class Camera {
       viewDirectionProjectionMatrix: glMatrix.mat4.create(),
     };
 
-    glMatrix.mat4.getRotation(
-      this.virtualUniforms.viewDirection,
-      this.virtualUniforms.viewMatrix,
-    );
-    glMatrix.mat4.getScaling(
-      this.virtualUniforms.viewScale,
-      this.virtualUniforms.viewMatrix,
-    );
-    glMatrix.mat4.fromRotationTranslationScale(
-      this.virtualUniforms.viewDirectionProjectionMatrix,
-      this.virtualUniforms.viewDirection,
-      [0, 0, 0],
-      this.virtualUniforms.viewScale,
-    );
-    glMatrix.mat4.mul(
-      this.virtualUniforms.viewDirectionProjectionMatrix,
-      this.virtualUniforms.projectionMatrix,
-      this.virtualUniforms.viewDirectionProjectionMatrix,
-    );
-    glMatrix.mat4.invert(
-      this.virtualUniforms.viewDirectionProjectionMatrix,
-      this.virtualUniforms.viewDirectionProjectionMatrix,
-    );
-
     this.cameraPositionInfo = {
       cameraPos: glMatrix.vec3.fromValues(10, 0, 10),
       cameraFront: glMatrix.vec3.fromValues(0, 0, -1),
@@ -46,18 +23,6 @@ export default class Camera {
       cameraLookAt: glMatrix.vec3.create(),
       cameraUp: glMatrix.vec3.fromValues(0, 1, 0),
     };
-
-    glMatrix.vec3.normalize(
-      this.cameraPositionInfo.cameraFront,
-      this.cameraPositionInfo.cameraPos,
-    );
-
-    glMatrix.vec3.scale(
-      this.cameraPositionInfo.cameraFront,
-      this.cameraPositionInfo.cameraFront,
-      -1,
-    );
-
 
     glMatrix.vec3.copy(
       this.cameraPositionInfo.cameraFrontOld,
@@ -75,8 +40,32 @@ export default class Camera {
       lastUpdateWasDrag: false,
     };
 
-    this.initializeCamera();
+    this.initializeViewAndProjection();
   }
+
+  initializeViewAndProjection() {
+    const { viewMatrix, projectionMatrix } = this.virtualUniforms;
+    const {
+      cameraPos, cameraFront, cameraUp, cameraLookAt,
+    } = this.cameraPositionInfo;
+
+    glMatrix.vec3.add(cameraLookAt, cameraPos, cameraFront);
+    glMatrix.mat4.lookAt(
+      viewMatrix,
+      cameraPos,
+      cameraLookAt,
+      cameraUp,
+    );
+
+    glMatrix.mat4.perspective(
+      projectionMatrix,
+      glMatrix.glMatrix.toRadian(45),
+      this.canvas.width / this.canvas.height,
+      0.1, // frustrum near
+      1000.0, // frustrum far
+    );
+  }
+
 
   screenToRayInWorld(outVec, screenVec) {
     const {
@@ -160,44 +149,7 @@ export default class Camera {
     }
   }
 
-  initializeCamera() {
-    const { viewMatrix, projectionMatrix } = this.virtualUniforms;
-    const {
-      cameraPos, cameraFront, cameraUp, cameraLookAt,
-    } = this.cameraPositionInfo;
-
-    glMatrix.vec3.add(cameraLookAt, cameraPos, cameraFront);
-    glMatrix.mat4.lookAt(
-      viewMatrix,
-      cameraPos,
-      cameraLookAt,
-      cameraUp,
-    );
-
-    glMatrix.mat4.perspective(
-      projectionMatrix,
-      glMatrix.glMatrix.toRadian(45),
-      this.canvas.width / this.canvas.height,
-      0.1, // frustrum near
-      1000.0, // frustrum far
-    );
-  }
-
-  update() {
-    const {
-      cameraPos, cameraFront, cameraUp, cameraLookAt,
-    } = this.cameraPositionInfo;
-
-    glMatrix.mat4.identity(this.virtualUniforms.projectionMatrix);
-    glMatrix.mat4.perspective(
-      this.virtualUniforms.projectionMatrix,
-      glMatrix.glMatrix.toRadian(45),
-      this.canvas.width / this.canvas.height,
-      0.01, // frustrum near
-      1000.0, // frustrum far
-    );
-    glMatrix.vec3.add(cameraLookAt, cameraPos, cameraFront);
-
+  updateRayDirectionProjection() {
     glMatrix.mat4.getRotation(
       this.virtualUniforms.viewDirection,
       this.virtualUniforms.viewMatrix,
@@ -221,15 +173,40 @@ export default class Camera {
       this.virtualUniforms.viewDirectionProjectionMatrix,
       this.virtualUniforms.viewDirectionProjectionMatrix,
     );
+  }
 
-    this.processClick();
-    this.processKeyPress();
+  updateProjectionMatrix() {
+    const frustrumNear = 0.01;
+    const frustrumRear = 1000.0;
+    glMatrix.mat4.identity(this.virtualUniforms.projectionMatrix);
+    glMatrix.mat4.perspective(
+      this.virtualUniforms.projectionMatrix,
+      glMatrix.glMatrix.toRadian(70),
+      this.canvas.width / this.canvas.height,
+      frustrumNear,
+      frustrumRear,
+    );
+  }
 
+  updateViewMatrix() {
+    glMatrix.vec3.add(
+      this.cameraPositionInfo.cameraLookAt,
+      this.cameraPositionInfo.cameraPos,
+      this.cameraPositionInfo.cameraFront,
+    );
     glMatrix.mat4.lookAt(
       this.virtualUniforms.viewMatrix,
-      cameraPos,
-      cameraLookAt,
-      cameraUp,
+      this.cameraPositionInfo.cameraPos,
+      this.cameraPositionInfo.cameraLookAt,
+      this.cameraPositionInfo.cameraUp,
     );
+  }
+
+  update() {
+    this.processClick();
+    this.processKeyPress();
+    this.updateProjectionMatrix();
+    this.updateRayDirectionProjection();
+    this.updateViewMatrix();
   }
 }
