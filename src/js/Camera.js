@@ -28,9 +28,9 @@ export default class Camera {
       inverseView: glMatrix.mat4.create(),
       clickRay: glMatrix.vec4.create(),
       clickRayWorld: glMatrix.vec3.create(),
-      dragInitialRay: glMatrix.vec3.create(),
-      dragCurrRay: glMatrix.vec3.create(),
       dragDiffRay: glMatrix.vec3.create(),
+      dragResetRay: glMatrix.vec2.fromValues(0, 0),
+      dragDiffScreenRev: glMatrix.vec2.create(),
       lastUpdateWasDrag: false,
     };
 
@@ -72,26 +72,28 @@ export default class Camera {
     const { click, drag } = this.clickListener.info;
     const { cameraFront, cameraFrontOld } = this.cameraPositionInfo;
     const {
-      clickRayWorld, dragInitialRay, dragCurrRay, dragDiffRay,
+      clickRayWorld, dragDiffRay, dragDiffScreenRev, dragResetRay,
     } = this.clickRayData;
 
     if (click.is) {
+      console.log('click');
       this.screenToRayInWorld(clickRayWorld, click.loc);
       glMatrix.vec3.copy(cameraFrontOld, clickRayWorld);
       glMatrix.vec3.copy(cameraFront, clickRayWorld);
     } else if (drag.is) {
       this.clickRayData.lastUpdateWasDrag = true;
-      // I think it is because I am continuously calling with drag initial even though
-      // that is no longer a correct value to call with
-      // need to adjust drag initial
-      this.screenToRayInWorld(dragInitialRay, drag.initial);
-      this.screenToRayInWorld(dragCurrRay, drag.curr);
+      glMatrix.vec2.scale(dragDiffScreenRev, drag.diff, -1);
+      console.log(dragDiffScreenRev);
+      this.screenToRayInWorld(dragDiffRay, dragDiffScreenRev);
 
-      glMatrix.vec3.subtract(dragDiffRay, dragInitialRay, dragCurrRay);
+      console.log(dragDiffRay);
+
       glMatrix.vec3.add(cameraFront, dragDiffRay, cameraFrontOld);
     } else if (this.clickRayData.lastUpdateWasDrag) {
+      this.screenToRayInWorld(clickRayWorld, dragResetRay);
+      glMatrix.vec3.copy(cameraFrontOld, clickRayWorld);
+      glMatrix.vec3.copy(cameraFront, clickRayWorld);
       this.clickRayData.lastUpdateWasDrag = false;
-      glMatrix.vec3.copy(cameraFrontOld, cameraFront);
     }
   }
 
