@@ -9,7 +9,16 @@ export default class PlanetBuilder {
     this.vertColors = [1, 0, 0];
   }
 
+  setVertColorsToRandom() {
+    this.vertColors = [
+      Math.random(),
+      Math.random(),
+      Math.random(),
+    ];
+  }
+
   buildPlanet(parent, size, initialLoc) {
+    this.setVertColorsToRandom();
     const cubeMaterial = new Material(this.gl);
     cubeMaterial.setToBasicMaterial();
 

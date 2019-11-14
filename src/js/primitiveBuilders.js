@@ -7,14 +7,14 @@ const primitiveBuilders = {
   buildColoredCube: (size, rgbVec) => {
     const cubeGeometry = twgl.primitives.createCubeVertices(size);
     cubeGeometry.vertColor = { numComponents: 4, data: [] };
-    cubeGeometry.position.forEach(() => {
-      cubeGeometry.vertColor.data.push(
-        Math.random() * rgbVec[0],
-        Math.random() * rgbVec[1],
-        Math.random() * rgbVec[2],
-        1.0,
-      );
-    });
+    for (let i = 0; i < cubeGeometry.indices.length; i += 6) {
+      const getRandom = (index) => (Math.random() * rgbVec[index]);
+      const color = [getRandom(0), getRandom(1), getRandom(2), 1];
+      for (let j = 0; j < 6; j++) {
+        cubeGeometry.vertColor.data.push(...color);
+      }
+    }
+    console.log(cubeGeometry);
     return cubeGeometry;
   },
 
