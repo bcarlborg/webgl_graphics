@@ -109,16 +109,28 @@ export default class Camera {
   }
 
   processKeyPress() {
-    if (this.keyHandler.keysPressed.SPACE) {
+    const normalizeCameraFront = () => {
       glMatrix.vec3.normalize(
         this.cameraPositionInfo.cameraFront,
         this.cameraPositionInfo.cameraFront,
       );
+    };
+    if (this.keyHandler.keysPressed.W) {
+      normalizeCameraFront();
       glMatrix.vec3.scaleAndAdd(
         this.cameraPositionInfo.cameraPos,
         this.cameraPositionInfo.cameraPos,
         this.cameraPositionInfo.cameraFront,
         0.1,
+      );
+    }
+    if (this.keyHandler.keysPressed.S) {
+      normalizeCameraFront();
+      glMatrix.vec3.scaleAndAdd(
+        this.cameraPositionInfo.cameraPos,
+        this.cameraPositionInfo.cameraPos,
+        this.cameraPositionInfo.cameraFront,
+        -0.1,
       );
     }
   }
