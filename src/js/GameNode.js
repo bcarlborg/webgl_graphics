@@ -12,7 +12,7 @@ export default class GameNode extends GameEntity {
   }
 
   // should use child.setParent(parent) rather than
-  // parent.addChild(child)
+  // parent.addChild(child) to create a relationship
   setParent(parent) {
     this.parent = parent;
     this.parent.addChild(this);
@@ -33,7 +33,6 @@ export default class GameNode extends GameEntity {
 
 
   update() {
-    // update world matrix
     if (this.parent) {
       glMatrix.mat4.mul(this.worldMatrix, this.parent.worldMatrix, this.localMatrix);
     } else {
@@ -42,7 +41,6 @@ export default class GameNode extends GameEntity {
 
     this.setUniforms({ worldMatrix: this.worldMatrix });
 
-    // update all children
     this.children.forEach((child) => child.update());
   }
 

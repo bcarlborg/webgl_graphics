@@ -12,8 +12,6 @@ export default class Scene {
   }
 
   update() {
-    // click listener should be updated before everything
-    // else to ensure that click info is consistent
     this.clickListener.update();
     this.camera.update();
     this.game.objectsToUpdate().forEach((object) => {
