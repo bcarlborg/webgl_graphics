@@ -10,13 +10,22 @@ export default class Camera {
     this.virtualUniforms = {
       viewMatrix: glMatrix.mat4.create(),
       projectionMatrix: glMatrix.mat4.create(),
+      viewDirection: glMatrix.quat.create(),
       viewDirectionProjectionMatrix: glMatrix.mat4.create(),
     };
 
+    glMatrix.mat4.getRotation(
+      this.virtualUniforms.viewDirection,
+      this.virtualUniforms.viewMatrix,
+    );
+    glMatrix.mat4.fromQuat(
+      this.virtualUniforms.viewDirectionProjectionMatrix,
+      this.virtualUniforms.viewDirection,
+    );
     glMatrix.mat4.mul(
       this.virtualUniforms.viewDirectionProjectionMatrix,
       this.virtualUniforms.projectionMatrix,
-      this.virtualUniforms.viewMatrix,
+      this.virtualUniforms.viewDirectionProjectionMatrix,
     );
     glMatrix.mat4.invert(
       this.virtualUniforms.viewDirectionProjectionMatrix,
@@ -184,16 +193,23 @@ export default class Camera {
     );
     glMatrix.vec3.add(cameraLookAt, cameraPos, cameraFront);
 
+    glMatrix.mat4.getRotation(
+      this.virtualUniforms.viewDirection,
+      this.virtualUniforms.viewMatrix,
+    );
+    glMatrix.mat4.fromQuat(
+      this.virtualUniforms.viewDirectionProjectionMatrix,
+      this.virtualUniforms.viewDirection,
+    );
     glMatrix.mat4.mul(
       this.virtualUniforms.viewDirectionProjectionMatrix,
       this.virtualUniforms.projectionMatrix,
-      this.virtualUniforms.viewMatrix,
+      this.virtualUniforms.viewDirectionProjectionMatrix,
     );
     glMatrix.mat4.invert(
       this.virtualUniforms.viewDirectionProjectionMatrix,
       this.virtualUniforms.viewDirectionProjectionMatrix,
     );
-    console.log(this.virtualUniforms.viewDirectionProjectionMatrix);
 
     this.processClick();
     this.processKeyPress();
