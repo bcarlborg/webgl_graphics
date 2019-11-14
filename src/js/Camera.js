@@ -110,10 +110,15 @@ export default class Camera {
 
   processKeyPress() {
     if (this.keyHandler.keysPressed.SPACE) {
-      glMatrix.vec3.add(
+      glMatrix.vec3.normalize(
+        this.cameraPositionInfo.cameraFront,
+        this.cameraPositionInfo.cameraFront,
+      );
+      glMatrix.vec3.scaleAndAdd(
         this.cameraPositionInfo.cameraPos,
         this.cameraPositionInfo.cameraPos,
-        [0.1, 0, 0.1],
+        this.cameraPositionInfo.cameraFront,
+        0.1,
       );
     }
   }
