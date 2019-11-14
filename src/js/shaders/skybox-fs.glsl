@@ -11,6 +11,6 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   void main() {
     vec4 t = viewDirectionProjectionMatrix * v_position;
-    outColor = texture(skyboxTexture, normalize(t.xyz / t.w));
+    outColor = texture(skyboxTexture, t.xyz);
   }
 `;

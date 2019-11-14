@@ -24,6 +24,7 @@ export default class OrbitsGame extends Game {
       'interstellar_nz.jpg',
     ]);
     const skyBoxGeometry = primitiveBuilders.buildCube(100);
+    console.log(skyBoxGeometry);
     const skyBoxMesh = new Mesh(this.gl, skyBoxMat, skyBoxGeometry);
     const skyBox = new SkyBox(this.gl, skyBoxMesh);
     this.gameObjects.push(skyBox);

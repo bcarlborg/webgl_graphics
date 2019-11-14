@@ -11,6 +11,7 @@ export default class Camera {
       viewMatrix: glMatrix.mat4.create(),
       projectionMatrix: glMatrix.mat4.create(),
       viewDirection: glMatrix.quat.create(),
+      viewScale: glMatrix.vec3.create(),
       viewDirectionProjectionMatrix: glMatrix.mat4.create(),
     };
 
@@ -18,9 +19,15 @@ export default class Camera {
       this.virtualUniforms.viewDirection,
       this.virtualUniforms.viewMatrix,
     );
-    glMatrix.mat4.fromQuat(
+    glMatrix.mat4.getScaling(
+      this.virtualUniforms.viewScale,
+      this.virtualUniforms.viewMatrix,
+    );
+    glMatrix.mat4.fromRotationTranslationScale(
       this.virtualUniforms.viewDirectionProjectionMatrix,
       this.virtualUniforms.viewDirection,
+      [0, 0, 0],
+      this.virtualUniforms.viewScale,
     );
     glMatrix.mat4.mul(
       this.virtualUniforms.viewDirectionProjectionMatrix,
@@ -197,9 +204,15 @@ export default class Camera {
       this.virtualUniforms.viewDirection,
       this.virtualUniforms.viewMatrix,
     );
-    glMatrix.mat4.fromQuat(
+    glMatrix.mat4.getScaling(
+      this.virtualUniforms.viewScale,
+      this.virtualUniforms.viewMatrix,
+    );
+    glMatrix.mat4.fromRotationTranslationScale(
       this.virtualUniforms.viewDirectionProjectionMatrix,
       this.virtualUniforms.viewDirection,
+      [0, 0, 0],
+      this.virtualUniforms.viewScale,
     );
     glMatrix.mat4.mul(
       this.virtualUniforms.viewDirectionProjectionMatrix,

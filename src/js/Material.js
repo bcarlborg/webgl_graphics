@@ -28,6 +28,8 @@ export default class Material {
       this.gl, {
         skyboxTex: {
           target: this.gl.TEXTURE_CUBE_MAP,
+          width: 800,
+          height: 800,
           src: [
             `../media/${textureFiles[0]}`,
             `../media/${textureFiles[1]}`,
