@@ -2,7 +2,8 @@ import * as twgl from '../lib/twgl-full.module.js';
 
 export default class primitiveBuilders {
   static buildCube(size) {
-    return twgl.primitives.createCubeVertices(size);
+    const cubeVerts = twgl.primitives.createCubeVertices(size);
+    return this.deindexVertices(cubeVerts);
   }
 
   static buildTorus(size) {
@@ -12,16 +13,18 @@ export default class primitiveBuilders {
     const radialSubdivisions = 10;
     const bodySubdivisions = 10;
 
-    const torusVertices = twgl.primitives.createTorusVertices(
+    const torusVerts = twgl.primitives.createTorusVertices(
       radius, thickness, radialSubdivisions, bodySubdivisions,
     );
 
-    const deindexedVertices = twgl.primitives.deindexVertices(torusVertices);
-    return deindexedVertices;
+    return this.deindexVertices(torusVerts);
   }
 
-  static buildRandomColoredTorus(size) {
-    const uncoloredTorus = this.buildTorus(size);
-    return twgl.primitives.makeRandomVertexColors(uncoloredTorus);
+  static deindexVertices(vertices) {
+    return twgl.primitives.deindexVertices(vertices);
+  }
+
+  static addRandomColorsToVertices(vertices) {
+    return twgl.primitives.makeRandomVertexColors(vertices);
   }
 }
