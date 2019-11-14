@@ -1,6 +1,6 @@
 import Planet from './Planet.js';
 import Material from '../../Material.js';
-// import SkyBox from '../../SkyBox.js';
+import SkyBox from '../../SkyBox.js';
 import primitiveBuilders from '../../primitiveBuilders.js';
 import Mesh from '../../Mesh.js';
 
@@ -14,19 +14,19 @@ export default class OrbitsGame extends Game {
   }
 
   initObjects() {
-    // const skyBoxMat = new Material(this.gl);
-    // skyBoxMat.setToSkyBoxMaterial([
-    //   'interstellar_px.jpg',
-    //   'interstellar_nx.jpg',
-    //   'interstellar_py.jpg',
-    //   'interstellar_ny.jpg',
-    //   'interstellar_pz.jpg',
-    //   'interstellar_nz.jpg',
-    // ]);
-    // const skyBoxGeometry = primitiveBuilders.buildCube(100);
-    // const skyBoxMesh = new Mesh(this.gl, skyBoxMat, skyBoxGeometry);
-    // const skyBox = new SkyBox(this.gl, skyBoxMesh);
-    // this.gameObjects.push(skyBox);
+    const skyBoxMat = new Material(this.gl);
+    skyBoxMat.setToSkyBoxMaterial([
+      'interstellar_px.jpg',
+      'interstellar_nx.jpg',
+      'interstellar_py.jpg',
+      'interstellar_ny.jpg',
+      'interstellar_pz.jpg',
+      'interstellar_nz.jpg',
+    ]);
+    const skyBoxGeometry = primitiveBuilders.buildCube(100);
+    const skyBoxMesh = new Mesh(this.gl, skyBoxMat, skyBoxGeometry);
+    const skyBox = new SkyBox(this.gl, skyBoxMesh);
+    this.gameObjects.push(skyBox);
 
     const cubeMat1 = new Material(this.gl);
     cubeMat1.setToTexturedMaterial('computerTex.jpg');

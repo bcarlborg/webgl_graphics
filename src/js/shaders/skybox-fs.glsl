@@ -1,8 +1,8 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
   precision mediump float;
 
-  uniform samplerCube u_skybox;
-  uniform mat4 u_viewDirectionProjectionInverse;
+  uniform samplerCube skyboxTexture;
+  uniform mat4 viewDirectionProjectionMatrix;
 
   in vec4 v_position;
 
@@ -10,7 +10,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   out vec4 outColor;
 
   void main() {
-    vec4 t = u_viewDirectionProjectionInverse * v_position;
-    outColor = texture(u_skybox, normalize(t.xyz / t.w));
+    vec4 t = viewDirectionProjectionMatrix * v_position;
+    outColor = texture(skyboxTexture, normalize(t.xyz / t.w));
   }
 `;

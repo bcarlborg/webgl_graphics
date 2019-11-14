@@ -10,7 +10,18 @@ export default class Camera {
     this.virtualUniforms = {
       viewMatrix: glMatrix.mat4.create(),
       projectionMatrix: glMatrix.mat4.create(),
+      viewDirectionProjectionMatrix: glMatrix.mat4.create(),
     };
+
+    glMatrix.mat4.mul(
+      this.virtualUniforms.viewDirectionProjectionMatrix,
+      this.virtualUniforms.projectionMatrix,
+      this.virtualUniforms.viewMatrix,
+    );
+    glMatrix.mat4.invert(
+      this.virtualUniforms.viewDirectionProjectionMatrix,
+      this.virtualUniforms.viewDirectionProjectionMatrix,
+    );
 
     this.cameraPositionInfo = {
       cameraPos: glMatrix.vec3.fromValues(10, 0, 10),
@@ -172,6 +183,17 @@ export default class Camera {
       1000.0, // frustrum far
     );
     glMatrix.vec3.add(cameraLookAt, cameraPos, cameraFront);
+
+    glMatrix.mat4.mul(
+      this.virtualUniforms.viewDirectionProjectionMatrix,
+      this.virtualUniforms.projectionMatrix,
+      this.virtualUniforms.viewMatrix,
+    );
+    glMatrix.mat4.invert(
+      this.virtualUniforms.viewDirectionProjectionMatrix,
+      this.virtualUniforms.viewDirectionProjectionMatrix,
+    );
+    console.log(this.virtualUniforms.viewDirectionProjectionMatrix);
 
     this.processClick();
     this.processKeyPress();

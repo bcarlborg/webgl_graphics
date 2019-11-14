@@ -6,16 +6,17 @@ export default class Material {
     this.gl = gl;
     this.programInfo = null;
     this.progBuilder = new ProgramBuilder(this.gl);
-    this.texture = null;
+    this.virtualUniforms = {};
   }
 
   setToBasicMaterial() {
     this.programInfo = this.progBuilder.buildProgram('base-vs.glsl', 'base-fs.glsl');
+    this.virtualUniforms = {};
   }
 
   setToTexturedMaterial(textureFile) {
     this.programInfo = this.progBuilder.buildProgram('texture-vs.glsl', 'texture-fs.glsl');
-    this.texture = twgl.createTextures(
+    this.virtualUniforms.foo_texture = twgl.createTextures(
       this.gl,
       { computerTex: { src: `../media/${textureFile}`, mag: this.gl.NEAREST } },
     ).computerTex;
@@ -23,7 +24,7 @@ export default class Material {
 
   setToSkyBoxMaterial(textureFiles) {
     this.programInfo = this.progBuilder.buildProgram('skybox-vs.glsl', 'skybox-fs.glsl');
-    this.texture = twgl.createTextures(
+    this.virtualUniforms.skyboxTexture = twgl.createTextures(
       this.gl, {
         skyboxTex: {
           target: this.gl.TEXTURE_CUBE_MAP,
@@ -42,11 +43,7 @@ export default class Material {
 
   // return any uniforms to set
   prepareTodraw() {
-    let uniforms = null;
-    if (this.texture) {
-      uniforms = { foo_texture: this.texture };
-    }
     this.gl.useProgram(this.programInfo.program);
-    return uniforms;
+    return this.virtualUniforms;
   }
 }
