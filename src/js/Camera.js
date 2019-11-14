@@ -51,14 +51,12 @@ export default class Camera {
       this.cameraPositionInfo.cameraFront,
       this.cameraPositionInfo.cameraPos,
     );
-    console.log(this.cameraPositionInfo.cameraFront);
 
     glMatrix.vec3.scale(
       this.cameraPositionInfo.cameraFront,
       this.cameraPositionInfo.cameraFront,
       -1,
     );
-    console.log(this.cameraPositionInfo.cameraFront);
 
 
     glMatrix.vec3.copy(

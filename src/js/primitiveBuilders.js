@@ -18,6 +18,8 @@ const primitiveBuilders = {
     return cubeGeometry;
   },
 
+  buildPlane: () => (twgl.primitives.createPlaneVertices(10, 10)),
+
   buildColoredTorus: (radius, thickness, radialSubdivisions, bodySubdivisions, rgbVec) => {
     const torusGeometry = twgl.primitives.createTorusVertices(
       radius, thickness, radialSubdivisions, bodySubdivisions,
