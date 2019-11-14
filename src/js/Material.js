@@ -22,14 +22,6 @@ export default class Material {
     ).computerTex;
   }
 
-  setToInfiniteGroundMaterial(textureFile) {
-    this.programInfo = this.progBuilder.buildProgram('infinite-ground-vs.glsl', 'infinite-ground-fs.glsl');
-    this.virtualUniforms.foo_texture = twgl.createTextures(
-      this.gl,
-      { computerTex: { src: `../media/${textureFile}`, mag: this.gl.NEAREST } },
-    ).computerTex;
-  }
-
   setToSkyBoxMaterial(textureFiles) {
     this.programInfo = this.progBuilder.buildProgram('skybox-vs.glsl', 'skybox-fs.glsl');
     this.virtualUniforms.skyboxTexture = twgl.createTextures(

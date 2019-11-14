@@ -24,6 +24,8 @@ export default class Camera {
       cameraUp: glMatrix.vec3.fromValues(0, 1, 0),
     };
 
+    this.lookAtOrigin();
+
     glMatrix.vec3.copy(
       this.cameraPositionInfo.cameraFrontOld,
       this.cameraPositionInfo.cameraFront,
@@ -65,7 +67,6 @@ export default class Camera {
       1000.0, // frustrum far
     );
   }
-
 
   screenToRayInWorld(outVec, screenVec) {
     const {
@@ -147,6 +148,10 @@ export default class Camera {
         -0.1,
       );
     }
+    if (this.keyHandler.keysPressed.O) {
+      normalizeCameraFront();
+      this.lookAtOrigin();
+    }
   }
 
   updateRayDirectionProjection() {
@@ -185,6 +190,22 @@ export default class Camera {
       this.canvas.width / this.canvas.height,
       frustrumNear,
       frustrumRear,
+    );
+  }
+
+  lookAtOrigin() {
+    glMatrix.vec3.subtract(
+      this.cameraPositionInfo.cameraFront,
+      [0, 0, 0],
+      this.cameraPositionInfo.cameraPos,
+    );
+    glMatrix.vec3.normalize(
+      this.cameraPositionInfo.cameraFront,
+      this.cameraPositionInfo.cameraFront,
+    );
+    glMatrix.vec3.copy(
+      this.cameraPositionInfo.cameraFrontOld,
+      this.cameraPositionInfo.cameraFront,
     );
   }
 
