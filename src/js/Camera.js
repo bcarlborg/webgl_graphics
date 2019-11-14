@@ -1,22 +1,38 @@
 import ClickListener from './ClickListener.js';
+import KeyHandler from './KeyHandler.js';
 import glMatrix from './helpers/glm.js';
 
 export default class Camera {
   constructor(canvas) {
     this.canvas = canvas;
     this.clickListener = new ClickListener();
+    this.keyHandler = new KeyHandler();
     this.virtualUniforms = {
       viewMatrix: glMatrix.mat4.create(),
       projectionMatrix: glMatrix.mat4.create(),
     };
 
     this.cameraPositionInfo = {
-      cameraPos: glMatrix.vec3.fromValues(0, 0, 10),
+      cameraPos: glMatrix.vec3.fromValues(10, 0, 10),
       cameraFront: glMatrix.vec3.fromValues(0, 0, -1),
       cameraFrontOld: glMatrix.vec3.create(),
       cameraLookAt: glMatrix.vec3.create(),
       cameraUp: glMatrix.vec3.fromValues(0, 1, 0),
     };
+
+    glMatrix.vec3.normalize(
+      this.cameraPositionInfo.cameraFront,
+      this.cameraPositionInfo.cameraPos,
+    );
+    console.log(this.cameraPositionInfo.cameraFront);
+
+    glMatrix.vec3.scale(
+      this.cameraPositionInfo.cameraFront,
+      this.cameraPositionInfo.cameraFront,
+      -1,
+    );
+    console.log(this.cameraPositionInfo.cameraFront);
+
 
     glMatrix.vec3.copy(
       this.cameraPositionInfo.cameraFrontOld,
@@ -76,24 +92,25 @@ export default class Camera {
     } = this.clickRayData;
 
     if (click.is) {
-      console.log('click');
       this.screenToRayInWorld(clickRayWorld, click.loc);
       glMatrix.vec3.copy(cameraFrontOld, clickRayWorld);
       glMatrix.vec3.copy(cameraFront, clickRayWorld);
     } else if (drag.is) {
       this.clickRayData.lastUpdateWasDrag = true;
       glMatrix.vec2.scale(dragDiffScreenRev, drag.diff, -1);
-      console.log(dragDiffScreenRev);
       this.screenToRayInWorld(dragDiffRay, dragDiffScreenRev);
-
-      console.log(dragDiffRay);
-
       glMatrix.vec3.add(cameraFront, dragDiffRay, cameraFrontOld);
     } else if (this.clickRayData.lastUpdateWasDrag) {
       this.screenToRayInWorld(clickRayWorld, dragResetRay);
       glMatrix.vec3.copy(cameraFrontOld, clickRayWorld);
       glMatrix.vec3.copy(cameraFront, clickRayWorld);
       this.clickRayData.lastUpdateWasDrag = false;
+    }
+  }
+
+  processKeyPress() {
+    if (this.keyHandler.keysPressed.SPACE) {
+      glMatrix.vec3.scale(this.cameraPositionInfo.cameraPos, 1.1);
     }
   }
 
@@ -136,6 +153,7 @@ export default class Camera {
     glMatrix.vec3.add(cameraLookAt, cameraPos, cameraFront);
 
     this.processClick();
+    this.processKeyPress();
 
     glMatrix.mat4.lookAt(
       this.virtualUniforms.viewMatrix,
