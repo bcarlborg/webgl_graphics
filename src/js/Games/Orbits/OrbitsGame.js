@@ -12,13 +12,13 @@ export default class OrbitsGame extends Game {
     this.gl = gl;
     this.planetBuilder = new PlanetBuilder(this.gl);
     this.initPlanets();
-    // this.initSkyBox();
+    this.initSkyBox();
   }
 
   initPlanets() {
     const centerPlanet = this.planetBuilder.buildPlanet(null, 2);
-    const orbit1 = this.planetBuilder.buildPlanet(centerPlanet, 1, [2, 0, 0]);
-    const orbit2 = this.planetBuilder.buildPlanet(centerPlanet, 1, [-2, 0, 0]);
+    const orbit1 = this.planetBuilder.buildPlanet(centerPlanet, 1, [4, 0, 0]);
+    const orbit2 = this.planetBuilder.buildPlanet(centerPlanet, 1, [-4, 0, 0]);
 
     this.gameObjects.push(centerPlanet, orbit1, orbit2);
   }
