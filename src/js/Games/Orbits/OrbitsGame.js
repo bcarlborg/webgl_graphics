@@ -11,10 +11,18 @@ export default class OrbitsGame extends Game {
     super();
     this.gl = gl;
     this.planetBuilder = new PlanetBuilder(this.gl);
-    this.initObjects();
+    this.initPlanets();
   }
 
-  initObjects() {
+  initPlanets() {
+    const centerPlanet = this.planetBuilder.buildPlanet(null, 2, [0, 0, 0]);
+    const orbit1 = this.planetBuilder.buildPlanet(centerPlanet, 1, [2, 0, 0]);
+    const orbit2 = this.planetBuilder.buildPlanet(centerPlanet, 1, [-2, 0, 0]);
+
+    this.gameObjects.push(centerPlanet, orbit1, orbit2);
+  }
+
+  initSkyBox() {
     const skyBoxMat = new Material(this.gl);
     skyBoxMat.setToSkyBoxMaterial([
       'interstellar_px.jpg',
@@ -28,8 +36,5 @@ export default class OrbitsGame extends Game {
     const skyBoxMesh = new Mesh(this.gl, skyBoxMat, skyBoxGeometry);
     const skyBox = new SkyBox(this.gl, skyBoxMesh);
     this.gameObjects.push(skyBox);
-
-    const centerPlanet = this.planetBuilder.buildPlanet(null, 1, [0, 0, 0]);
-    this.gameObjects.push(centerPlanet);
   }
 }

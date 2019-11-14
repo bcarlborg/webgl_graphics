@@ -7,12 +7,23 @@ export default class Planet extends GameNode {
     this.rotationDelta = glMatrix.glMatrix.toRadian(1);
     this.rotation = 0;
     this.identityBase = glMatrix.mat4.create();
+    this.rotationStart = [3, 0, 0];
+    this.rotationAxis = [0, 1, 0];
   }
 
   rotate() {
-    glMatrix.mat4.rotate(this.localMatrix, this.identityBase, this.rotation, [0, 1, 0]);
-    // glMatrix.mat4.rotate(this.localMatrix, this.localMatrix, this.rotation, [0, 1, 0]);
+    glMatrix.mat4.rotate(
+      this.localMatrix, this.identityBase, this.rotation, this.rotationAxis,
+    );
     this.rotation += this.rotationDelta;
+  }
+
+  setRotationAxis(axis) {
+    this.rotationAxis = axis;
+  }
+
+  setRotationStart(startLoc) {
+    this.rotationStart = startLoc;
   }
 
   orbit() {
@@ -20,7 +31,7 @@ export default class Planet extends GameNode {
       const parentTrans = glMatrix.vec3.create();
       glMatrix.mat4.getTranslation(parentTrans, this.parent.worldMatrix);
       glMatrix.mat4.fromTranslation(this.localMatrix, parentTrans);
-      glMatrix.mat4.fromTranslation(this.localMatrix, [3, 0, 0]);
+      glMatrix.mat4.fromTranslation(this.localMatrix, this.rotationStart);
     }
   }
 

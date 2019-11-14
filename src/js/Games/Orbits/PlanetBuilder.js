@@ -16,7 +16,10 @@ export default class PlanetBuilder {
     const mesh = new Mesh(this.gl, cubeMaterial, cubeGeometry);
 
     const planet = new Planet(this.gl, mesh);
-    if (parent) planet.setParent(planet);
+    if (parent) {
+      planet.setParent(parent);
+      planet.setRotationStart(initialLoc);
+    }
 
     return planet;
   }
