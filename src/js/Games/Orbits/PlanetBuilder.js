@@ -22,10 +22,8 @@ export default class PlanetBuilder {
     const cubeMaterial = new Material(this.gl);
     cubeMaterial.setToBasicMaterial();
 
-    const planetGeometry = primitiveBuilders.buildCube(size, this.vertColors);
-    primitiveBuilders.addVertColorToGeometry(planetGeometry, this.vertColors);
-    console.log(planetGeometry);
-    const mesh = new Mesh(this.gl, cubeMaterial, planetGeometry);
+    const planetVertices = primitiveBuilders.buildRandomColoredTorus(size);
+    const mesh = new Mesh(this.gl, cubeMaterial, planetVertices);
 
     const planet = new Planet(this.gl, mesh);
     if (parent) {
