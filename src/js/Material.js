@@ -9,25 +9,25 @@ export default class Material {
     this.virtualUniforms = {};
   }
 
+  fileNameToPath(name) {
+    return `../media/${name}`;
+  }
+
   setProgram(vsName, fsName) {
     this.programInfo = this.progBuilder.buildProgram(vsName, fsName);
   }
 
   buildTextureFromImage(imageFileName) {
+    const filePath = this.fileNameToPath(imageFileName);
     return twgl.createTexture(
-      this.gl,
-      { src: `../media/${imageFileName}`, mag: this.gl.NEAREST },
+      this.gl, { src: filePath, mag: this.gl.NEAREST },
     );
   }
 
   buildSkyBoxTexture(textureFiles) {
-    const fullPaths = textureFiles.map((fileName) => (
-      `../media/${fileName}`
-    ));
-
+    const fullPaths = textureFiles.map(this.fileNameToPath);
     return twgl.createTexture(
-      this.gl,
-      { target: this.gl.TEXTURE_CUBE_MAP, src: fullPaths },
+      this.gl, { target: this.gl.TEXTURE_CUBE_MAP, src: fullPaths },
     );
   }
 
