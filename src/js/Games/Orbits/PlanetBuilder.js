@@ -22,7 +22,7 @@ export default class PlanetBuilder {
     const cubeMaterial = new Material(this.gl);
     cubeMaterial.setToWoodenMaterial();
 
-    const planetVertices = primitiveBuilders.buildCube(size);
+    const planetVertices = primitiveBuilders.buildTorus(size);
     const coloredPlanetVertices = primitiveBuilders.addRandomColorsToVertices(planetVertices);
     const mesh = new Mesh(this.gl, cubeMaterial, coloredPlanetVertices);
 
