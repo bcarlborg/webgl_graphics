@@ -3,7 +3,10 @@ import * as twgl from '../lib/twgl-full.module.js';
 export default class primitiveBuilders {
   static buildCube(size) {
     const cubeVerts = twgl.primitives.createCubeVertices(size);
-    return this.deindexVertices(cubeVerts);
+    const deindexedCube = this.deindexVertices(cubeVerts);
+    const newTexCoords = deindexedCube.texcoord.map((coord) => coord * 0.25);
+    deindexedCube.texcoord = newTexCoords;
+    return deindexedCube;
   }
 
   static buildTorus(size) {

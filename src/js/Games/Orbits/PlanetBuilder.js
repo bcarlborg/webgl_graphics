@@ -6,35 +6,37 @@ import Planet from './Planet.js';
 export default class PlanetBuilder {
   constructor(gl) {
     this.gl = gl;
-    this.vertColors = [1, 0, 0];
   }
 
-  setVertColorsToRandom() {
-    this.vertColors = [
-      Math.random(),
-      Math.random(),
-      Math.random(),
-    ];
-  }
-
-  buildPlanet(parent, size, initialLoc) {
-    this.setVertColorsToRandom();
+  buildWoodPlanet(parent, size, initialLoc) {
     const cubeMaterial = new Material(this.gl);
     cubeMaterial.setToWoodenMaterial();
+    return this.buildPlanet(cubeMaterial, parent, size, initialLoc);
+  }
 
+  buildColoredPlanet(parent, size, initialLoc) {
+    const cubeMaterial = new Material(this.gl);
+    cubeMaterial.setToBasicMaterial();
+    return this.buildPlanet(cubeMaterial, parent, size, initialLoc);
+  }
+
+  buildWirePlanet(parent, size, initialLoc) {
+    const cubeMaterial = new Material(this.gl);
+    cubeMaterial.setToBasicMaterial();
+    cubeMaterial.setToTexturedMaterial('computerTex.jpg');
+    return this.buildPlanet(cubeMaterial, parent, size, initialLoc);
+  }
+
+  buildPlanet(material, parent, size, initialLoc) {
     const planetVertices = primitiveBuilders.buildCube(size);
     const coloredPlanetVertices = primitiveBuilders.addRandomColorsToVertices(planetVertices);
-    const mesh = new Mesh(this.gl, cubeMaterial, coloredPlanetVertices);
+    const mesh = new Mesh(this.gl, material, coloredPlanetVertices);
 
     const planet = new Planet(this.gl, mesh);
     if (parent) {
       planet.setParent(parent);
       planet.setRotationStart(initialLoc);
     }
-
-    const planeVerts = primitiveBuilders.buildHomogeneousPlane(100);
-    console.log(planeVerts);
-
     return planet;
   }
 }

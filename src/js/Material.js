@@ -46,6 +46,11 @@ export default class Material {
 
   setToTexturedMaterial(textureFile) {
     this.setProgram('texture-vs.glsl', 'texture-fs.glsl');
+    this.virtualUniforms.u_textureImage = this.buildTextureFromImage(textureFile);
+  }
+
+  setToInfiniteGroundMaterial(textureFile) {
+    this.setProgram('infinite-ground-vs.glsl', 'infinite-ground-fs.glsl');
     this.virtualUniforms.foo_texture = this.buildTextureFromImage(textureFile);
   }
 

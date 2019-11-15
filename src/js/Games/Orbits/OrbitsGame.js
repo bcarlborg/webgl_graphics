@@ -16,10 +16,10 @@ export default class OrbitsGame extends Game {
   }
 
   initPlanets() {
-    const centerPlanet = this.planetBuilder.buildPlanet(null, 2);
+    const centerPlanet = this.planetBuilder.buildWirePlanet(null, 2);
     centerPlanet.setLocation([0, 3, 0]);
-    const orbit1 = this.planetBuilder.buildPlanet(centerPlanet, 1, [4, 0, 0]);
-    const orbit2 = this.planetBuilder.buildPlanet(centerPlanet, 1, [-4, 0, 0]);
+    const orbit1 = this.planetBuilder.buildColoredPlanet(centerPlanet, 1, [4, 0, 0]);
+    const orbit2 = this.planetBuilder.buildWoodPlanet(centerPlanet, 1, [-4, 0, 0]);
 
     this.gameObjects.push(centerPlanet, orbit1, orbit2);
   }
