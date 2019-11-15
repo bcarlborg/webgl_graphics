@@ -17,6 +17,7 @@ export default class OrbitsGame extends Game {
 
   initPlanets() {
     const centerPlanet = this.planetBuilder.buildPlanet(null, 2);
+    centerPlanet.setLocation([0, 3, 0]);
     const orbit1 = this.planetBuilder.buildPlanet(centerPlanet, 1, [4, 0, 0]);
     const orbit2 = this.planetBuilder.buildPlanet(centerPlanet, 1, [-4, 0, 0]);
 

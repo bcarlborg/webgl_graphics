@@ -22,7 +22,7 @@ export default class PlanetBuilder {
     const cubeMaterial = new Material(this.gl);
     cubeMaterial.setToWoodenMaterial();
 
-    const planetVertices = primitiveBuilders.buildTorus(size);
+    const planetVertices = primitiveBuilders.buildCube(size);
     const coloredPlanetVertices = primitiveBuilders.addRandomColorsToVertices(planetVertices);
     const mesh = new Mesh(this.gl, cubeMaterial, coloredPlanetVertices);
 
@@ -31,6 +31,9 @@ export default class PlanetBuilder {
       planet.setParent(parent);
       planet.setRotationStart(initialLoc);
     }
+
+    const planeVerts = primitiveBuilders.buildHomogeneousPlane(100);
+    console.log(planeVerts);
 
     return planet;
   }
