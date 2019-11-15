@@ -5,6 +5,7 @@ export default class Mesh {
     this.gl = gl;
     this.material = material;
     this.vertices = vertices;
+    twgl.attributes.setAttributePrefix('a_');
     this.bufferInfo = twgl.createBufferInfoFromArrays(this.gl, this.vertices);
   }
 
@@ -13,6 +14,7 @@ export default class Mesh {
     this.gl.enable(this.gl.CULL_FACE);
 
     const materialUniforms = this.material.prepareTodraw();
+
     twgl.setBuffersAndAttributes(this.gl, this.material.programInfo, this.bufferInfo);
     return materialUniforms;
   }
