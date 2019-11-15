@@ -28,6 +28,45 @@ export default class primitiveBuilders {
     return deindexedPlane;
   }
 
+  static buildHomogeneousPlane() {
+    const size = 50;
+    const origin = [0, 0, 0];
+    const idealP1 = [0, 0, size];
+    const idealP2 = [-size, 0, -size];
+    const idealP3 = [size, 0, -size];
+
+    const position = [];
+    position.push(
+      ...origin, ...idealP2, ...idealP1,
+      ...origin, ...idealP1, ...idealP3,
+      ...origin, ...idealP3, ...idealP2,
+    );
+
+    const homogeneous = [];
+    const originW = 1;
+    const idealW = 0;
+    for (let ii = 0; ii < position.length; ii += 9) {
+      homogeneous.push(
+        position[ii], position[ii + 1], position[ii + 2], originW,
+        position[ii + 3], position[ii + 4], position[ii + 5], idealW,
+        position[ii + 6], position[ii + 7], position[ii + 8], idealW,
+      );
+    }
+
+    const normal = [];
+    for (let ii = 0; ii < position.length; ii += 3) {
+      normal.push(0, -1, 0);
+    }
+
+    const plane = {
+      position: new Float32Array(position),
+      homogeneous: new Float32Array(homogeneous),
+      normal: new Float32Array(normal),
+    };
+
+    return plane;
+  }
+
   static deindexVertices(vertices) {
     return twgl.primitives.deindexVertices(vertices);
   }
