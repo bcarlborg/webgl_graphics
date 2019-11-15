@@ -51,7 +51,7 @@ export default class Material {
 
   setToInfiniteGroundMaterial(textureFile) {
     this.setProgram('infinite-ground-vs.glsl', 'infinite-ground-fs.glsl');
-    this.virtualUniforms.foo_texture = this.buildTextureFromImage(textureFile);
+    this.virtualUniforms.u_textureImage = this.buildTextureFromImage(textureFile);
   }
 
   setToSkyBoxMaterial(textureFiles) {

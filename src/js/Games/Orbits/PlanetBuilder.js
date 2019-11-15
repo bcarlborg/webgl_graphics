@@ -45,7 +45,7 @@ export default class PlanetBuilder {
     const planetVertices = primitiveBuilders.buildPlane(10);
     const coloredPlaneVertices = primitiveBuilders.addRandomColorsToVertices(planetVertices);
     const planeMaterial = new Material(this.gl);
-    planeMaterial.setToBasicMaterial();
+    planeMaterial.setToInfiniteGroundMaterial('wavyGrid.jpg');
     const mesh = new Mesh(this.gl, planeMaterial, coloredPlaneVertices);
     const plane = new InfiniteGround(this.gl, mesh);
     return plane;
