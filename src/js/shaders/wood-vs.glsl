@@ -6,10 +6,12 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   uniform mat4 viewMatrix;
   uniform mat4 projectionMatrix;
 
-  out vec4 fragmentColor;
+  out vec3 v_position;
+  out vec4 v_fragmentColor;
 
   void main() {
-    fragmentColor = a_color;
+    v_fragmentColor = a_color;
+    v_position = a_position;
     gl_Position = projectionMatrix * viewMatrix * worldMatrix * vec4(a_position, 1.0);
   }
 `;

@@ -21,7 +21,6 @@ export default class ProgramBuilder {
       this.gl,
       [shaderSource[vsName], shaderSource[fsName]],
     );
-    console.log(vsName, fsName);
 
     this.addProgram(vsName, fsName, programInfo);
     return this.programs[vsName][fsName];
