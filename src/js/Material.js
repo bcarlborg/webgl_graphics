@@ -9,37 +9,40 @@ export default class Material {
     this.virtualUniforms = {};
   }
 
+  setProgram(vsName, fsName) {
+    this.programInfo = this.progBuilder.buildProgram(vsName, fsName);
+  }
+
+  buildTextureFromImage(imageFileName) {
+    return twgl.createTexture(
+      this.gl,
+      { src: `../media/${imageFileName}`, mag: this.gl.NEAREST },
+    );
+  }
+
+  buildSkyBoxTexture(textureFiles) {
+    const fullPaths = textureFiles.map((fileName) => (
+      `../media/${fileName}`
+    ));
+
+    return twgl.createTexture(
+      this.gl,
+      { target: this.gl.TEXTURE_CUBE_MAP, src: fullPaths },
+    );
+  }
+
   setToBasicMaterial() {
-    this.programInfo = this.progBuilder.buildProgram('base-vs.glsl', 'base-fs.glsl');
+    this.setProgram('base-vs.glsl', 'base-fs.glsl');
     this.virtualUniforms = {};
   }
 
   setToTexturedMaterial(textureFile) {
-    this.programInfo = this.progBuilder.buildProgram('texture-vs.glsl', 'texture-fs.glsl');
-    this.virtualUniforms.foo_texture = twgl.createTextures(
-      this.gl,
-      { computerTex: { src: `../media/${textureFile}`, mag: this.gl.NEAREST } },
-    ).computerTex;
+    this.setProgram('texture-vs.glsl', 'texture-fs.glsl');
+    this.virtualUniforms.foo_texture = this.buildTextureFromImage(textureFile);
   }
 
   setToSkyBoxMaterial(textureFiles) {
     this.programInfo = this.progBuilder.buildProgram('skybox-vs.glsl', 'skybox-fs.glsl');
-    this.virtualUniforms.skyboxTexture = twgl.createTextures(
-      this.gl, {
-        skyboxTex: {
-          target: this.gl.TEXTURE_CUBE_MAP,
-          width: 800,
-          height: 800,
-          src: [
-            `../media/${textureFiles[0]}`,
-            `../media/${textureFiles[1]}`,
-            `../media/${textureFiles[2]}`,
-            `../media/${textureFiles[3]}`,
-            `../media/${textureFiles[4]}`,
-            `../media/${textureFiles[5]}`,
-          ],
-        },
-      },
-    ).skyboxTex;
+    this.virtualUniforms.skyboxTexture = this.buildSkyBoxTexture(textureFiles);
   }
 }
