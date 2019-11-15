@@ -1,5 +1,6 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
   in vec3 a_position;
+  in vec2 a_texcoord;
   in vec4 a_homogeneous;
 
   uniform mat4 worldMatrix;

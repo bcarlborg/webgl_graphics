@@ -30,32 +30,45 @@ export default class primitiveBuilders {
 
   static buildHomogeneousPlane() {
     const size = 50;
-    const origin = [0, 0, 0];
-    const idealP1 = [0, 0, size];
-    const idealP2 = [-size, 0, -size];
-    const idealP3 = [size, 0, -size];
-
-    const position = [];
-    position.push(
-      ...origin, ...idealP2, ...idealP1,
-      ...origin, ...idealP1, ...idealP3,
-      ...origin, ...idealP3, ...idealP2,
-    );
+    const origin = [0, 0, 0, 1];
+    const idealP1 = [-size, -size, 0, 0];
+    const idealP2 = [-size, size, 0, 0];
+    const idealP3 = [size, size, 0, 0];
+    const idealP4 = [size, -size, 0, 0];
 
     const homogeneous = [];
-    const originW = 1;
-    const idealW = 0;
-    for (let ii = 0; ii < position.length; ii += 9) {
-      homogeneous.push(
-        position[ii], position[ii + 1], position[ii + 2], originW,
-        position[ii + 3], position[ii + 4], position[ii + 5], idealW,
-        position[ii + 6], position[ii + 7], position[ii + 8], idealW,
+    homogeneous.push(
+      // 1 2
+      // ...origin, ...idealP1, ...idealP2,
+      ...idealP2, ...origin, ...idealP1,
+      // ...idealP1, ...idealP2, ...origin,
+
+      // 2 3
+      ...origin, ...idealP2, ...idealP3,
+      // ...idealP3, ...origin, ...idealP2,
+      // ...idealP2, ...idealP3, ...origin,
+
+      // 3 4
+      // ...origin, ...idealP3, ...idealP4,
+      ...idealP4, ...origin, ...idealP3,
+      // ...idealP3, ...idealP4, ...origin,
+     
+      // 4 1
+      ...origin, ...idealP4, ...idealP1,
+      // ...idealP1, ...origin, ...idealP4,
+      // ...idealP4, ...idealP1, ...origin,
+    );
+
+    const position = [];
+    for (let ii = 0; ii < homogeneous.length; ii += 4) {
+      position.push(
+        homogeneous[ii], homogeneous[ii + 2], homogeneous[ii + 1],
       );
     }
 
     const normal = [];
     for (let ii = 0; ii < position.length; ii += 3) {
-      normal.push(0, -1, 0);
+      normal.push(0, 1, 0);
     }
 
     const plane = {
