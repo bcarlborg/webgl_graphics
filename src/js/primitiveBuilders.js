@@ -29,52 +29,43 @@ export default class primitiveBuilders {
   }
 
   static buildHomogeneousPlane() {
-    const size = 50;
-    const origin = [0, 0, 0, 1];
-    const idealP1 = [-size, -size, 0, 0];
-    const idealP2 = [-size, size, 0, 0];
-    const idealP3 = [size, size, 0, 0];
-    const idealP4 = [size, -size, 0, 0];
-
-    const homogeneous = [];
-    homogeneous.push(
-      // 1 2
-      // ...origin, ...idealP1, ...idealP2,
-      ...idealP2, ...origin, ...idealP1,
-      // ...idealP1, ...idealP2, ...origin,
-
-      // 2 3
-      ...origin, ...idealP2, ...idealP3,
-      // ...idealP3, ...origin, ...idealP2,
-      // ...idealP2, ...idealP3, ...origin,
-
-      // 3 4
-      // ...origin, ...idealP3, ...idealP4,
-      ...idealP4, ...origin, ...idealP3,
-      // ...idealP3, ...idealP4, ...origin,
-     
-      // 4 1
-      ...origin, ...idealP4, ...idealP1,
-      // ...idealP1, ...origin, ...idealP4,
-      // ...idealP4, ...idealP1, ...origin,
+    const position = { data: [] };
+    position.data.push(
+      0, 0, 0, 1,
+      1, 0, 0, 0,
+      0, 0, 1, 0,
+      -1, 0, -1, 0,
     );
+    position.numComponents = 4;
 
-    const position = [];
-    for (let ii = 0; ii < homogeneous.length; ii += 4) {
-      position.push(
-        homogeneous[ii], homogeneous[ii + 2], homogeneous[ii + 1],
-      );
-    }
+    const homogeneous = { data: [] };
+    homogeneous.data.push(
+      0, 0, 0, 1,
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      -1, -1, 0, 0,
+    );
+    homogeneous.numComponents = 4;
 
-    const normal = [];
-    for (let ii = 0; ii < position.length; ii += 3) {
-      normal.push(0, 1, 0);
+    const indices = { data: [] };
+    indices.data.push(
+      0, 2, 1,
+      0, 3, 2,
+      0, 1, 3,
+    );
+    indices.numComponents = 3;
+
+    const normal = { data: [] };
+    for (let ii = 0; ii < position.data.length; ii += 3) {
+      normal.data.push(0, 1, 0);
     }
+    normal.numComponents = 3;
 
     const plane = {
-      position: new Float32Array(position),
-      homogeneous: new Float32Array(homogeneous),
-      normal: new Float32Array(normal),
+      indices,
+      position,
+      homogeneous,
+      normal,
     };
 
     return plane;

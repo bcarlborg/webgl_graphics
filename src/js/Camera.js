@@ -17,8 +17,8 @@ export default class Camera {
     };
 
     this.cameraPositionInfo = {
-      cameraPos: glMatrix.vec3.fromValues(0, 10, 10),
-      cameraFront: glMatrix.vec3.fromValues(0, 0, -1),
+      cameraPos: glMatrix.vec3.fromValues(0, 2, -2),
+      cameraFront: glMatrix.vec3.fromValues(0, -1, 1),
       cameraFrontOld: glMatrix.vec3.create(),
       cameraLookAt: glMatrix.vec3.create(),
       cameraUp: glMatrix.vec3.fromValues(0, 1, 0),
