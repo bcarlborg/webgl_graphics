@@ -1,5 +1,3 @@
-import * as twgl from '../lib/twgl-full.module.js';
-
 export default class GameEntity {
   constructor(gl, mesh) {
     this.gl = gl;
@@ -14,24 +12,10 @@ export default class GameEntity {
   update() {
   }
 
-  configureGlSettings() {
-    this.gl.enable(this.gl.DEPTH_TEST);
-    this.gl.enable(this.gl.CULL_FACE);
-  }
-
-  addVirtualUniformsFrom(newUniforms) {
-    Object.assign(this.virtualUniforms, newUniforms);
-  }
-
   draw(camera) {
-    this.configureGlSettings();
-
-    if (camera) this.addVirtualUniformsFrom(camera.virtualUniforms);
-
-    const meshUniforms = this.mesh.prepareTodraw();
-    if (meshUniforms) this.addVirtualUniformsFrom(meshUniforms);
-
-    twgl.setUniforms(this.mesh.material.programInfo, this.virtualUniforms);
-    this.mesh.draw();
+    if (camera) {
+      Object.assign(this.virtualUniforms, camera.virtualUniforms);
+    }
+    this.mesh.draw(this.virtualUniforms);
   }
 }
