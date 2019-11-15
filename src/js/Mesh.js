@@ -10,11 +10,7 @@ export default class Mesh {
   }
 
   prepareTodraw() {
-    this.gl.enable(this.gl.DEPTH_TEST);
-    this.gl.enable(this.gl.CULL_FACE);
-
     const materialUniforms = this.material.prepareTodraw();
-
     twgl.setBuffersAndAttributes(this.gl, this.material.programInfo, this.bufferInfo);
     return materialUniforms;
   }

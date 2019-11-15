@@ -14,14 +14,23 @@ export default class GameEntity {
   update() {
   }
 
+  configureGlSettings() {
+    this.gl.enable(this.gl.DEPTH_TEST);
+    this.gl.enable(this.gl.CULL_FACE);
+  }
+
+  addVirtualUniformsFrom(newUniforms) {
+    Object.assign(this.virtualUniforms, newUniforms);
+  }
+
   draw(camera) {
-    if (camera) {
-      Object.assign(this.virtualUniforms, camera.virtualUniforms);
-    }
+    this.configureGlSettings();
+
+    if (camera) this.addVirtualUniformsFrom(camera.virtualUniforms);
+
     const meshUniforms = this.mesh.prepareTodraw();
-    if (meshUniforms) {
-      Object.assign(this.virtualUniforms, meshUniforms);
-    }
+    if (meshUniforms) this.addVirtualUniformsFrom(meshUniforms);
+
     twgl.setUniforms(this.mesh.material.programInfo, this.virtualUniforms);
     this.mesh.draw();
   }
