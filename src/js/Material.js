@@ -33,7 +33,10 @@ export default class Material {
 
   setToWoodenMaterial() {
     this.setProgram('wood-vs.glsl', 'wood-fs.glsl');
-    this.virtualUniforms = {};
+    this.virtualUniforms = {
+      u_darkWoodColor: [0.43, 0.20, 0.03],
+      u_lightWoodColor: [0.76, 0.61, 0.34],
+    };
   }
 
   setToBasicMaterial() {
