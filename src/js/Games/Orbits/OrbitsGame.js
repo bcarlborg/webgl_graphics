@@ -21,6 +21,9 @@ export default class OrbitsGame extends Game {
     const orbit1 = this.planetBuilder.buildColoredPlanet(centerPlanet, 1, [4, 0, 0]);
     const orbit2 = this.planetBuilder.buildWoodPlanet(centerPlanet, 1, [-4, 0, 0]);
 
+    const plane = this.planetBuilder.buildInfinitePlane();
+    this.gameObjects.push(plane);
+
     this.gameObjects.push(centerPlanet, orbit1, orbit2);
   }
 

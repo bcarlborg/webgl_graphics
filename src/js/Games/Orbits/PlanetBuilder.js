@@ -1,5 +1,6 @@
 import Material from '../../Material.js';
 import Mesh from '../../Mesh.js';
+import InfiniteGround from './InfiniteGround.js';
 import primitiveBuilders from '../../primitiveBuilders.js';
 import Planet from './Planet.js';
 
@@ -38,5 +39,15 @@ export default class PlanetBuilder {
       planet.setRotationStart(initialLoc);
     }
     return planet;
+  }
+
+  buildInfinitePlane() {
+    const planetVertices = primitiveBuilders.buildPlane(10);
+    const coloredPlaneVertices = primitiveBuilders.addRandomColorsToVertices(planetVertices);
+    const planeMaterial = new Material(this.gl);
+    planeMaterial.setToBasicMaterial();
+    const mesh = new Mesh(this.gl, planeMaterial, coloredPlaneVertices);
+    const plane = new InfiniteGround(this.gl, mesh);
+    return plane;
   }
 }
