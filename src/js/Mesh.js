@@ -19,9 +19,9 @@ export default class Mesh {
   draw(incomingUniforms) {
     this.configureGlSettings();
     Object.assign(this.virtualUniforms, incomingUniforms);
-    const materialUniforms = this.material.prepareTodraw();
-    Object.assign(this.virtualUniforms, materialUniforms);
+    Object.assign(this.virtualUniforms, this.material.virtualUniforms);
 
+    this.gl.useProgram(this.material.programInfo.program);
     twgl.setUniforms(this.material.programInfo, this.virtualUniforms);
     twgl.setBuffersAndAttributes(this.gl, this.material.programInfo, this.bufferInfo);
     twgl.drawBufferInfo(this.gl, this.bufferInfo);

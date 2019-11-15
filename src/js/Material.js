@@ -42,10 +42,4 @@ export default class Material {
       },
     ).skyboxTex;
   }
-
-  // return any uniforms to set
-  prepareTodraw() {
-    this.gl.useProgram(this.programInfo.program);
-    return this.virtualUniforms;
-  }
 }
