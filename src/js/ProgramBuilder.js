@@ -15,13 +15,13 @@ export default class ProgramBuilder {
     if (this.haveProgram(vsName, fsName)) {
       return this.programs[vsName][fsName];
     }
-
     // eslint-disable-next-line
     const shaderSource = ShaderSource.source;
     const programInfo = twgl.createProgramInfo(
       this.gl,
       [shaderSource[vsName], shaderSource[fsName]],
     );
+    console.log(vsName, fsName);
 
     this.addProgram(vsName, fsName, programInfo);
     return this.programs[vsName][fsName];

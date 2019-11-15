@@ -20,7 +20,7 @@ export default class PlanetBuilder {
   buildPlanet(parent, size, initialLoc) {
     this.setVertColorsToRandom();
     const cubeMaterial = new Material(this.gl);
-    cubeMaterial.setToBasicMaterial();
+    cubeMaterial.setToWoodenMaterial();
 
     const planetVertices = primitiveBuilders.buildCube(size);
     const coloredPlanetVertices = primitiveBuilders.addRandomColorsToVertices(planetVertices);

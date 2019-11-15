@@ -31,6 +31,11 @@ export default class Material {
     );
   }
 
+  setToWoodenMaterial() {
+    this.setProgram('wood-vs.glsl', 'wood-fs.glsl');
+    this.virtualUniforms = {};
+  }
+
   setToBasicMaterial() {
     this.setProgram('base-vs.glsl', 'base-fs.glsl');
     this.virtualUniforms = {};
