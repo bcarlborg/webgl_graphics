@@ -32,6 +32,7 @@ export default class GameNode extends GameEntity {
   }
 
   update() {
+    super.update();
     if (this.parent) {
       glMatrix.mat4.mul(this.worldMatrix, this.parent.worldMatrix, this.localMatrix);
     } else {

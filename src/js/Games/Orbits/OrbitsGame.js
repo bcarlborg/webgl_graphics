@@ -11,8 +11,15 @@ export default class OrbitsGame extends Game {
     super();
     this.gl = gl;
     this.planetBuilder = new PlanetBuilder(this.gl);
-    this.initPlanets();
+    this.initTestPlanet();
+    // this.initPlanets();
     this.initSkyBox();
+  }
+
+  initTestPlanet() {
+    const testPlanet = this.planetBuilder.buildTestPlanet(null, 2);
+    testPlanet.setLocation(0, 3, 0);
+    this.gameObjects.push(testPlanet);
   }
 
   initPlanets() {
@@ -20,9 +27,6 @@ export default class OrbitsGame extends Game {
     centerPlanet.setLocation([0, 3, 0]);
     const orbit1 = this.planetBuilder.buildColoredPlanet(centerPlanet, 1, [4, 0, 0]);
     const orbit2 = this.planetBuilder.buildWoodPlanet(centerPlanet, 1, [-4, 0, 0]);
-
-    const plane = this.planetBuilder.buildInfinitePlane();
-    this.gameObjects.push(plane);
 
     this.gameObjects.push(centerPlanet, orbit1, orbit2);
   }

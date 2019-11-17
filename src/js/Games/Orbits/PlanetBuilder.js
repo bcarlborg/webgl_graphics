@@ -9,6 +9,12 @@ export default class PlanetBuilder {
     this.gl = gl;
   }
 
+  buildTestPlanet(parent, size, initialLoc) {
+    const cubeMaterial = new Material(this.gl);
+    cubeMaterial.setToTestMaterial();
+    return this.buildPlanet(cubeMaterial, parent, size, initialLoc);
+  }
+
   buildWoodPlanet(parent, size, initialLoc) {
     const cubeMaterial = new Material(this.gl);
     cubeMaterial.setToWoodenMaterial();
@@ -43,7 +49,6 @@ export default class PlanetBuilder {
 
   buildInfinitePlane() {
     const homogeneousPlane = primitiveBuilders.buildHomogeneousPlane();
-    console.log(homogeneousPlane);
     const planeMaterial = new Material(this.gl);
     planeMaterial.setToInfiniteGroundMaterial('wavyGrid.jpg');
     const mesh = new Mesh(this.gl, planeMaterial, homogeneousPlane);

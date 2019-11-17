@@ -1,5 +1,6 @@
 import ProgramBuilder from './ProgramBuilder.js';
 import * as twgl from '../lib/twgl-full.module.js';
+import GameTime from './GameTime.js';
 
 export default class Material {
   constructor(gl) {
@@ -7,6 +8,12 @@ export default class Material {
     this.programInfo = null;
     this.progBuilder = new ProgramBuilder(this.gl);
     this.virtualUniforms = {};
+    this.gameTime = new GameTime();
+    this.virtualUniforms = { u_time: this.gameTime.timeInfo.t };
+  }
+
+  update() {
+    this.virtualUniforms.u_time = this.gameTime.timeInfo.t;
   }
 
   fileNameToPath(name) {
@@ -37,6 +44,10 @@ export default class Material {
       u_darkWoodColor: [0.43, 0.20, 0.03],
       u_lightWoodColor: [0.76, 0.61, 0.34],
     };
+  }
+
+  setToTestMaterial() {
+    this.setProgram('procedural/test-vs.glsl', 'procedural/test-fs.glsl');
   }
 
   setToBasicMaterial() {

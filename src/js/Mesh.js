@@ -11,6 +11,10 @@ export default class Mesh {
     this.bufferInfo = twgl.createBufferInfoFromArrays(this.gl, this.vertices);
   }
 
+  update() {
+    this.material.update();
+  }
+
   configureGlSettings() {
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);

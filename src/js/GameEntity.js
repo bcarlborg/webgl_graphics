@@ -10,6 +10,7 @@ export default class GameEntity {
   }
 
   update() {
+    this.mesh.update();
   }
 
   draw(camera) {
