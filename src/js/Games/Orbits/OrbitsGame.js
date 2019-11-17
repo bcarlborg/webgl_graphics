@@ -32,8 +32,10 @@ export default class OrbitsGame extends Game {
   }
 
   initSkyBox() {
-    const skyBoxMat = new Material(this.gl);
-    skyBoxMat.setToSkyBoxMaterial([
+    const skyBoxMat = new Material(
+      this.gl, 'skybox-vs.glsl', 'skybox-fs.glsl',
+    );
+    skyBoxMat.setSkyBoxTextureFromFiles([
       'interstellar_px.jpg',
       'interstellar_nx.jpg',
       'interstellar_py.jpg',
