@@ -1,5 +1,5 @@
 import ClickListener from './ClickListener.js';
-import Camera from './Camera.js';
+import ThirdPersonCamera from './ThirdPersonCamera.js';
 import OrbitsGame from './games/orbits/OrbitsGame.js';
 import GameTime from './GameTime.js';
 
@@ -8,9 +8,11 @@ export default class Scene {
     this.canvas = canvas;
     this.gl = gl;
     this.clickListener = new ClickListener(this.canvas);
-    this.camera = new Camera(this.canvas);
-    this.game = new OrbitsGame(this.gl);
     this.GameTime = new GameTime();
+    this.camera = new ThirdPersonCamera(this.canvas);
+    this.game = new OrbitsGame(this.gl);
+    this.cameraFollowObject = this.game.cameraFollowObject;
+    this.camera.setObjectToFollow(this.cameraFollowObject);
   }
 
   update() {
