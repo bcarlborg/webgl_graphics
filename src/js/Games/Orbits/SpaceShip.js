@@ -9,23 +9,33 @@ export default class SpaceShip extends GameNode {
     this.KeyHandler = new KeyHandler();
     this.gameTime = new GameTime();
     this.position = {
-      location: glMatrix.vec3.create(),
       rotation: glMatrix.quat.create(),
-      initialForward: glMatrix.vec3.fromValues(0, 0, 1),
+      location: glMatrix.vec3.create(),
       forward: glMatrix.vec3.create(),
-      initialLateral: glMatrix.vec3.fromValues(1, 0, 0),
       lateral: glMatrix.vec3.create(),
-      initialUp: glMatrix.vec3.fromValues(0, 1, 0),
       up: glMatrix.vec3.create(),
     };
     this.initSpaceship();
   }
 
   initSpaceship() {
-    glMatrix.vec3.set(this.position.location, 0, 0, -10);
-    glMatrix.vec3.set(this.position.forward, 0, 0, 1);
-    glMatrix.vec3.set(this.position.lateral, 1, 0, 0);
-    glMatrix.vec3.set(this.position.up, 0, 1, 0);
+    this.position.initialLocation = glMatrix.vec3.fromValues(0, 0, 0);
+    this.position.initialForward = glMatrix.vec3.fromValues(0, 0, 1);
+    this.position.initialLateral = glMatrix.vec3.fromValues(1, 0, 0);
+    this.position.initialUp = glMatrix.vec3.fromValues(0, 1, 0);
+
+    glMatrix.vec3.copy(
+      this.position.location, this.position.initialLocation,
+    );
+    glMatrix.vec3.copy(
+      this.position.forward, this.position.initialForward,
+    );
+    glMatrix.vec3.copy(
+      this.position.up, this.position.initialUp,
+    );
+    glMatrix.vec3.copy(
+      this.position.lateral, this.position.initialLateral,
+    );
   }
 
   updateRotation(rotation) {
@@ -33,7 +43,7 @@ export default class SpaceShip extends GameNode {
   }
 
   relativePitch(delta) {
-    const rad = glMatrix.glMatrix.toRadian(delta);
+    const rad = glMatrix.glMatrix.toRadian(-delta);
     const rotation = glMatrix.quat.create();
     glMatrix.quat.setAxisAngle(
       rotation,
@@ -75,7 +85,7 @@ export default class SpaceShip extends GameNode {
   }
 
   relativeRoll(delta) {
-    const rad = glMatrix.glMatrix.toRadian(delta);
+    const rad = glMatrix.glMatrix.toRadian(-delta);
     const rotation = glMatrix.quat.create();
     glMatrix.quat.setAxisAngle(
       rotation,
@@ -95,21 +105,33 @@ export default class SpaceShip extends GameNode {
     );
   }
 
+  moveForward(delta) {
+    glMatrix.vec3.normalize(
+      this.position.forward, this.position.forward,
+    );
+    glMatrix.vec3.scaleAndAdd(
+      this.position.location,
+      this.position.location,
+      this.position.forward,
+      delta,
+    );
+  }
+
   processKeysPressed() {
     const degreeDelta = (this.gameTime.timeInfo.dt / 1000) * 45;
     if (this.KeyHandler.keysPressed.UP) this.relativePitch(degreeDelta);
     if (this.KeyHandler.keysPressed.LEFT) this.relativeRoll(degreeDelta);
     if (this.KeyHandler.keysPressed.RIGHT) this.relativeRoll(-degreeDelta);
     if (this.KeyHandler.keysPressed.DOWN) this.relativePitch(-degreeDelta);
+    if (this.KeyHandler.keysPressed.SPACE) this.moveForward(0.1);
   }
 
   update() {
     this.processKeysPressed();
-    console.log(this.position.forward);
     glMatrix.mat4.fromRotationTranslation(
       this.localMatrix,
       this.position.rotation,
-      [0, 0, 0],
+      this.position.location,
     );
     super.update();
   }

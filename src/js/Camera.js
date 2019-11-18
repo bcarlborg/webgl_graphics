@@ -16,7 +16,7 @@ export default class Camera {
   }
 
   initCamera() {
-    this.setCameraLocation([0, 3, -10]);
+    this.setCameraLocation([0, 0, -10]);
     this.lookAt([0, 0, 0]);
   }
 
