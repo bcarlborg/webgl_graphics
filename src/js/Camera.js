@@ -1,12 +1,8 @@
-import ClickListener from './ClickListener.js';
-import KeyHandler from './KeyHandler.js';
 import glMatrix from './helpers/glm.js';
 
 export default class Camera {
   constructor(canvas) {
     this.canvas = canvas;
-    this.clickListener = new ClickListener();
-    this.keyHandler = new KeyHandler();
 
     this.cameraMatrix = glMatrix.mat4.create();
     this.projectionMatrix = glMatrix.mat4.create();

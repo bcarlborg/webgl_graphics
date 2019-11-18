@@ -1,3 +1,4 @@
+import SpaceShip from './SpaceShip.js';
 import Material from '../../Material.js';
 import Mesh from '../../Mesh.js';
 import InfiniteGround from './InfiniteGround.js';
@@ -7,6 +8,15 @@ import Planet from './Planet.js';
 export default class PlanetBuilder {
   constructor(gl) {
     this.gl = gl;
+  }
+
+  buildSpaceShip() {
+    const spaceshipMaterial = new Material(
+      this.gl, 'procedural/test-vs.glsl', 'procedural/test-fs.glsl',
+    );
+    const spaceShipVerts = primitiveBuilders.buildCube(1);
+    const mesh = new Mesh(this.gl, spaceshipMaterial, spaceShipVerts);
+    return new SpaceShip(this.gl, mesh);
   }
 
   buildTestPlanet(parent, size, initialLoc) {
