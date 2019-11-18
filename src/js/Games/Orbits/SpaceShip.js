@@ -42,6 +42,39 @@ export default class SpaceShip extends GameNode {
     glMatrix.quat.multiply(this.position.rotation, rotation, this.position.rotation);
   }
 
+  updateForward() {
+    glMatrix.vec3.transformQuat(
+      this.position.forward,
+      this.position.initialForward,
+      this.position.rotation,
+    );
+    glMatrix.vec3.normalize(
+      this.position.forward, this.position.forward,
+    );
+  }
+
+  updateLateral() {
+    glMatrix.vec3.transformQuat(
+      this.position.lateral,
+      this.position.initialLateral,
+      this.position.rotation,
+    );
+    glMatrix.vec3.normalize(
+      this.position.up, this.position.up,
+    );
+  }
+
+  updateUp() {
+    glMatrix.vec3.transformQuat(
+      this.position.up,
+      this.position.initialUp,
+      this.position.rotation,
+    );
+    glMatrix.vec3.normalize(
+      this.position.up, this.position.up,
+    );
+  }
+
   relativePitch(delta) {
     const rad = glMatrix.glMatrix.toRadian(-delta);
     const rotation = glMatrix.quat.create();
@@ -51,16 +84,8 @@ export default class SpaceShip extends GameNode {
       rad,
     );
     this.updateRotation(rotation);
-    glMatrix.vec3.transformQuat(
-      this.position.forward,
-      this.position.initialForward,
-      this.position.rotation,
-    );
-    glMatrix.vec3.transformQuat(
-      this.position.up,
-      this.position.initialUp,
-      this.position.rotation,
-    );
+    this.updateForward();
+    this.updateUp();
   }
 
   relativeYaw(delta) {
@@ -72,16 +97,8 @@ export default class SpaceShip extends GameNode {
       rad,
     );
     this.updateRotation(rotation);
-    glMatrix.vec3.transformQuat(
-      this.position.forward,
-      this.position.initialForward,
-      this.position.rotation,
-    );
-    glMatrix.vec3.transformQuat(
-      this.position.lateral,
-      this.position.initialLateral,
-      this.position.rotation,
-    );
+    this.updateForward();
+    this.updateLateral();
   }
 
   relativeRoll(delta) {
@@ -93,22 +110,11 @@ export default class SpaceShip extends GameNode {
       rad,
     );
     this.updateRotation(rotation);
-    glMatrix.vec3.transformQuat(
-      this.position.up,
-      this.position.initialUp,
-      this.position.rotation,
-    );
-    glMatrix.vec3.transformQuat(
-      this.position.lateral,
-      this.position.initialLateral,
-      this.position.rotation,
-    );
+    this.updateUp();
+    this.updateLateral();
   }
 
   moveForward(delta) {
-    glMatrix.vec3.normalize(
-      this.position.forward, this.position.forward,
-    );
     glMatrix.vec3.scaleAndAdd(
       this.position.location,
       this.position.location,
