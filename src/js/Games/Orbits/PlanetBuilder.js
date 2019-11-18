@@ -12,10 +12,11 @@ export default class PlanetBuilder {
 
   buildSpaceShip() {
     const spaceshipMaterial = new Material(
-      this.gl, 'procedural/test-vs.glsl', 'procedural/test-fs.glsl',
+      this.gl, 'base-vs.glsl', 'base-fs.glsl',
     );
     const spaceShipVerts = primitiveBuilders.buildCube(1);
-    const mesh = new Mesh(this.gl, spaceshipMaterial, spaceShipVerts);
+    const coloredVertices = primitiveBuilders.addRandomColorsToVertices(spaceShipVerts);
+    const mesh = new Mesh(this.gl, spaceshipMaterial, coloredVertices);
     return new SpaceShip(this.gl, mesh);
   }
 
