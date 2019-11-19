@@ -27,25 +27,6 @@ export default class PlanetBuilder {
     return this.buildPlanet(cubeMaterial, parent, size, initialLoc);
   }
 
-  buildWoodPlanet(parent, size, initialLoc) {
-    const cubeMaterial = new Material(this.gl);
-    cubeMaterial.setToWoodenMaterial();
-    return this.buildPlanet(cubeMaterial, parent, size, initialLoc);
-  }
-
-  buildColoredPlanet(parent, size, initialLoc) {
-    const cubeMaterial = new Material(this.gl);
-    cubeMaterial.setToBasicMaterial();
-    return this.buildPlanet(cubeMaterial, parent, size, initialLoc);
-  }
-
-  buildWirePlanet(parent, size, initialLoc) {
-    const cubeMaterial = new Material(this.gl);
-    cubeMaterial.setToBasicMaterial();
-    cubeMaterial.setToTexturedMaterial('computerTex.jpg');
-    return this.buildPlanet(cubeMaterial, parent, size, initialLoc);
-  }
-
   buildPlanet(material, parent, size, initialLoc) {
     const planetVertices = primitiveBuilders.buildCube(size);
     const planetGeometry = new Geometry(this.gl, planetVertices);
@@ -69,14 +50,8 @@ export default class PlanetBuilder {
       'interstellar_pz.jpg',
       'interstellar_nz.jpg',
     ]);
-    // const box = primitiveBuilders.buildCube(1);
-    // const skyBoxGeometry = new Geometry(this.gl, box);
-
-    // const plane = primitiveBuilders.buildPlane(2);
-    // console.log(plane);
 
     const quad = primitiveBuilders.buildSkyBoxPlane();
-    console.log(quad);
     const skyBoxGeometry = new Geometry(this.gl, quad, { '2d': true });
     const mesh = new Mesh(this.gl, material, skyBoxGeometry);
 
