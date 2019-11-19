@@ -70,6 +70,10 @@ export default class PlanetBuilder {
       'interstellar_nz.jpg',
     ]);
     const box = primitiveBuilders.buildCube(1);
+    const plane = primitiveBuilders.buildPlane(2);
+    console.log(plane);
+    const quad = primitiveBuilders.buildSkyBoxPlane();
+    console.log(quad);
     const skyBoxGeometry = new Geometry(this.gl, box);
     const mesh = new Mesh(this.gl, material, skyBoxGeometry);
 

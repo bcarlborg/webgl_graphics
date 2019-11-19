@@ -30,9 +30,9 @@ export default class primitiveBuilders {
     return deindexedPlane;
   }
 
-  buildSkyBoxGeometry() {
-    const position = { data: [] };
-    position.data.push(
+  static buildSkyBoxPlane() {
+    const position = [];
+    position.push(
       -1, -1,
       1, -1,
       -1, 1,
@@ -40,7 +40,8 @@ export default class primitiveBuilders {
       1, -1,
       1, 1,
     );
-    position.numComponents = 2;
+    const positionFloatArray = new Float32Array(position);
+    return { position: positionFloatArray };
   }
 
   static buildHomogeneousPlane() {

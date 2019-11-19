@@ -27,7 +27,6 @@ export default class OrbitsGame extends Game {
 
   initSkyBox() {
     const skybox = this.planetBuilder.buildSkyBox();
-    console.log(skybox);
     this.gameObjects.push(skybox);
   }
 }
