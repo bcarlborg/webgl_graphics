@@ -11,7 +11,7 @@ export default class InfiniteGround extends GameEntity {
   setWorldMatrix() {
     glMatrix.mat4.fromTranslation(
       this.virtualUniforms.worldMatrix,
-      [0, 0, 0],
+      [0, -20, 0],
     );
   }
 }

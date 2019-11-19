@@ -20,6 +20,13 @@ export default class PlanetBuilder {
     return new SpaceShip(this.gl, mesh);
   }
 
+  buildMirrorPlanet(parent, size, initialLoc) {
+    const cubeMaterial = new Material(
+      this.gl, 'procedural/mirror-vs.glsl', 'procedural/mirror-fs.glsl',
+    );
+    return this.buildPlanet(cubeMaterial, parent, size, initialLoc);
+  }
+
   buildTestPlanet(parent, size, initialLoc) {
     const cubeMaterial = new Material(
       this.gl, 'base-vs.glsl', 'procedural/test-fs.glsl',
@@ -62,7 +69,6 @@ export default class PlanetBuilder {
   buildInfinitePlane() {
     const homogeneousPlane = primitiveBuilders.buildHomogeneousPlane();
     const planeGeometry = new Geometry(this.gl, homogeneousPlane);
-    console.log(homogeneousPlane);
 
     const planeMaterial = new Material(this.gl, 'infinite-ground-vs.glsl', 'infinite-ground-fs.glsl');
     planeMaterial.setTextureFromFile('wavyGrid.jpg');

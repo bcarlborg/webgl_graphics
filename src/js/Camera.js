@@ -23,7 +23,7 @@ export default class Camera {
     const fov = glMatrix.glMatrix.toRadian(60);
     const aspect = this.canvas.width / this.canvas.height;
     const near = 0.01;
-    const far = 100;
+    const far = 10000;
     glMatrix.mat4.perspective(
       this.projectionMatrix, fov, aspect, near, far,
     );

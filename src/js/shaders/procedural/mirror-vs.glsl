@@ -1,17 +1,18 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
   in vec4 a_position;
-  in vec2 a_texcoord;
-  in vec4 a_homogeneous;
+  in vec4 a_color;
+  in vec4 a_normal;
 
+  uniform mat4 worldMatrix;
   uniform mat4 u_viewMatrix;
   uniform mat4 u_projectionMatrix;
-  uniform mat4 worldMatrix;
 
-  out vec2 v_texcoord;
-  out vec4 v_homogeneous;
+  out vec4 v_fragmentColor;
+  out vec3 v_worldPosition;
+  out vec3 v_worldNormal;
 
   void main() {
-    v_homogeneous = a_homogeneous;
+    v_fragmentColor = a_color;
     gl_Position = u_projectionMatrix * u_viewMatrix * worldMatrix * a_position;
   }
 `;
