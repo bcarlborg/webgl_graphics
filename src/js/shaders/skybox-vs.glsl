@@ -10,6 +10,6 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   void main() {
     fragmentColor = a_color;
-    gl_Position = u_projectionMatrix * u_viewMatrix * vec4(a_position, 1.0);
+    gl_Position = vec4(a_position.xy, .9999, 1.0);
   }
 `;

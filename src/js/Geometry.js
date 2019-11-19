@@ -19,7 +19,7 @@ export default class Geometry {
     twgl.attributes.setAttributePrefix('a_');
 
     if (this.options && this.options['2d']) {
-      twgl.primitives.createXYQuadBufferInfo(this.gl);
+      this.bufferInfo = twgl.primitives.createXYQuadBufferInfo(this.gl);
     } else {
       this.bufferInfo = twgl.createBufferInfoFromArrays(this.gl, this.vertices);
     }
