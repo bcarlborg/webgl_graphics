@@ -1,5 +1,3 @@
-import Mesh from './Mesh.js';
-import Game from './games/Game.js';
 import Scene from './Scene.js';
 
 export default class App {
