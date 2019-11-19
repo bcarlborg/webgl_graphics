@@ -5,6 +5,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec4 v_homogeneous;
 
   uniform sampler2D u_textureImage;
+
   out vec4 outColor;
 
   void main() {

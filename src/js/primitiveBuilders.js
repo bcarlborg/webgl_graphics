@@ -83,7 +83,6 @@ export default class primitiveBuilders {
       homogeneous,
       normal,
     };
-
     return plane;
   }
 

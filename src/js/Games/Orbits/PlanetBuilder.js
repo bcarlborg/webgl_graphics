@@ -62,9 +62,10 @@ export default class PlanetBuilder {
   buildInfinitePlane() {
     const homogeneousPlane = primitiveBuilders.buildHomogeneousPlane();
     const planeGeometry = new Geometry(this.gl, homogeneousPlane);
+    console.log(homogeneousPlane);
 
-    const planeMaterial = new Material(this.gl);
-    planeMaterial.setToInfiniteGroundMaterial('wavyGrid.jpg');
+    const planeMaterial = new Material(this.gl, 'infinite-ground-vs.glsl', 'infinite-ground-fs.glsl');
+    planeMaterial.setTextureFromFile('wavyGrid.jpg');
 
     const mesh = new Mesh(this.gl, planeMaterial, planeGeometry);
     const plane = new InfiniteGround(this.gl, mesh);

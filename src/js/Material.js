@@ -32,9 +32,10 @@ export default class Material {
 
   setTextureFromFile(imageFileName) {
     const filePath = this.fileNameToPath(imageFileName);
-    return twgl.createTexture(
+    const texture = twgl.createTexture(
       this.gl, { src: filePath, mag: this.gl.NEAREST },
     );
+    Object.assign(this.virtualUniforms, { u_textureImage: texture });
   }
 
   setSkyBoxTextureFromFiles(textureFiles) {

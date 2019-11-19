@@ -11,6 +11,7 @@ export default class OrbitsGame extends Game {
     this.initSpaceship();
     this.initTestPlanet();
     this.initSkyBox();
+    this.initInfiniteFloor();
   }
 
   initSpaceship() {
@@ -28,5 +29,10 @@ export default class OrbitsGame extends Game {
   initSkyBox() {
     const skybox = this.planetBuilder.buildSkyBox();
     this.gameObjects.push(skybox);
+  }
+
+  initInfiniteFloor() {
+    const infiniteFloor = this.planetBuilder.buildInfinitePlane();
+    this.gameObjects.push(infiniteFloor);
   }
 }
