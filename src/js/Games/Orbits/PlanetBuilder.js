@@ -22,7 +22,7 @@ export default class PlanetBuilder {
 
   buildTestPlanet(parent, size, initialLoc) {
     const cubeMaterial = new Material(
-      this.gl, 'procedural/test-vs.glsl', 'procedural/test-fs.glsl',
+      this.gl, 'base-vs.glsl', 'procedural/test-fs.glsl',
     );
     return this.buildPlanet(cubeMaterial, parent, size, initialLoc);
   }

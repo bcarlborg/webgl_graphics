@@ -9,7 +9,7 @@ export default class OrbitsGame extends Game {
     this.planetBuilder = new PlanetBuilder(this.gl);
     this.cameraFollowObject = null;
     this.initSpaceship();
-    // this.initTestPlanet();
+    this.initTestPlanet();
     this.initSkyBox();
   }
 
