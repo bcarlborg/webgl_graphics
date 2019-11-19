@@ -7,4 +7,5 @@ app.use(express.static(__dirname + '/src/lib'));
 app.use(express.static(__dirname + '/src/media'));
 app.use(express.static(__dirname + '/src/lib/WebGLMath'));
 app.use(express.static(__dirname + '/src/lib/WebGLMath/js'));
+app.use(express.static(__dirname + '/src/lib/WebGLMath/js/games/orbits'));
 app.listen(port);
