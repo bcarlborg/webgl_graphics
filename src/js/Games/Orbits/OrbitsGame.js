@@ -9,7 +9,8 @@ export default class OrbitsGame extends Game {
     this.planetBuilder = new PlanetBuilder(this.gl);
     this.cameraFollowObject = null;
     this.initSpaceship();
-    this.initTestPlanet();
+    // this.initTestPlanet();
+    this.initSkyBox();
   }
 
   initSpaceship() {
@@ -22,5 +23,11 @@ export default class OrbitsGame extends Game {
     const testPlanet = this.planetBuilder.buildTestPlanet(null, 2);
     testPlanet.setLocation(0, 3, 10);
     this.gameObjects.push(testPlanet);
+  }
+
+  initSkyBox() {
+    const skybox = this.planetBuilder.buildSkyBox();
+    console.log(skybox);
+    this.gameObjects.push(skybox);
   }
 }

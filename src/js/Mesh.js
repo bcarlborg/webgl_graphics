@@ -1,14 +1,12 @@
 import * as twgl from '../lib/twgl-full.module.js';
 
 export default class Mesh {
-  constructor(gl, material, vertices) {
+  constructor(gl, material, geometry) {
     this.gl = gl;
     this.material = material;
-    this.vertices = vertices;
-
-    twgl.attributes.setAttributePrefix('a_');
+    this.geometry = geometry;
+    this.bufferInfo = this.geometry.bufferInfo;
     this.virtualUniforms = {};
-    this.bufferInfo = twgl.createBufferInfoFromArrays(this.gl, this.vertices);
   }
 
   update() {

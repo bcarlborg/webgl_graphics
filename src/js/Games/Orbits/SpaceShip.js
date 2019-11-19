@@ -19,7 +19,7 @@ export default class SpaceShip extends GameNode {
   }
 
   initSpaceship() {
-    this.position.initialLocation = glMatrix.vec3.fromValues(0, 0, 0);
+    this.position.initialLocation = glMatrix.vec3.fromValues(0, 0, -10);
     this.position.initialForward = glMatrix.vec3.fromValues(0, 0, 1);
     this.position.initialLateral = glMatrix.vec3.fromValues(1, 0, 0);
     this.position.initialUp = glMatrix.vec3.fromValues(0, 1, 0);

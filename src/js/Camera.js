@@ -46,6 +46,11 @@ export default class Camera {
       this.virtualUniforms.u_viewMatrix,
       this.cameraMatrix,
     );
+    this.updateViewDirectionProjection();
+  }
+
+  updateViewDirectionProjection() {
+
   }
 
   update() {

@@ -19,13 +19,35 @@ export default class primitiveBuilders {
     const torusVerts = twgl.primitives.createTorusVertices(
       radius, thickness, radialSubdivisions, bodySubdivisions,
     );
-    return this.deindexVertices(torusVerts);
+    const deindexVertices = this.deindexVertices(torusVerts);
+    twgl.primitives.makeRandomVertexColors(deindexVertices);
+    return deindexVertices;
   }
 
   static buildPlane(size) {
     const planeVerts = twgl.primitives.createPlaneVertices(size, size);
     const deindexedPlane = this.deindexVertices(planeVerts);
     return deindexedPlane;
+  }
+
+  buildSkyBoxGeometry() {
+    const position = { data: [] };
+    position.data.push(
+      -1, -1,
+      1, -1,
+      -1, 1,
+      -1, 1,
+      1, -1,
+      1, 1,
+    );
+    position.numComponents = 2;
+
+    const indices = { data: [] };
+    indices.data.push(
+      0, 2, 1,
+      0, 1, 3,
+    );
+    indices.numComponents = 3;
   }
 
   static buildHomogeneousPlane() {

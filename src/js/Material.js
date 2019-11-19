@@ -39,9 +39,9 @@ export default class Material {
 
   setSkyBoxTextureFromFiles(textureFiles) {
     const fullPaths = textureFiles.map(this.fileNameToPath);
-    const skyboxTexture = twgl.createTexture(
+    const skybox = twgl.createTexture(
       this.gl, { target: this.gl.TEXTURE_CUBE_MAP, src: fullPaths },
     );
-    Object.assign(this.virtualUniforms, { skyboxTexture });
+    Object.assign(this.virtualUniforms, { u_skybox: skybox });
   }
 }
