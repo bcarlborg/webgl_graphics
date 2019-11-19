@@ -41,13 +41,6 @@ export default class primitiveBuilders {
       1, 1,
     );
     position.numComponents = 2;
-
-    const indices = { data: [] };
-    indices.data.push(
-      0, 2, 1,
-      0, 1, 3,
-    );
-    indices.numComponents = 3;
   }
 
   static buildHomogeneousPlane() {
