@@ -1,5 +1,5 @@
 import SpaceShip from './SpaceShip.js';
-import SkyBox from '../../SkyBox.js';
+import GameEntity from '../../GameEntity.js';
 import Material from '../../Material.js';
 import Mesh from '../../Mesh.js';
 import InfiniteGround from './InfiniteGround.js';
@@ -55,7 +55,7 @@ export default class PlanetBuilder {
     const skyBoxGeometry = new Geometry(this.gl, quad, { '2d': true });
     const mesh = new Mesh(this.gl, material, skyBoxGeometry);
 
-    const skybox = new SkyBox(this.gl, mesh);
+    const skybox = new GameEntity(this.gl, mesh);
     return skybox;
   }
 
