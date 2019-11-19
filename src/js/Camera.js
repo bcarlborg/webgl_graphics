@@ -16,6 +16,7 @@ export default class Camera {
       u_viewDirectionProjectionInverse: glMatrix.mat4.create(),
       u_projectionMatrix: glMatrix.mat4.create(),
       u_viewMatrix: glMatrix.mat4.create(),
+      u_cameraPosition: glMatrix.vec3.create(),
     };
   }
 
@@ -47,6 +48,12 @@ export default class Camera {
       this.virtualUniforms.u_viewMatrix,
       this.cameraMatrix,
     );
+
+    glMatrix.vec3.copy(
+      this.virtualUniforms.u_cameraPosition,
+      this.position.location,
+    );
+
     this.updateViewDirectionProjection();
   }
 
