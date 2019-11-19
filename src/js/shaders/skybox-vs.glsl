@@ -7,9 +7,14 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   uniform mat4 u_projectionMatrix;
 
   out vec4 fragmentColor;
+  out vec4 v_position;
 
   void main() {
     fragmentColor = a_color;
-    gl_Position = vec4(a_position.xy, .9999, 1.0);
+
+    vec4 adjustedPosition = vec4(a_position.xy, .9999, 1.0);
+    v_position = adjustedPosition;
+
+    gl_Position = adjustedPosition;
   }
 `;

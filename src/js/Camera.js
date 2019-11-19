@@ -13,6 +13,7 @@ export default class Camera {
     };
 
     this.virtualUniforms = {
+      u_viewDirectionProjectionInverse: glMatrix.mat4.create(),
       u_projectionMatrix: glMatrix.mat4.create(),
       u_viewMatrix: glMatrix.mat4.create(),
     };
@@ -50,7 +51,29 @@ export default class Camera {
   }
 
   updateViewDirectionProjection() {
+    const { u_viewDirectionProjectionInverse } = this.virtualUniforms;
+    // get the view direction direction
+    glMatrix.mat4.copy(
+      u_viewDirectionProjectionInverse,
+      this.virtualUniforms.u_viewMatrix,
+    );
+    // set translation to zero
+    u_viewDirectionProjectionInverse[12] = 0;
+    u_viewDirectionProjectionInverse[13] = 0;
+    u_viewDirectionProjectionInverse[14] = 0;
 
+    // view direction projection
+    glMatrix.mat4.multiply(
+      u_viewDirectionProjectionInverse,
+      this.virtualUniforms.u_projectionMatrix,
+      u_viewDirectionProjectionInverse,
+    );
+
+    // view direction projection inverse
+    glMatrix.mat4.invert(
+      u_viewDirectionProjectionInverse,
+      u_viewDirectionProjectionInverse,
+    );
   }
 
   update() {
