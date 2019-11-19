@@ -5,8 +5,6 @@ port = process.env.PORT || 4000;
 app.use(express.static(__dirname + '/src'));
 app.use(express.static(__dirname + '/src/lib'));
 app.use(express.static(__dirname + '/src/media'));
-app.use(express.static(__dirname + '/src/lib/WebGLMath'));
-app.use(express.static(__dirname + '/src/lib/WebGLMath/js'));
-app.use(express.static(__dirname + '/src/lib/WebGLMath/js/games'));
-app.use(express.static(__dirname + '/src/lib/WebGLMath/js/games/orbits'));
+app.use(express.static(__dirname + '/src/js'));
+
 app.listen(port);
