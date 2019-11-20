@@ -1,4 +1,5 @@
 import glMatrix from './helpers/glm.js';
+import _ from './helpers/lodash.js';
 
 export default class GameEntity {
   constructor(parent) {
@@ -207,14 +208,40 @@ export default class GameEntity {
     this.updateLateral();
   }
 
-  update() {
-    this.mesh.update();
+  // BY FRAME UPDATE METHODS
+  setWorldAndLocalMatrix() {
+    // Local Matrix
+    glMatrix.mat4.fromRotationTranslation(
+      this.localMatrix,
+      this.position.rotation,
+      this.position.location,
+    );
+
+    // u_worldMatrix
+    if (this.parent) {
+      glMatrix.mat4.multiply(
+        this.virtualUniforms.u_worldMatrix,
+        this.parent.virtualUniforms.u_worldMatrix,
+        this.localMatrix,
+      );
+    } else {
+      glMatrix.mat4.copy(
+        this.virtualUniforms.u_worldMatrix,
+        this.localMatrix,
+      );
+    }
   }
 
-  draw(camera) {
-    if (camera) {
-      Object.assign(this.virtualUniforms, camera.virtualUniforms);
+  updateUniformsFromParent() {
+    if (this.parent) {
+      _.defaults(
+        this.virtualUniforms, this.parent.virtualUniforms,
+      );
     }
-    this.mesh.draw(this.virtualUniforms);
+  }
+
+  update() {
+    this.setWorldAndLocalMatrix();
+    this.updateUniformsFromParent();
   }
 }
