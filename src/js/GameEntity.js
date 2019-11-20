@@ -243,5 +243,10 @@ export default class GameEntity {
   update() {
     this.setWorldAndLocalMatrix();
     this.updateUniformsFromParent();
+    this.children.foreach((child) => child.update());
+  }
+
+  draw() {
+    this.children.foreach((child) => child.draw());
   }
 }
