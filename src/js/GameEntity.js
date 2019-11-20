@@ -2,7 +2,7 @@ import glMatrix from './helpers/glm.js';
 import _ from './helpers/lodash.js';
 
 export default class GameEntity {
-  constructor(parent) {
+  constructor(parent, initialPositions) {
     this.parent = parent;
     this.children = [];
     this.localMatrix = glMatrix.mat4.create();
@@ -26,6 +26,7 @@ export default class GameEntity {
       lateral: glMatrix.vec3.fromValues(1, 0, 0),
       up: glMatrix.vec3.fromValues(0, 1, 0),
     };
+    if (initialPositions) this.initialPositions = initialPositions;
 
     // used to avoid creating a new intermediate variable
     // on every frame with an update change
@@ -36,7 +37,7 @@ export default class GameEntity {
     this.initPositions(this.initialPositions);
   }
 
-  initPosition(positions) {
+  initPositions(positions) {
     const { position } = this;
     glMatrix.vec3.copy(
       position.location, positions.location,
@@ -243,10 +244,10 @@ export default class GameEntity {
   update() {
     this.setWorldAndLocalMatrix();
     this.updateUniformsFromParent();
-    this.children.foreach((child) => child.update());
+    this.children.forEach((child) => child.update());
   }
 
   draw() {
-    this.children.foreach((child) => child.draw());
+    this.children.forEach((child) => child.draw());
   }
 }

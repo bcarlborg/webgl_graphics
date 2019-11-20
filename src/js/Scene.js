@@ -1,7 +1,7 @@
 import ClickListener from './ClickListener.js';
-import ThirdPersonCamera from './ThirdPersonCamera.js';
-import OrbitsGame from './games/orbits/OrbitsGame.js';
+import FreeCreateGame from './games/freeCreate/FreeCreateGame.js';
 import GameTime from './GameTime.js';
+import Camera from './Camera.js';
 
 export default class Scene {
   constructor(gl, canvas) {
@@ -9,10 +9,9 @@ export default class Scene {
     this.gl = gl;
     this.clickListener = new ClickListener(this.canvas);
     this.GameTime = new GameTime();
-    this.camera = new ThirdPersonCamera(this.canvas);
-    this.game = new OrbitsGame(this.gl);
-    this.cameraFollowObject = this.game.cameraFollowObject;
-    this.camera.setObjectToFollow(this.cameraFollowObject);
+    this.camera = new Camera(this.canvas);
+    this.camera.setPosition(0, 0, -10);
+    this.game = new FreeCreateGame(this.gl, this.camera);
   }
 
   update() {

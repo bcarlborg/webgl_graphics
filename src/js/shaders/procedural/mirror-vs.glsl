@@ -3,7 +3,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec4 a_color;
   in vec3 a_normal;
 
-  uniform mat4 worldMatrix;
+  uniform mat4 u_worldMatrix;
   uniform mat4 u_viewMatrix;
   uniform mat4 u_projectionMatrix;
 
@@ -13,8 +13,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   void main() {
     v_fragmentColor = a_color;
-    v_worldPosition = (worldMatrix * a_position).xyz;
-    v_worldNormal = mat3(worldMatrix) * a_normal;
-    gl_Position = u_projectionMatrix * u_viewMatrix * worldMatrix * a_position;
+    v_worldPosition = (u_worldMatrix * a_position).xyz;
+    v_worldNormal = mat3(u_worldMatrix) * a_normal;
+    gl_Position = u_projectionMatrix * u_viewMatrix * u_worldMatrix * a_position;
   }
 `;
