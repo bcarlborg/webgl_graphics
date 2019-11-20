@@ -10,6 +10,25 @@ export default class FreeCreateGame extends Game {
     this.gl = gl;
     this.camera = camera;
     this.initBox();
+    this.initSkyBox();
+  }
+
+  initSkyBox() {
+    const material = new Material(this.gl, 'skybox-vs.glsl', 'skybox-fs.glsl');
+    material.setSkyBoxTextureFromFiles([
+      'interstellar_px.jpg',
+      'interstellar_nx.jpg',
+      'interstellar_py.jpg',
+      'interstellar_ny.jpg',
+      'interstellar_pz.jpg',
+      'interstellar_nz.jpg',
+    ]);
+
+    const quad = primitiveBuilders.buildSkyBoxPlane();
+    const skyBoxGeometry = new Geometry(this.gl, quad, { '2d': true });
+
+    const skybox = new DrawableEntity(this.gl, this.camera, skyBoxGeometry, material);
+    this.gameObjects.push(skybox);
   }
 
   initBox() {
