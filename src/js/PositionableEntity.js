@@ -24,6 +24,7 @@ export default class GameEntity {
     // on every frame with an update change
     this.intermediates = {
       rotation: glMatrix.quat.create(),
+      directionVector: glMatrix.vec3.create(),
     };
 
     this.initPositions(this.initialPositions);
@@ -45,12 +46,22 @@ export default class GameEntity {
     );
   }
 
+  setPositionInformation(positionInformation) {
+    glMatrix.quat.identity(this.position.rotation);
+    Object.assign(this.initialPositions, positionInformation);
+    this.initPositions(this.initialPositions);
+  }
+
   // POSITION CHANGES
   setPosition(x, y, z) {
     glMatrix.vec3.set(this.position.location, x, y, z);
   }
 
   moveAlongForward(delta) {
+    glMatrix.vec3.normalize(
+      this.position.forward,
+      this.position.forward,
+    );
     glMatrix.vec3.scaleAndAdd(
       this.position.location,
       this.position.location,
@@ -180,13 +191,64 @@ export default class GameEntity {
     this.updateLateral();
   }
 
+  lookAt(x, y, z) {
+    glMatrix.vec3.subtract(
+      this.position.forward,
+      this.location,
+      [x, y, z],
+    );
+
+    glMatrix.quat.rotationTo(
+      this.intermediates.rotation,
+      this.position.forward,
+      this.position.up,
+    );
+
+    glMatrix.vec3.transformQuat(
+      this.position.lateral,
+      this.position.lateral,
+      this.intermediates.rotation,
+    );
+
+    glMatrix.quat.getAxisAngle(
+      this.intermediates.directionVector,
+      this.intermediates.rotation,
+    );
+
+    const forwardToUp = glMatrix.glMatrix.toRadian(90);
+    glMatrix.quat.setAxisAngle(
+      this.intermediates.rotation,
+      this.intermediates.directionVector,
+      forwardToUp,
+    );
+
+    glMatrix.vec3.transformQuat(
+      this.position.up,
+      this.position.forward,
+      this.intermediates.rotation,
+    );
+  }
+
   // UPDATE METHODS
   setPositionMatrix() {
-    glMatrix.mat4.fromRotationTranslation(
-      this.positionMatrix,
-      this.position.rotation,
+    glMatrix.vec3.add(
+      this.intermediates.directionVector,
       this.position.location,
+      this.position.forward,
     );
+
+    glMatrix.mat4.targetTo(
+      this.positionMatrix,
+      this.position.location,
+      this.intermediates.directionVector,
+      this.position.up,
+    );
+
+    // glMatrix.mat4.fromRotationTranslation(
+    //   this.positionMatrix,
+    //   this.position.rotation,
+    //   this.position.location,
+    // );
   }
 
   update() {

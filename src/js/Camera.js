@@ -16,6 +16,13 @@ export default class Camera extends PositionableEntity {
 
     this.globalUniforms = new GlobalUniforms();
     this.globalUniforms.setManyUniforms(this.cameraUniforms);
+
+    this.setPositionInformation({
+      location: glMatrix.vec3.fromValues(0, 0, -10),
+      forward: glMatrix.vec3.fromValues(0, 0, 1),
+      lateral: glMatrix.vec3.fromValues(1, 0, 0),
+      up: glMatrix.vec3.fromValues(0, 1, 0),
+    });
   }
 
   setPerspective() {

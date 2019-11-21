@@ -10,10 +10,10 @@ export default class FreeMovingCamera extends Camera {
   processKeysPressed() {
     // movement
     if (this.KeyHandler.keysPressed.W) {
-      this.moveAlongForward(1);
+      this.moveAlongForward(0.3);
     }
     if (this.KeyHandler.keysPressed.S) {
-      this.moveAlongForward(-0.1);
+      this.moveAlongForward(-0.3);
     }
     if (this.KeyHandler.keysPressed.A) {
       this.moveAlongLateral(0.1);

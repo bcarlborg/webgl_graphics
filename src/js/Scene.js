@@ -10,7 +10,7 @@ export default class Scene {
     this.clickListener = new ClickListener(this.canvas);
     this.GameTime = new GameTime();
     this.camera = new FreeMovingCamera(this.canvas);
-    this.camera.setPosition(0, 0, -10);
+    // this.camera.setPosition(0, 0, -10);
     this.game = new FreeCreateGame(this.gl, this.camera);
   }
 
