@@ -8,6 +8,7 @@ export default class FreeMovingCamera extends Camera {
   }
 
   processKeysPressed() {
+    // movement
     if (this.KeyHandler.keysPressed.W) {
       this.moveAlongForward(0.1);
     }
@@ -19,6 +20,20 @@ export default class FreeMovingCamera extends Camera {
     }
     if (this.KeyHandler.keysPressed.D) {
       this.moveAlongLateral(-0.1);
+    }
+
+    // rotations
+    if (this.KeyHandler.keysPressed.UP) {
+      this.relativePitch(1);
+    }
+    if (this.KeyHandler.keysPressed.DOWN) {
+      this.relativePitch(-1);
+    }
+    if (this.KeyHandler.keysPressed.LEFT) {
+      this.relativeYaw(1);
+    }
+    if (this.KeyHandler.keysPressed.RIGHT) {
+      this.relativeYaw(-1);
     }
   }
 

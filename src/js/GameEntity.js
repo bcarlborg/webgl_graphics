@@ -142,7 +142,7 @@ export default class GameEntity {
   updateForward() {
     glMatrix.vec3.transformQuat(
       this.position.forward,
-      this.position.initialForward,
+      this.initialPositions.forward,
       this.position.rotation,
     );
     glMatrix.vec3.normalize(
@@ -153,7 +153,7 @@ export default class GameEntity {
   updateLateral() {
     glMatrix.vec3.transformQuat(
       this.position.lateral,
-      this.position.initialLateral,
+      this.initialPositions.lateral,
       this.position.rotation,
     );
     glMatrix.vec3.normalize(
@@ -164,7 +164,7 @@ export default class GameEntity {
   updateUp() {
     glMatrix.vec3.transformQuat(
       this.position.up,
-      this.position.initialUp,
+      this.initialPositions.up,
       this.position.rotation,
     );
     glMatrix.vec3.normalize(
