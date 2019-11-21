@@ -3,7 +3,8 @@ import _ from './helpers/lodash.js';
 
 export default class GameEntity {
   constructor(parent, initialPositions) {
-    this.parent = parent;
+    this.parent = null;
+    if (parent) this.setParent(parent);
     this.children = [];
     this.localMatrix = glMatrix.mat4.create();
 
@@ -173,7 +174,7 @@ export default class GameEntity {
   }
 
   relativePitch(delta) {
-    const rad = glMatrix.glMatrix.toRadian(-delta);
+    const rad = glMatrix.glMatrix.toRadian(delta);
     glMatrix.quat.setAxisAngle(
       this.intermediates.rotation,
       this.position.lateral,
@@ -241,9 +242,10 @@ export default class GameEntity {
     }
   }
 
-  update() {
+  update(beforeChildrenUpdateCallback) {
     this.setWorldAndLocalMatrix();
     this.updateUniformsFromParent();
+    if (beforeChildrenUpdateCallback) beforeChildrenUpdateCallback();
     this.children.forEach((child) => child.update());
   }
 

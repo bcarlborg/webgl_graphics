@@ -20,7 +20,7 @@ export default class Camera extends GameEntity {
 
   setPerspective() {
     const { u_projectionMatrix } = this.virtualUniforms;
-    const fov = glMatrix.glMatrix.toRadian(60);
+    const fov = glMatrix.glMatrix.toRadian(45);
     const aspect = this.canvas.width / this.canvas.height;
     const near = 0.01;
     const far = 10000;
@@ -30,25 +30,25 @@ export default class Camera extends GameEntity {
     );
   }
 
-  setTolookAt(position) {
-    if (position) {
-      glMatrix.vec3.set(
-        this.position.lookAtPoint, ...position,
-      );
-    } else {
-      glMatrix.vec3.add(
-        this.position.lookAtPoint,
-        this.position.location,
-        this.position.forward,
-      );
-    }
-    glMatrix.mat4.targetTo(
-      this.localMatrix,
-      this.position.location,
-      this.position.lookAtPoint,
-      this.position.up,
-    );
-  }
+  // setTolookAt(position) {
+  //   if (position) {
+  //     glMatrix.vec3.set(
+  //       this.position.lookAtPoint, ...position,
+  //     );
+  //   } else {
+  //     glMatrix.vec3.add(
+  //       this.position.lookAtPoint,
+  //       this.position.location,
+  //       this.position.forward,
+  //     );
+  //   }
+  //   glMatrix.mat4.targetTo(
+  //     this.localMatrix,
+  //     this.position.location,
+  //     this.position.lookAtPoint,
+  //     this.position.up,
+  //   );
+  // }
 
   updateUniformsFromLocalValues() {
     glMatrix.mat4.invert(
@@ -91,8 +91,10 @@ export default class Camera extends GameEntity {
   }
 
   update() {
-    this.setPerspective();
-    this.setTolookAt();
-    this.updateUniformsFromLocalValues();
+    const beforeChildrenUpdate = () => {
+      this.setPerspective();
+      this.updateUniformsFromLocalValues();
+    };
+    super.update(beforeChildrenUpdate);
   }
 }
