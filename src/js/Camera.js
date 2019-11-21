@@ -30,7 +30,18 @@ export default class Camera extends GameEntity {
     );
   }
 
-  setTolookAt() {
+  setTolookAt(position) {
+    if (position) {
+      glMatrix.vec3.set(
+        this.position.lookAtPoint, ...position,
+      );
+    } else {
+      glMatrix.vec3.add(
+        this.position.lookAtPoint,
+        this.position.location,
+        this.position.forward,
+      );
+    }
     glMatrix.mat4.targetTo(
       this.localMatrix,
       this.position.location,
