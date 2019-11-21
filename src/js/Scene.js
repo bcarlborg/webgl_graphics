@@ -1,7 +1,7 @@
 import ClickListener from './ClickListener.js';
 import FreeCreateGame from './games/freeCreate/FreeCreateGame.js';
 import GameTime from './GameTime.js';
-import Camera from './Camera.js';
+import FreeMovingCamera from './FreeMovingCamera.js';
 
 export default class Scene {
   constructor(gl, canvas) {
@@ -9,7 +9,7 @@ export default class Scene {
     this.gl = gl;
     this.clickListener = new ClickListener(this.canvas);
     this.GameTime = new GameTime();
-    this.camera = new Camera(this.canvas);
+    this.camera = new FreeMovingCamera(this.canvas);
     this.camera.setPosition(0, 0, -10);
     this.game = new FreeCreateGame(this.gl, this.camera);
   }
