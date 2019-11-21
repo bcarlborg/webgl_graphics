@@ -191,44 +191,6 @@ export default class GameEntity {
     this.updateLateral();
   }
 
-  lookAt(x, y, z) {
-    glMatrix.vec3.subtract(
-      this.position.forward,
-      this.location,
-      [x, y, z],
-    );
-
-    glMatrix.quat.rotationTo(
-      this.intermediates.rotation,
-      this.position.forward,
-      this.position.up,
-    );
-
-    glMatrix.vec3.transformQuat(
-      this.position.lateral,
-      this.position.lateral,
-      this.intermediates.rotation,
-    );
-
-    glMatrix.quat.getAxisAngle(
-      this.intermediates.directionVector,
-      this.intermediates.rotation,
-    );
-
-    const forwardToUp = glMatrix.glMatrix.toRadian(90);
-    glMatrix.quat.setAxisAngle(
-      this.intermediates.rotation,
-      this.intermediates.directionVector,
-      forwardToUp,
-    );
-
-    glMatrix.vec3.transformQuat(
-      this.position.up,
-      this.position.forward,
-      this.intermediates.rotation,
-    );
-  }
-
   // UPDATE METHODS
   setPositionMatrix() {
     glMatrix.vec3.add(
@@ -243,12 +205,6 @@ export default class GameEntity {
       this.intermediates.directionVector,
       this.position.up,
     );
-
-    // glMatrix.mat4.fromRotationTranslation(
-    //   this.positionMatrix,
-    //   this.position.rotation,
-    //   this.position.location,
-    // );
   }
 
   update() {

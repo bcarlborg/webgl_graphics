@@ -16,10 +16,10 @@ export default class FreeMovingCamera extends Camera {
       this.moveAlongForward(-0.3);
     }
     if (this.KeyHandler.keysPressed.A) {
-      this.moveAlongLateral(0.1);
+      this.moveAlongLateral(-0.1);
     }
     if (this.KeyHandler.keysPressed.D) {
-      this.moveAlongLateral(-0.1);
+      this.moveAlongLateral(0.1);
     }
 
     // rotations
