@@ -1,13 +1,15 @@
-import GameEntity from './GameEntity.js';
+import SceneGraphEntity from './SceneGraphEntity.js';
 import Mesh from './Mesh.js';
 
-export default class DrawableEntity extends GameEntity {
-  constructor(gl, parent, geometry, material) {
-    super(parent);
+export default class DrawableEntity extends SceneGraphEntity {
+  constructor(gl, geometry, material) {
+    super();
     this.gl = gl;
     this.geometry = geometry;
     this.material = material;
     this.mesh = null;
+
+    this.virtualUniforms = {};
     this.buildMesh();
   }
 
@@ -26,6 +28,10 @@ export default class DrawableEntity extends GameEntity {
       this.gl, this.material, this.geometry,
     );
   }
+
+  // maybe will want a function
+  // get virtualUniformsFromParent() {} that checks if
+  // the parent has virtual uniforms, and if so, grabs them
 
   update() {
     this.mesh.update();
