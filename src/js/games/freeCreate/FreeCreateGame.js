@@ -3,22 +3,15 @@ import Material from '../../Material.js';
 import Geometry from '../../Geometry.js';
 import primitiveBuilders from '../../primitiveBuilders.js';
 import DrawableEntity from '../../DrawableEntity.js';
-import DirectionLight from '../../lights/DirectionLight.js';
 
 export default class FreeCreateGame extends Game {
   constructor(gl, camera) {
     super();
     this.gl = gl;
     this.camera = camera;
-    this.initLights();
+    // this.initLights();
     this.initBox();
     this.initSkyBox();
-  }
-
-  initLights() {
-    const directionLight = new DirectionLight();
-    this.camera.setParent(directionLight);
-    this.gameObjects.push(directionLight);
   }
 
   initSkyBox() {
@@ -35,7 +28,7 @@ export default class FreeCreateGame extends Game {
     const quad = primitiveBuilders.buildSkyBoxPlane();
     const skyBoxGeometry = new Geometry(this.gl, quad, { '2d': true });
 
-    const skybox = new DrawableEntity(this.gl, this.camera, skyBoxGeometry, material);
+    const skybox = new DrawableEntity(this.gl, skyBoxGeometry, material);
     this.gameObjects.push(skybox);
   }
 
@@ -45,7 +38,7 @@ export default class FreeCreateGame extends Game {
     );
     const planetVertices = primitiveBuilders.buildCube(1);
     const planetGeometry = new Geometry(this.gl, planetVertices);
-    const entity = new DrawableEntity(this.gl, this.camera, planetGeometry, cubeMaterial);
+    const entity = new DrawableEntity(this.gl, planetGeometry, cubeMaterial);
     this.gameObjects.push(entity);
   }
 }

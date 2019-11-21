@@ -9,7 +9,9 @@ export default class DrawableEntity extends SceneGraphEntity {
     this.material = material;
     this.mesh = null;
 
-    this.virtualUniforms = {};
+    this.virtualUniforms = {
+      u_worldMatrix: this.worldMatrix,
+    };
     this.buildMesh();
   }
 
@@ -25,7 +27,7 @@ export default class DrawableEntity extends SceneGraphEntity {
 
   buildMesh() {
     this.mesh = new Mesh(
-      this.gl, this.material, this.geometry,
+      this.gl, this.geometry, this.material,
     );
   }
 
@@ -40,6 +42,6 @@ export default class DrawableEntity extends SceneGraphEntity {
 
   draw() {
     this.mesh.draw(this.virtualUniforms);
-    super.draw();
+    this.children.forEach((child) => child.draw);
   }
 }
