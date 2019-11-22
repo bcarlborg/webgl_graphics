@@ -1,4 +1,5 @@
 import ClickListener from './ClickListener.js';
+import KeyHandler from './KeyHandler.js';
 import FreeCreateGame from './games/freeCreate/FreeCreateGame.js';
 import GameTime from './GameTime.js';
 import FreeMovingCamera from './FreeMovingCamera.js';
@@ -8,6 +9,7 @@ export default class Scene {
     this.canvas = canvas;
     this.gl = gl;
     this.clickListener = new ClickListener(this.canvas);
+    this.keyHandler = new KeyHandler(this.canvas);
     this.GameTime = new GameTime();
     this.camera = new FreeMovingCamera(this.canvas);
     // this.camera.setPosition(0, 0, -10);
@@ -17,6 +19,7 @@ export default class Scene {
   update() {
     this.GameTime.update();
     this.clickListener.update();
+    this.keyHandler.update();
     this.camera.update();
     this.game.objectsToUpdate().forEach((object) => {
       object.update();

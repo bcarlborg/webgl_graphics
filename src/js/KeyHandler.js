@@ -7,36 +7,26 @@ export default class KeyHandler {
     if (KeyHandler.instance) return KeyHandler.instance;
     KeyHandler.instance = this;
 
+    this.keysPressedForNextUpdate = {};
+
     this.registerEventHandlers();
     this.keysPressed = {};
     this.keyCallbacks = {};
     return this;
   }
 
-  registerCallback(keyName, callback) {
-    if (!this.keyCallbacks[keyName]) {
-      this.keyCallbacks[keyName] = [];
-    }
-    this.keyCallbacks[keyName].push(callback);
-  }
-
-  executeCallbacks(keyName) {
-    if (this.keyCallbacks[keyName]) {
-      this.keyCallbacks[keyName].forEach((callback) => { callback(); });
-    }
-  }
-
   registerEventHandlers() {
     document.onkeydown = (event) => {
       const keyName = keyNames[event.keyCode];
-      if (!this.keysPressed[keyName]) {
-        this.executeCallbacks(keyName);
-      }
-      this.keysPressed[keyName] = true;
+      this.keysPressedForNextUpdate[keyName] = true;
     };
 
     document.onkeyup = (event) => {
-      this.keysPressed[keyNames[event.keyCode]] = false;
+      this.keysPressedForNextUpdate[keyNames[event.keyCode]] = false;
     };
+  }
+
+  update() {
+    Object.assign(this.keysPressed, this.keysPressedForNextUpdate);
   }
 }
