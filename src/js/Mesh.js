@@ -33,7 +33,10 @@ export default class Mesh {
     twgl.setUniforms(this.material.programInfo, incomingUniforms);
     twgl.setUniforms(this.material.programInfo, this.material.virtualUniforms);
     twgl.setUniforms(this.material.programInfo, this.virtualUniforms);
-    twgl.setUniforms(this.material.programInfo, this.globalUniforms.globalUniforms);
+    twgl.setUniforms(
+      this.material.programInfo,
+      this.globalUniforms.globalUniforms.individual,
+    );
     twgl.drawBufferInfo(this.gl, this.bufferInfo);
   }
 }
