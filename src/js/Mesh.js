@@ -4,7 +4,7 @@ import * as twgl from '../lib/twgl-full.module.js';
 export default class Mesh {
   constructor(gl, geometry, material) {
     this.gl = gl;
-    this.globalUniforms = new GlobalUniforms();
+    this.globalUniforms = new GlobalUniforms().globalUniforms;
     this.virtualUniforms = {};
     this.material = material;
     this.geometry = geometry;
@@ -27,15 +27,15 @@ export default class Mesh {
   setGlobalUniforms() {
     twgl.setUniforms(
       this.material.programInfo,
-      this.globalUniforms.globalUniforms.individual,
+      this.globalUniforms.individual,
     );
-    const blockNames = Object.keys(this.globalUniforms.globalUniforms.block);
+    const blockNames = Object.keys(this.globalUniforms.block);
     blockNames.forEach((blockName) => {
       const blockInfo = twgl.createUniformBlockInfo(
         this.gl, this.material.programInfo, blockName,
       );
       twgl.setBlockUniforms(
-        blockInfo, this.globalUniforms.globalUniforms.block[blockName],
+        blockInfo, this.globalUniforms.block[blockName],
       );
       twgl.setUniformBlock(this.gl, this.material.programInfo, blockInfo);
     });
