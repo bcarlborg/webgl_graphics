@@ -7,6 +7,7 @@ export default class Camera extends PositionableEntity {
     super();
     this.canvas = canvas;
 
+    this.cameraUniformsBlockName = 'u_camera';
     this.cameraUniforms = {
       u_viewDirectionProjectionInverse: glMatrix.mat4.create(),
       u_projectionMatrix: glMatrix.mat4.create(),
@@ -15,7 +16,9 @@ export default class Camera extends PositionableEntity {
     };
 
     this.globalUniforms = new GlobalUniforms();
-    this.globalUniforms.setManyUniforms(this.cameraUniforms);
+    this.globalUniforms.setBlockUniforms(
+      this.cameraUniformsBlockName, this.cameraUniforms,
+    );
 
     this.setPositionInformation({
       location: glMatrix.vec3.fromValues(0, 0, -10),
@@ -73,7 +76,9 @@ export default class Camera extends PositionableEntity {
   }
 
   updateGlobalUniforms() {
-    this.globalUniforms.setManyUniforms(this.cameraUniforms);
+    this.globalUniforms.setBlockUniforms(
+      this.cameraUniformsBlockName, this.cameraUniforms,
+    );
   }
 
   update() {

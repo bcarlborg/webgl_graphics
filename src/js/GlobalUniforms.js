@@ -16,4 +16,11 @@ export default class GlobalUniforms {
   setManyUniforms(incomingUniforms) {
     Object.assign(this.globalUniforms.individual, incomingUniforms);
   }
+
+  setBlockUniforms(blockName, incomingUniforms) {
+    if (!(this.globalUniforms.block[blockName])) {
+      this.globalUniforms.block[blockName] = {};
+    }
+    Object.assign(this.globalUniforms.block[blockName], incomingUniforms);
+  }
 }

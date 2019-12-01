@@ -24,19 +24,33 @@ export default class Mesh {
     this.gl.enable(this.gl.CULL_FACE);
   }
 
+  setGlobalUniforms() {
+    twgl.setUniforms(
+      this.material.programInfo,
+      this.globalUniforms.globalUniforms.individual,
+    );
+    const blockNames = Object.keys(this.globalUniforms.globalUniforms.block);
+    blockNames.forEach((blockName) => {
+      const blockInfo = twgl.createUniformBlockInfo(
+        this.gl, this.material.programInfo, blockName,
+      );
+      twgl.setBlockUniforms(
+        blockInfo, this.globalUniforms.globalUniforms.block[blockName],
+      );
+      twgl.setUniformBlock(this.gl, this.material.programInfo, blockInfo);
+    });
+  }
+
   draw(incomingUniforms) {
     this.configureGlSettings();
     Object.assign(this.virtualUniforms, this.material.virtualUniforms);
 
     this.gl.useProgram(this.material.programInfo.program);
     this.gl.bindVertexArray(this.vao);
+    this.setGlobalUniforms();
     twgl.setUniforms(this.material.programInfo, incomingUniforms);
     twgl.setUniforms(this.material.programInfo, this.material.virtualUniforms);
     twgl.setUniforms(this.material.programInfo, this.virtualUniforms);
-    twgl.setUniforms(
-      this.material.programInfo,
-      this.globalUniforms.globalUniforms.individual,
-    );
     twgl.drawBufferInfo(this.gl, this.bufferInfo);
   }
 }
