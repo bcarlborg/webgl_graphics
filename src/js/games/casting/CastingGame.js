@@ -11,6 +11,7 @@ export default class CastingGame extends Game {
     this.camera = camera;
     // this.initLights();
     this.initSkyBox();
+    this.initInfiniteGround();
   }
 
   initSkyBox() {
@@ -29,5 +30,17 @@ export default class CastingGame extends Game {
 
     const skybox = new DrawableEntity(this.gl, skyBoxGeometry, material);
     this.gameObjects.push(skybox);
+  }
+
+  initInfiniteGround() {
+    const planeMaterial = new Material(this.gl, 'infinite-ground-vs.glsl', 'infinite-ground-fs.glsl');
+
+    const homogeneousPlane = primitiveBuilders.buildHomogeneousPlane();
+    const planeGeometry = new Geometry(this.gl, homogeneousPlane);
+    planeMaterial.setTextureFromFile('wavyGrid.jpg');
+
+    const infinitePlane = new DrawableEntity(this.gl, planeGeometry, planeMaterial);
+    infinitePlane.setPosition(0, 0, -10);
+    this.gameObjects.push(infinitePlane);
   }
 }
