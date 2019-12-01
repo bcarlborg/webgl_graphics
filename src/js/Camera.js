@@ -9,10 +9,10 @@ export default class Camera extends PositionableEntity {
 
     this.cameraUniformsBlockName = 'u_camera';
     this.cameraUniforms = {
-      u_viewDirectionProjectionInverse: glMatrix.mat4.create(),
-      u_projectionMatrix: glMatrix.mat4.create(),
-      u_viewMatrix: glMatrix.mat4.create(),
-      u_cameraPosition: glMatrix.vec3.create(),
+      viewDirectionProjectionInverse: glMatrix.mat4.create(),
+      projectionMatrix: glMatrix.mat4.create(),
+      viewMatrix: glMatrix.mat4.create(),
+      cameraPosition: glMatrix.vec3.create(),
     };
 
     this.globalUniforms = new GlobalUniforms();
@@ -35,43 +35,43 @@ export default class Camera extends PositionableEntity {
     const far = 10000;
 
     glMatrix.mat4.perspective(
-      this.cameraUniforms.u_projectionMatrix, fov, aspect, near, far,
+      this.cameraUniforms.projectionMatrix, fov, aspect, near, far,
     );
   }
 
   updateUniformsLocally() {
-    const { u_viewDirectionProjectionInverse } = this.cameraUniforms;
+    const { viewDirectionProjectionInverse } = this.cameraUniforms;
 
     glMatrix.mat4.invert(
-      this.cameraUniforms.u_viewMatrix,
+      this.cameraUniforms.viewMatrix,
       this.positionMatrix,
     );
 
     glMatrix.vec3.copy(
-      this.cameraUniforms.u_cameraPosition,
+      this.cameraUniforms.cameraPosition,
       this.position.location,
     );
 
     glMatrix.mat4.copy(
-      u_viewDirectionProjectionInverse,
-      this.cameraUniforms.u_viewMatrix,
+      viewDirectionProjectionInverse,
+      this.cameraUniforms.viewMatrix,
     );
     // set translation to zero so all that is left is direction
-    u_viewDirectionProjectionInverse[12] = 0;
-    u_viewDirectionProjectionInverse[13] = 0;
-    u_viewDirectionProjectionInverse[14] = 0;
+    viewDirectionProjectionInverse[12] = 0;
+    viewDirectionProjectionInverse[13] = 0;
+    viewDirectionProjectionInverse[14] = 0;
 
     // view direction projection
     glMatrix.mat4.multiply(
-      u_viewDirectionProjectionInverse,
-      this.cameraUniforms.u_projectionMatrix,
-      u_viewDirectionProjectionInverse,
+      viewDirectionProjectionInverse,
+      this.cameraUniforms.projectionMatrix,
+      viewDirectionProjectionInverse,
     );
 
     // view direction projection inverse
     glMatrix.mat4.invert(
-      u_viewDirectionProjectionInverse,
-      u_viewDirectionProjectionInverse,
+      viewDirectionProjectionInverse,
+      viewDirectionProjectionInverse,
     );
   }
 
