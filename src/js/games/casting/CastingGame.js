@@ -40,7 +40,7 @@ export default class CastingGame extends Game {
     planeMaterial.setTextureFromFile('wavyGrid.jpg');
 
     const infinitePlane = new DrawableEntity(this.gl, planeGeometry, planeMaterial);
-    infinitePlane.setPosition(0, 0, -10);
+    infinitePlane.moveAlongUp(-10);
     this.gameObjects.push(infinitePlane);
   }
 }

@@ -50,6 +50,7 @@ export default class SceneGraphEntity extends PositionableEntity {
   }
 
   update() {
+    super.update();
     this.setWorldAndLocalMatrices();
   }
 }
