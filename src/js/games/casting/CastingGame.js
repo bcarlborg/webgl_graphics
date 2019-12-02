@@ -3,6 +3,7 @@ import Material from '../../Material.js';
 import Geometry from '../../Geometry.js';
 import primitiveBuilders from '../../primitiveBuilders.js';
 import DrawableEntity from '../../DrawableEntity.js';
+import ClippedQuadric from '../../ClippedQuadric.js';
 
 export default class CastingGame extends Game {
   constructor(gl, camera) {
@@ -12,6 +13,7 @@ export default class CastingGame extends Game {
     // this.initLights();
     this.initSkyBox();
     this.initInfiniteGround();
+    this.initQuadrics();
   }
 
   initSkyBox() {
@@ -42,5 +44,11 @@ export default class CastingGame extends Game {
     const infinitePlane = new DrawableEntity(this.gl, planeGeometry, planeMaterial);
     infinitePlane.moveAlongUp(-10);
     this.gameObjects.push(infinitePlane);
+  }
+
+  initQuadrics() {
+    const quadric = new ClippedQuadric(0);
+    quadric.setToUnitCylinder();
+    this.gameObjects.push(quadric);
   }
 }

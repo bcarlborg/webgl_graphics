@@ -3,12 +3,18 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   in vec4 v_rayDir;
 
+  uniform clippedQuadrics {
+    mat4 surface;
+    mat4 clipper;
+  } foo;
+
   uniform u_camera {
     mat4 viewMatrix;
     mat4 projectionMatrix;
     mat4 viewDirectionProjectionInverse;
     vec3 cameraPosition;
   } camera;
+
 
   uniform samplerCube u_skybox;
 
@@ -38,7 +44,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   }
 
   void main(void) {
-    vec4 e = vec4(camera.cameraPosition, 1);     //< ray origin
+    vec4 e = vec4(camera.cameraPosition, 1); //< ray origin
     vec4 d = vec4(normalize(v_rayDir).xyz, 0); //< ray direction
     mat4 b = mat4(
       1,0,0,0,

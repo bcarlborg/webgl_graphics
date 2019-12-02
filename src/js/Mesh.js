@@ -31,13 +31,16 @@ export default class Mesh {
     );
     const blockNames = Object.keys(this.globalUniforms.block);
     blockNames.forEach((blockName) => {
-      const blockInfo = twgl.createUniformBlockInfo(
-        this.gl, this.material.programInfo, blockName,
-      );
-      twgl.setBlockUniforms(
-        blockInfo, this.globalUniforms.block[blockName],
-      );
-      twgl.setUniformBlock(this.gl, this.material.programInfo, blockInfo);
+      const blockSpec = this.material.programInfo.uniformBlockSpec.blockSpecs[blockName];
+      if (blockSpec) {
+        const blockInfo = twgl.createUniformBlockInfo(
+          this.gl, this.material.programInfo, blockName,
+        );
+        twgl.setBlockUniforms(
+          blockInfo, this.globalUniforms.block[blockName],
+        );
+        twgl.setUniformBlock(this.gl, this.material.programInfo, blockInfo);
+      }
     });
   }
 
