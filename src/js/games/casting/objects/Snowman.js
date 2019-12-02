@@ -6,7 +6,7 @@ export default class Snowman extends ClippedQuadric {
     super(index);
     this.setToUnitCylinder();
     this.timeInfo = (new GameTime()).timeInfo;
-    this.moveAlongUp(10);
+    // this.moveAlongUp(10);
   }
 
   hop() {
@@ -17,7 +17,7 @@ export default class Snowman extends ClippedQuadric {
   }
 
   update() {
-    // this.hop();
+    this.hop();
     super.update();
   }
 }
