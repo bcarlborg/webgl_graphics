@@ -1,8 +1,10 @@
+import SceneGraphEntity from './SceneGraphEntity.js';
 import GlobalUniforms from './GlobalUniforms.js';
 import glMatrix from './helpers/glm.js';
 
-export default class ClippedQuadric {
+export default class ClippedQuadric extends SceneGraphEntity {
   constructor(index) {
+    super();
     this.index = index;
     this.globalUniforms = new GlobalUniforms();
     this.uniforms = {
@@ -29,6 +31,7 @@ export default class ClippedQuadric {
   }
 
   update() {
+    super.update();
     this.globalUniforms.setBlockUniforms(
       `clippedQuadrics[${this.index}]`, this.uniforms,
     );

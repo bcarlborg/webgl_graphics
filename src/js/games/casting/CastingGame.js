@@ -3,7 +3,7 @@ import Material from '../../Material.js';
 import Geometry from '../../Geometry.js';
 import primitiveBuilders from '../../primitiveBuilders.js';
 import DrawableEntity from '../../DrawableEntity.js';
-import ClippedQuadric from '../../ClippedQuadric.js';
+import Snowman from './objects/Snowman.js';
 
 export default class CastingGame extends Game {
   constructor(gl, camera) {
@@ -47,7 +47,7 @@ export default class CastingGame extends Game {
   }
 
   initQuadrics() {
-    const quadric = new ClippedQuadric(0);
+    const quadric = new Snowman(0);
     quadric.setToUnitCylinder();
     this.gameObjects.push(quadric);
   }
