@@ -6,7 +6,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   uniform u_clippedQuadrics {
     mat4 surface;
     mat4 clipper;
-  } clippedQuadrics[15];
+  } clippedQuadrics[8];
 
   uniform u_camera {
     mat4 viewMatrix;
@@ -46,18 +46,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   void main(void) {
     vec4 e = vec4(camera.cameraPosition, 1); //< ray origin
     vec4 d = vec4(normalize(v_rayDir).xyz, 0); //< ray direction
-    mat4 b = mat4(
-      1,0,0,0,
-      0,0,0,0,
-      0,0,0,0,
-      0,0,0,-4
-    );
-    mat4 a = mat4(
-      0, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, -9
-    );
+    mat4 a = clippedQuadrics[0].surface;
+    mat4 b = clippedQuadrics[0].clipper;
     float bestT = intersectClippedQuadric(a,b,e,d);
 
     if(bestT > 0.0){
