@@ -29,17 +29,20 @@ export default class Mesh {
       this.material.programInfo,
       this.globalUniforms.individual,
     );
+
     const blockNames = Object.keys(this.globalUniforms.block);
     blockNames.forEach((blockName) => {
-      const blockSpec = this.material.programInfo.uniformBlockSpec.blockSpecs[blockName];
-      if (blockSpec) {
-        const blockInfo = twgl.createUniformBlockInfo(
-          this.gl, this.material.programInfo, blockName,
+      const block = this.globalUniforms.block[blockName];
+      const propertyNames = Object.keys(block);
+
+      for (let i = 0; i < propertyNames.length; ++i) {
+        const uniformName = `${blockName}.${propertyNames[i]}`;
+        const uniformValue = block[propertyNames[i]];
+        const uniform = {};
+        uniform[uniformName] = uniformValue;
+        twgl.setUniforms(
+          this.material.programInfo, uniform,
         );
-        twgl.setBlockUniforms(
-          blockInfo, this.globalUniforms.block[blockName],
-        );
-        twgl.setUniformBlock(this.gl, this.material.programInfo, blockInfo);
       }
     });
   }

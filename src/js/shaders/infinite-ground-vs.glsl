@@ -3,12 +3,13 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec2 a_texcoord;
   in vec4 a_homogeneous;
 
-  uniform u_camera {
+  struct u_camera {
     mat4 viewMatrix;
     mat4 projectionMatrix;
     mat4 viewDirectionProjectionInverse;
     vec3 cameraPosition;
-  } camera;
+  };
+  uniform u_camera camera;
 
   uniform mat4 u_worldMatrix;
 

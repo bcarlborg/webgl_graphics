@@ -30,7 +30,7 @@ export default class ClippedQuadric {
 
   update() {
     this.globalUniforms.setBlockUniforms(
-      `u_clippedQuadrics[${this.index}]`, this.uniforms,
+      `clippedQuadrics[${this.index}]`, this.uniforms,
     );
   }
 

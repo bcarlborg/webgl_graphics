@@ -7,7 +7,7 @@ export default class Camera extends PositionableEntity {
     super();
     this.canvas = canvas;
 
-    this.cameraUniformsBlockName = 'u_camera';
+    this.cameraUniformsBlockName = 'camera';
     this.cameraUniforms = {
       viewDirectionProjectionInverse: glMatrix.mat4.create(),
       projectionMatrix: glMatrix.mat4.create(),
