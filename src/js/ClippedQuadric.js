@@ -34,6 +34,24 @@ export default class ClippedQuadric extends SceneGraphEntity {
     );
   }
 
+  setToCone() {
+    glMatrix.mat4.set(
+      this.surface,
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, -1, 0,
+      0, 0, 0, 0,
+    );
+    glMatrix.mat4.set(
+      this.clipper,
+      0, 0, 0, 0,
+      0, 0, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, -2,
+    );
+  }
+
+
   transformSurfaceMatrix() {
     const transformableProps = ['clipper', 'surface'];
 

@@ -48,7 +48,6 @@ export default class CastingGame extends Game {
 
   initQuadrics() {
     const quadric = new Snowman(0);
-    quadric.setToUnitCylinder();
     this.gameObjects.push(quadric);
   }
 }
