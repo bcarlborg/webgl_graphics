@@ -3,10 +3,10 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   in vec4 v_rayDir;
 
-  uniform clippedQuadrics {
+  uniform u_clippedQuadrics {
     mat4 surface;
     mat4 clipper;
-  } foo;
+  } clippedQuadrics[15];
 
   uniform u_camera {
     mat4 viewMatrix;
