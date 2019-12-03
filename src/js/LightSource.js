@@ -7,18 +7,25 @@ export default class LightSource {
     this.foo = 'bar';
     this.globalUniforms = new GlobalUniforms();
     this.uniforms = {
-      reverseLightDirection: glMatrix.vec4.create(),
+      position: glMatrix.vec4.create(),
+      powerDensity: glMatrix.vec3.create(),
     };
+  }
+
+  setPowerDensity(r, g, b) {
+    glMatrix.vec3.set(
+      this.uniforms.powerDensity, r, g, b,
+    );
   }
 
   setLightDirection(x, y, z) {
     glMatrix.vec3.set(
-      this.uniforms.reverseLightDirection, x, y, z, 0,
+      this.uniforms.position, x, y, z, 0,
     );
 
     glMatrix.vec4.scale(
-      this.uniforms.reverseLightDirection,
-      this.uniforms.reverseLightDirection,
+      this.uniforms.position,
+      this.uniforms.position,
       -1,
     );
   }

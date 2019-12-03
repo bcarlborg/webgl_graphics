@@ -1,12 +1,11 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
-  #define SSIZE 2
-  #define MAX_RAYS 2;
   precision highp float;
 
   in vec4 v_rayDir;
 
   struct u_lights {
-    vec4 reverseLightDirection;
+    vec4 position;
+    vec3 powerDensity;
   };
   uniform u_lights lights[1];
 
@@ -29,6 +28,11 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   uniform samplerCube u_skybox;
 
   out vec4 fragmentColor;
+
+  vec3 shade( vec3 normal, vec3 lightDir, vec3 powerDensity, vec3 materialColor) {
+    float cosa = clamp( dot(lightDir, normal),0.0,1.0);
+    return powerDensity * materialColor * cosa;
+  }
 
   float intersectClippedQuadric(mat4 surface, mat4 B, vec4 rayOrigin, vec4 rayDirection) {
     float aCo = dot(rayDirection * surface, rayDirection);
@@ -103,38 +107,22 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
         vec4 normalShiftedHit = hit + vec4(normal.xyz, 0) * 0.1;
 
         for (int j = 0; j < 2; j++) {
-          int shadowIntersectInd;
-          float shadowIntersectT;
-          bool inShadow = findBestHit(normalShiftedHit, lights[j].reverseLightDirection, shadowIntersectInd, shadowIntersectT);
+          vec3 lightDir = lights[j].position.xyz;
+          vec3 powerDensity = lights[j].powerDensity;
 
-          if (!inShadow) { fragmentColor.rgb = clippedQuadrics[bestInd].color; }
+          fragmentColor.rgb += shade(normal, lightDir, powerDensity, clippedQuadrics[bestInd].color);
+          /* int shadowIntersectInd; */
+          /* float bestShadowT; */
+          /* bool shadowRayHitSomething = findBestHit(normalShiftedHit, lights[j].reverseLightDirection, shadowIntersectInd, bestShadowT); */
 
-          /* if( !inShadow || bestShadowT * lights[i].position.w > sqrt(dot(lightDiff, lightDiff)) ) { */
-          /*   // add light source contribution */
-          /* } */
+
+          /* if( !shadowRayHitSomething || bestShadowT * lights[j].position.w > sqrt(dot(lightDiff, lightDiff)) ) { */
+            // add light source contribution
         }
-
-        // computing depth from world space hit coordinates
         vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit;
         gl_FragDepth = ndcHit.z / ndcHit.w * 0.5 + 0.5;
 
-
-        // loop over the light sources, and you do the same shading code from the rasterization
-        // we check to see if the light source is 
-        /* fragmentColor.rgb += direct lighting; */
         top--;
-        /* if (refractive) { */
-        /*   top++; */
-        /*   // What is this syntax? */
-        /*   // what should refracted be? */
-        /*   // this is essentia */
-        /*   (rayOriginStack, rayDirectionStack, rayRGBStack)[top] = refracted; */
-        /* } */
-        /* if (reflective) { */
-        /*   top++; */
-        /*   // What is this syntax? */
-        /*   (rayOriginStack, rayDirectionStack, rayRGBStack)[top] = reflected; */
-        /* } */
       } else {
         fragmentColor = texture(u_skybox, rayDirectionStack[top].xyz);
         gl_FragDepth = 0.9999999;
