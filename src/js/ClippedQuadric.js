@@ -58,7 +58,7 @@ export default class ClippedQuadric extends SceneGraphEntity {
       0, 0, 0, 0,
       0, 1, 0, 0,
       0, 0, 0, 0,
-      0, 0, 0, 0,
+      0, 0, 0, -1,
     );
     glMatrix.mat4.set(
       this.clipper,

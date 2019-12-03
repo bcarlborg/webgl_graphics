@@ -100,7 +100,11 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
       if (hasHit) {
         vec4 hit = rayOriginStack[top] + rayDirectionStack[top] * bestT;
         vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz);
-        fragmentColor.rgb = clippedQuadrics[bestInd].color;
+        vec4 normalShiftedHit = hit + vec4(normal.xyz, 0) * 0.1;
+
+        bool inShadow = findBestHit(normalShiftedHit, vec4(lights[0].reverseLightDirection.xyz, 0), bestInd, bestT);
+
+        if (!inShadow) { fragmentColor.rgb = clippedQuadrics[bestInd].color; }
 
         // computing depth from world space hit coordinates
         vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit;
