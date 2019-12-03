@@ -37,15 +37,23 @@ export default class CastingGame extends Game {
   }
 
   initLights() {
+    // directional light
     const light1 = new LightSource(0);
     light1.setLightDirection(0, -1, 0);
     light1.setPowerDensity(0.5, 0.5, 0.5);
     this.gameObjects.push(light1);
 
+    // directional light
     const light2 = new LightSource(1);
     light2.setLightDirection(1, -1, 0);
     light2.setPowerDensity(0.5, 0.5, 0.5);
     this.gameObjects.push(light2);
+
+    // point light
+    const light3 = new LightSource(2);
+    light3.setLightLocation(8, 8, 8);
+    light3.setPowerDensity(500, 500, 500);
+    this.gameObjects.push(light3);
   }
 
   initInfiniteGround() {

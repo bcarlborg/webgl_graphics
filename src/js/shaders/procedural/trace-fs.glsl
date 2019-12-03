@@ -7,7 +7,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec4 position;
     vec3 powerDensity;
   };
-  uniform u_lights lights[2];
+  uniform u_lights lights[3];
 
   struct u_clippedQuadrics {
     mat4 surface;
@@ -106,11 +106,12 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
         vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz);
         vec4 normalShiftedHit = hit + vec4(normal.xyz, 0) * 0.1;
 
-        for (int j = 0; j < 2; j++) {
-          vec3 lightDir = lights[j].position.xyz;
-          vec3 powerDensity = lights[j].powerDensity;
-
-          vec3 lightDiff = lights[j].position.xyz - hit.xyz;
+        for (int j = 0; j < 3; j++) {
+          vec3 lightDiff = lights[j].position.xyz - hit.xyz / hit.w * lights[j].position.w;
+          vec3 lightDir = normalize(lightDiff);
+          float distanceSquared = dot(lightDiff, lightDiff);
+          /* vec3 powerDensity = lights[j].powerDensity; */
+          vec3 powerDensity = lights[j].powerDensity / distanceSquared;
 
           int shadowIntersectInd;
           float bestShadowT;

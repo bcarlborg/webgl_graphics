@@ -19,7 +19,7 @@ export default class LightSource {
   }
 
   setLightDirection(x, y, z) {
-    glMatrix.vec3.set(
+    glMatrix.vec4.set(
       this.uniforms.position, x, y, z, 0,
     );
 
@@ -27,6 +27,12 @@ export default class LightSource {
       this.uniforms.position,
       this.uniforms.position,
       -1,
+    );
+  }
+
+  setLightLocation(x, y, z) {
+    glMatrix.vec4.set(
+      this.uniforms.position, x, y, z, 1,
     );
   }
 
