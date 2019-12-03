@@ -39,12 +39,12 @@ export default class CastingGame extends Game {
   initLights() {
     const light1 = new LightSource(0);
     light1.setLightDirection(0, -1, 0);
-    light1.setPowerDensity(0.8, 0.8, 0.8);
+    light1.setPowerDensity(0.5, 0.5, 0.5);
     this.gameObjects.push(light1);
 
     const light2 = new LightSource(1);
     light2.setLightDirection(1, -1, 0);
-    light2.setPowerDensity(0.8, 0.8, 0.8);
+    light2.setPowerDensity(0.5, 0.5, 0.5);
     this.gameObjects.push(light2);
   }
 

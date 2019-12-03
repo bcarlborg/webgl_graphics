@@ -7,7 +7,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec4 position;
     vec3 powerDensity;
   };
-  uniform u_lights lights[1];
+  uniform u_lights lights[2];
 
   struct u_clippedQuadrics {
     mat4 surface;
