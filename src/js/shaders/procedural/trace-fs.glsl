@@ -6,7 +6,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec4 v_rayDir;
 
   struct u_lights {
-    vec3 reverseLightDirection;
+    vec4 reverseLightDirection;
   };
   uniform u_lights lights[8];
 
@@ -102,7 +102,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
         vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz);
         vec4 normalShiftedHit = hit + vec4(normal.xyz, 0) * 0.1;
 
-        bool inShadow = findBestHit(normalShiftedHit, vec4(lights[0].reverseLightDirection.xyz, 0), bestInd, bestT);
+        int shadowIntersecInd;
+        bool inShadow = findBestHit(normalShiftedHit, lights[0].reverseLightDirection, shadowIntersecInd, bestT);
 
         if (!inShadow) { fragmentColor.rgb = clippedQuadrics[bestInd].color; }
 
