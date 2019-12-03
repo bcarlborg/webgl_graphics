@@ -6,6 +6,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   struct u_clippedQuadrics {
     mat4 surface;
     mat4 clipper;
+    vec3 color;
   };
   uniform u_clippedQuadrics clippedQuadrics[8];
 
@@ -35,34 +36,61 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
       float t2 = (-1.0 * bCo - sDis) / (2.0 * aCo);
       vec4 r1 = e + d * t1;
       vec4 r2 = e + d * t2;
-      if(dot(r1*B,r1) > 0.0){
+      if (dot(r1*B,r1) > 0.0) {
         t1 = -1.0;
       }
-      if(dot(r2*B,r2) > 0.0){
+      if (dot(r2*B,r2) > 0.0) {
         t2 = -1.0;
       }
       return (t1<0.0)?t2:((t2<0.0)?t1:min(t1, t2));
     }
   }
 
-  void main(void) {
-    vec4 e = vec4(camera.cameraPosition, 1); //< ray origin
-    vec4 d = vec4(normalize(v_rayDir).xyz, 0); //< ray direction
-    mat4 a = clippedQuadrics[0].surface;
-    mat4 b = clippedQuadrics[0].clipper;
-    float bestT = intersectClippedQuadric(a,b,e,d);
+  bool findBestHit(vec4 rayOrigin, vec4 rayDirection, out int bestIndex, out float bestT){
+    bestT = 100000.0;
+    bestIndex = 0;
 
-    if(bestT > 0.0){
-      vec4 hit = e + d * bestT;
-      vec3 normal = normalize( (hit * a + a * hit).xyz);
+    for (int i = 0; i < 16; i++) {
+      float t = intersectClippedQuadric(
+        clippedQuadrics[i].surface, clippedQuadrics[i].clipper, rayOrigin, rayDirection
+      );
+
+      if (t > 0.0 && t < bestT) {
+        bestT = t;
+        bestIndex = i;
+      }
+    }
+
+    return bestT != 100000.0;
+  }
+
+  void main(void) {
+    vec4 rayOrigin = vec4(camera.cameraPosition, 1);
+    vec4 rayDirection = vec4(normalize(v_rayDir).xyz, 0);
+
+    // pointers to be set to the indices of coresponding quad
+    float bestT = 0.0;
+    int bestInd = 0;
+
+    bool hasHit = findBestHit(rayOrigin, rayDirection, bestInd, bestT);
+
+    if (hasHit) {
+      vec4 hit = rayOrigin + rayDirection * bestT;
+      vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz);
       fragmentColor.rgb = normal;
+
       // computing depth from world space hit coordinates
       vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit;
       gl_FragDepth = ndcHit.z / ndcHit.w * 0.5 + 0.5;
     } else {
       // nothing hit by ray, return enviroment color
-      fragmentColor = texture(u_skybox, d.xyz);
+      fragmentColor = texture(u_skybox, rayDirection.xyz);
       gl_FragDepth = 0.9999999;
     }
   }
+
+
+
+
+
 `;
