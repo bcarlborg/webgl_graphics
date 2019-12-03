@@ -14,6 +14,7 @@ export default class ClippedQuadric extends SceneGraphEntity {
     this.uniforms = {
       surface: glMatrix.mat4.create(),
       clipper: glMatrix.mat4.create(),
+      color: glMatrix.vec3.create(),
     };
   }
 
@@ -65,6 +66,12 @@ export default class ClippedQuadric extends SceneGraphEntity {
       0, 1, 0, 0,
       0, 0, 0, 0,
       0, 0, 0, -8,
+    );
+  }
+
+  setColor(r, g, b) {
+    glMatrix.vec3.set(
+      this.uniforms.color, r, g, b,
     );
   }
 

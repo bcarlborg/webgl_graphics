@@ -80,7 +80,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     if (hasHit) {
       vec4 hit = rayOrigin + rayDirection * bestT;
       vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz);
-      fragmentColor.rgb = normal;
+      fragmentColor.rgb = clippedQuadrics[bestInd].color;
 
       // computing depth from world space hit coordinates
       vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit;

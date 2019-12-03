@@ -38,15 +38,18 @@ export default class CastingGame extends Game {
     const infiniteFloor = new ClippedQuadric(2);
     infiniteFloor.setToInfinitePlane();
     infiniteFloor.moveAlongUp(-10);
+    infiniteFloor.setColor(0.5, 0.8, 0.8);
     this.gameObjects.push(infiniteFloor);
   }
 
   initQuadrics() {
     const snowman1 = new Snowman(0);
+    snowman1.setColor(0.8, 0.1, 0.1);
     this.gameObjects.push(snowman1);
 
     const snowman2 = new Snowman(1);
     snowman2.moveAlongLateral(10);
+    snowman2.setColor(0.8, 0.1, 0.1);
     this.gameObjects.push(snowman2);
   }
 }
