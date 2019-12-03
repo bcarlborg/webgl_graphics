@@ -10,14 +10,14 @@ export default class Snowman extends ClippedQuadric {
   }
 
   hop() {
-    const upOrDown = Math.sin(this.timeInfo.t / 1000);
-    let vertDelta = this.timeInfo.dt / 1000;
-    if (upOrDown < 0) vertDelta = -1 * this.timeInfo.dt / 1000;
+    const upOrDown = Math.sin(this.timeInfo.t / 500);
+    let vertDelta = this.timeInfo.dt / 500;
+    if (upOrDown < 0) vertDelta = -1 * this.timeInfo.dt / 500;
     this.moveAlongUp(vertDelta);
   }
 
   update() {
-    // this.hop();
+    this.hop();
     super.update();
   }
 }

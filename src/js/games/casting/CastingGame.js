@@ -51,15 +51,15 @@ export default class CastingGame extends Game {
 
     // point light
     const light3 = new LightSource(2);
-    light3.setLightLocation(8, 8, 8);
-    light3.setPowerDensity(500, 500, 500);
+    light3.setLightLocation(8, 20, 8);
+    light3.setPowerDensity(250, 250, 250);
     this.gameObjects.push(light3);
   }
 
   initInfiniteGround() {
     const infiniteFloor = new ClippedQuadric(2);
     infiniteFloor.setToInfinitePlane();
-    infiniteFloor.moveAlongUp(-10);
+    infiniteFloor.moveAlongUp(-2.9);
     infiniteFloor.setColor(0.5, 0.8, 0.8);
     this.gameObjects.push(infiniteFloor);
   }
