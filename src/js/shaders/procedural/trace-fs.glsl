@@ -97,7 +97,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     int bestInd = 0;
 
     fragmentColor = vec4(0, 0, 0, 1);
-    for(int i=0; i<2; i++) {
+    for(int i=0; i<3; i++) {
       float bestT; int bestIndex;
 
       bool hasHit = findBestHit(rayOriginStack[top], rayDirectionStack[top], bestInd, bestT);
@@ -130,7 +130,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
           rayOriginStack[top] = hit;
           rayOriginStack[top].xyz += normal * 0.01;
           rayDirectionStack[top] = vec4(reflect(rayDir_in, normal), 0);
-          rayRGBStack[top].rgb = rayRGB_in.rgb * vec3(1,1,1);
+          rayRGBStack[top].rgb = rayRGB_in.rgb * vec3(1.0,1.0,1.0);
           rayRGBStack[top].a = rayRGB_in.a + 1.0;
           top++;
         }

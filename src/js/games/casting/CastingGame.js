@@ -76,9 +76,15 @@ export default class CastingGame extends Game {
     this.gameObjects.push(snowman2);
 
     const bauble = new Bauble(3);
-    bauble.setColor(0.1, 0.8, 0.1);
+    bauble.setColor(0.9, 0.9, 0.9);
     bauble.moveAlongLateral(5);
     bauble.moveAlongForward(5);
     this.gameObjects.push(bauble);
+
+    const bauble2 = new Bauble(4);
+    bauble2.setColor(0.9, 0.9, 0.9);
+    bauble2.moveAlongLateral(-5);
+    bauble2.moveAlongForward(-5);
+    this.gameObjects.push(bauble2);
   }
 }
