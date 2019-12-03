@@ -47,7 +47,11 @@ export default class CastingGame extends Game {
   }
 
   initQuadrics() {
-    const quadric = new Snowman(0);
-    this.gameObjects.push(quadric);
+    const snowman1 = new Snowman(0);
+    this.gameObjects.push(snowman1);
+
+    const snowman2 = new Snowman(1);
+    snowman2.moveAlongLateral(10);
+    this.gameObjects.push(snowman2);
   }
 }

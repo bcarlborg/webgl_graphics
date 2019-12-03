@@ -23,30 +23,33 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   out vec4 fragmentColor;
 
-  float intersectClippedQuadric(mat4 a, mat4 B, vec4 e, vec4 d){
-    float aCo = dot(d * a, d);
-    float bCo = dot(d * a, e) + dot(e * a, d);
-    float cCo = dot(e * a, e);
+  float intersectClippedQuadric(mat4 surface, mat4 B, vec4 rayOrigin, vec4 rayDirection) {
+    float aCo = dot(rayDirection * surface, rayDirection);
+    float bCo = dot(rayDirection * surface, rayOrigin)
+      + dot(rayOrigin * surface, rayDirection);
+    float cCo = dot(rayOrigin * surface, rayOrigin);
     float discrim = bCo * bCo - 4.0 * aCo * cCo;
-    if(discrim < 0.0){
+
+    if (discrim < 0.0) {
       return -1.0;
     } else {
       float sDis = sqrt(discrim);
       float t1 = (-1.0 * bCo + sDis) / (2.0 * aCo);
       float t2 = (-1.0 * bCo - sDis) / (2.0 * aCo);
-      vec4 r1 = e + d * t1;
-      vec4 r2 = e + d * t2;
+      vec4 r1 = rayOrigin + rayDirection * t1;
+      vec4 r2 = rayOrigin + rayDirection * t2;
       if (dot(r1*B,r1) > 0.0) {
         t1 = -1.0;
       }
       if (dot(r2*B,r2) > 0.0) {
         t2 = -1.0;
       }
+
       return (t1<0.0)?t2:((t2<0.0)?t1:min(t1, t2));
     }
   }
 
-  bool findBestHit(vec4 rayOrigin, vec4 rayDirection, out int bestIndex, out float bestT){
+  bool findBestHit(vec4 rayOrigin, vec4 rayDirection, out int bestIndex, out float bestT) {
     bestT = 100000.0;
     bestIndex = 0;
 
