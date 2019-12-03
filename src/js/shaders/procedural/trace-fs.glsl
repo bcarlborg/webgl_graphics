@@ -5,6 +5,11 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   in vec4 v_rayDir;
 
+  struct u_lights {
+    vec3 reverseLightDirection;
+  };
+  uniform u_lights lights[8];
+
   struct u_clippedQuadrics {
     mat4 surface;
     mat4 clipper;

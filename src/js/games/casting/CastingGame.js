@@ -5,6 +5,7 @@ import primitiveBuilders from '../../primitiveBuilders.js';
 import DrawableEntity from '../../DrawableEntity.js';
 import Snowman from './objects/Snowman.js';
 import ClippedQuadric from '../../ClippedQuadric.js';
+import LightSource from '../../LightSource.js';
 
 export default class CastingGame extends Game {
   constructor(gl, camera) {
@@ -14,6 +15,7 @@ export default class CastingGame extends Game {
     this.initSkyBox();
     this.initInfiniteGround();
     this.initQuadrics();
+    this.initLights();
   }
 
   initSkyBox() {
@@ -32,6 +34,12 @@ export default class CastingGame extends Game {
 
     const skybox = new DrawableEntity(this.gl, skyBoxGeometry, material);
     this.gameObjects.push(skybox);
+  }
+
+  initLights() {
+    const light = new LightSource(0);
+    light.setLightDirection(0, -1, 0);
+    this.gameObjects.push(light);
   }
 
   initInfiniteGround() {
