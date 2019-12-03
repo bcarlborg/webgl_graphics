@@ -41,12 +41,32 @@ export default class Snowman extends SceneGraphEntity {
     this.nextIndex++;
     nose.setToHorizontalCone();
     nose.scale(0.64);
-    nose.moveAlongUp(8);
     nose.setParent(this);
+    nose.moveAlongUp(8);
     nose.scaleVec(0.1, 0.1, 0.5);
     nose.moveAlongForward(-2);
     nose.moveAlongUp(-2.5);
     nose.setColor(...this.noseColor);
+
+    const coalEye1 = new ClippedQuadric(this.nextIndex);
+    this.nextIndex++;
+    coalEye1.setToSphere();
+    coalEye1.setParent(this);
+    coalEye1.scale(0.15);
+    coalEye1.moveAlongUp(8);
+    coalEye1.moveAlongForward(-1);
+    coalEye1.moveAlongLateral(0.4);
+    coalEye1.moveAlongUp(-2);
+
+    const coalEye2 = new ClippedQuadric(this.nextIndex);
+    this.nextIndex++;
+    coalEye2.setToSphere();
+    coalEye2.setParent(this);
+    coalEye2.scale(0.15);
+    coalEye2.moveAlongUp(8);
+    coalEye2.moveAlongForward(-1);
+    coalEye2.moveAlongLateral(-0.4);
+    coalEye2.moveAlongUp(-2);
   }
 
   hop() {
@@ -57,7 +77,7 @@ export default class Snowman extends SceneGraphEntity {
   }
 
   update() {
-    // this.hop();
+    this.hop();
     super.update();
   }
 
