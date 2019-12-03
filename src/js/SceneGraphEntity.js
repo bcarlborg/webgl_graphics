@@ -52,5 +52,6 @@ export default class SceneGraphEntity extends PositionableEntity {
   update() {
     super.update();
     this.setWorldAndLocalMatrices();
+    this.children.forEach((child) => child.update());
   }
 }

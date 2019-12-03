@@ -1,11 +1,40 @@
+import SceneGraphEntity from '../../../SceneGraphEntity.js';
 import ClippedQuadric from '../../../ClippedQuadric.js';
 import GameTime from '../../../GameTime.js';
 
-export default class Snowman extends ClippedQuadric {
+export default class Snowman extends SceneGraphEntity {
   constructor(index) {
-    super(index);
-    this.setToSphere();
+    super();
+    this.nextIndex = index;
     this.timeInfo = (new GameTime()).timeInfo;
+    this.snowColor = [1.0, 1.0, 1.0];
+    this.moveAlongUp(-1);
+    this.scale(0.5);
+    this.initBody();
+  }
+
+  initBody() {
+    const bodyLower = new ClippedQuadric(this.nextIndex);
+    this.nextIndex++;
+    bodyLower.setToSphere();
+    bodyLower.setParent(this);
+    bodyLower.setColor(...this.snowColor);
+
+    const bodyMid = new ClippedQuadric(this.nextIndex);
+    this.nextIndex++;
+    bodyMid.setToSphere();
+    bodyMid.scale(0.8);
+    bodyMid.moveAlongUp(3);
+    bodyMid.setParent(this);
+    bodyMid.setColor(...this.snowColor);
+
+    const bodyUpper = new ClippedQuadric(this.nextIndex);
+    this.nextIndex++;
+    bodyUpper.setToSphere();
+    bodyUpper.scale(0.64);
+    bodyUpper.moveAlongUp(5.5);
+    bodyUpper.setParent(this);
+    bodyUpper.setColor(...this.snowColor);
   }
 
   hop() {
@@ -19,4 +48,6 @@ export default class Snowman extends ClippedQuadric {
     this.hop();
     super.update();
   }
+
+  draw() {}
 }

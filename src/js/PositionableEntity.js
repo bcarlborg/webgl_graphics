@@ -5,6 +5,7 @@ export default class GameEntity {
     this.positionMatrix = glMatrix.mat4.create();
 
     this.position = {
+      scale: glMatrix.vec3.fromValues(1, 1, 1),
       rotation: glMatrix.quat.create(),
       location: glMatrix.vec3.create(),
       forward: glMatrix.vec3.create(),
@@ -191,6 +192,13 @@ export default class GameEntity {
     this.updateLateral();
   }
 
+  // TRANSFORMATIONS
+  scale(factor) {
+    glMatrix.vec3.set(
+      this.position.scale, factor, factor, factor,
+    );
+  }
+
   // UPDATE METHODS
   setPositionMatrix() {
     glMatrix.vec3.add(
@@ -204,6 +212,12 @@ export default class GameEntity {
       this.position.location,
       this.intermediates.directionVector,
       this.position.up,
+    );
+
+    glMatrix.mat4.scale(
+      this.positionMatrix,
+      this.positionMatrix,
+      this.position.scale,
     );
   }
 
