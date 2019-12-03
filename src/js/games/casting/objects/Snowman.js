@@ -8,6 +8,7 @@ export default class Snowman extends SceneGraphEntity {
     this.nextIndex = index;
     this.timeInfo = (new GameTime()).timeInfo;
     this.snowColor = [1.0, 1.0, 1.0];
+    this.noseColor = [1.0, 0.5, 0.2];
     this.moveAlongUp(-1);
     this.scale(0.5);
     this.initBody();
@@ -35,6 +36,14 @@ export default class Snowman extends SceneGraphEntity {
     bodyUpper.moveAlongUp(5.5);
     bodyUpper.setParent(this);
     bodyUpper.setColor(...this.snowColor);
+
+    const nose = new ClippedQuadric(this.nextIndex);
+    this.nextIndex++;
+    nose.setToHorizontalCone();
+    nose.scale(0.64);
+    nose.moveAlongUp(8);
+    nose.setParent(this);
+    nose.setColor(...this.snowColor);
   }
 
   hop() {
@@ -45,7 +54,7 @@ export default class Snowman extends SceneGraphEntity {
   }
 
   update() {
-    this.hop();
+    // this.hop();
     super.update();
   }
 
