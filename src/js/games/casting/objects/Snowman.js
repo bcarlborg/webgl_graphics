@@ -4,7 +4,7 @@ import GameTime from '../../../GameTime.js';
 export default class Snowman extends ClippedQuadric {
   constructor(index) {
     super(index);
-    this.setToCone();
+    this.setToSphere();
     this.timeInfo = (new GameTime()).timeInfo;
     // this.moveAlongUp(10);
   }

@@ -8,7 +8,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   struct u_lights {
     vec4 reverseLightDirection;
   };
-  uniform u_lights lights[8];
+  uniform u_lights lights[1];
 
   struct u_clippedQuadrics {
     mat4 surface;
@@ -60,7 +60,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     bestT = 100000.0;
     bestIndex = 0;
 
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 8; i++) {
       float t = intersectClippedQuadric(
         clippedQuadrics[i].surface, clippedQuadrics[i].clipper, rayOrigin, rayDirection
       );
@@ -102,10 +102,17 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
         vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz);
         vec4 normalShiftedHit = hit + vec4(normal.xyz, 0) * 0.1;
 
-        int shadowIntersecInd;
-        bool inShadow = findBestHit(normalShiftedHit, lights[0].reverseLightDirection, shadowIntersecInd, bestT);
+        for (int j = 0; j < 2; j++) {
+          int shadowIntersectInd;
+          float shadowIntersectT;
+          bool inShadow = findBestHit(normalShiftedHit, lights[j].reverseLightDirection, shadowIntersectInd, shadowIntersectT);
 
-        if (!inShadow) { fragmentColor.rgb = clippedQuadrics[bestInd].color; }
+          if (!inShadow) { fragmentColor.rgb = clippedQuadrics[bestInd].color; }
+
+          /* if( !inShadow || bestShadowT * lights[i].position.w > sqrt(dot(lightDiff, lightDiff)) ) { */
+          /*   // add light source contribution */
+          /* } */
+        }
 
         // computing depth from world space hit coordinates
         vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit;

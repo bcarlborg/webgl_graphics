@@ -37,9 +37,13 @@ export default class CastingGame extends Game {
   }
 
   initLights() {
-    const light = new LightSource(0);
-    light.setLightDirection(0, -1, 0);
-    this.gameObjects.push(light);
+    const light1 = new LightSource(0);
+    light1.setLightDirection(0, -1, 0);
+    this.gameObjects.push(light1);
+
+    const light2 = new LightSource(1);
+    light2.setLightDirection(1, -1, 0);
+    this.gameObjects.push(light2);
   }
 
   initInfiniteGround() {
