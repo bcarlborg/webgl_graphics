@@ -1,4 +1,6 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
+  #define SSIZE 2
+  #define MAX_RAYS 2;
   precision highp float;
 
   in vec4 v_rayDir;
@@ -68,28 +70,75 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   }
 
   void main(void) {
-    vec4 rayOrigin = vec4(camera.cameraPosition, 1);
-    vec4 rayDirection = vec4(normalize(v_rayDir).xyz, 0);
+    vec4 rayOriginStack[2];  //< ray stack, origins
+    vec4 rayDirectionStack[2];  //< ray stack, directions
+    vec4 rayRGBStack[2]; //< ray stack, rgb: product of reflectances/transmittances, a: light path length
 
-    // pointers to be set to the indices of coresponding quad
+    int top = 0; //< index of element on top of stack
+
+    rayOriginStack[0] = vec4(camera.cameraPosition.xyz, 1); //< ray origin
+    rayDirectionStack[0] = vec4(normalize(v_rayDir.xyz), 0); //< ray direction
+    rayRGBStack[0].rgb = vec3(1, 1, 1); //< product starts at 1
+    rayRGBStack[0].a = 1.0; //< light path length is 1>>
+
+    // t is essentially the distance from the ray to the surface it intersects
+    // bestIndex is the index of the quadric
     float bestT = 0.0;
     int bestInd = 0;
 
-    bool hasHit = findBestHit(rayOrigin, rayDirection, bestInd, bestT);
+    fragmentColor = vec4(0, 0, 0, 1);
+    // this for loop will set bestT and bestIndex to be equal to the bounced ray
+    for(int i=0; i<1; i++) {
+      float bestT; int bestIndex;
 
-    if (hasHit) {
-      vec4 hit = rayOrigin + rayDirection * bestT;
-      vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz);
-      fragmentColor.rgb = clippedQuadrics[bestInd].color;
+      bool hasHit = findBestHit(rayOriginStack[top], rayDirectionStack[top], bestInd, bestT);
+      if (hasHit) {
+        vec4 hit = rayOriginStack[top] + rayDirectionStack[top] * bestT;
+        vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz);
+        fragmentColor.rgb = clippedQuadrics[bestInd].color;
 
-      // computing depth from world space hit coordinates
-      vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit;
-      gl_FragDepth = ndcHit.z / ndcHit.w * 0.5 + 0.5;
-    } else {
-      // nothing hit by ray, return enviroment color
-      fragmentColor = texture(u_skybox, rayDirection.xyz);
-      gl_FragDepth = 0.9999999;
+        // computing depth from world space hit coordinates
+        vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit;
+        gl_FragDepth = ndcHit.z / ndcHit.w * 0.5 + 0.5;
+
+
+        // loop over the light sources, and you do the same shading code from the rasterization
+        // we check to see if the light source is 
+        /* fragmentColor.rgb += direct lighting; */
+        top--;
+        /* if (refractive) { */
+        /*   top++; */
+        /*   // What is this syntax? */
+        /*   // what should refracted be? */
+        /*   // this is essentia */
+        /*   (rayOriginStack, rayDirectionStack, rayRGBStack)[top] = refracted; */
+        /* } */
+        /* if (reflective) { */
+        /*   top++; */
+        /*   // What is this syntax? */
+        /*   (rayOriginStack, rayDirectionStack, rayRGBStack)[top] = reflected; */
+        /* } */
+      } else {
+        fragmentColor = texture(u_skybox, rayDirectionStack[top].xyz);
+        gl_FragDepth = 0.9999999;
+        top--;
+      }
+      if(top < 0) break;
     }
+
+    /* if (hasHit) { */
+    /*   vec4 hit = rayOrigin + rayDirection * bestT; */
+    /*   vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz); */
+    /*   fragmentColor.rgb = clippedQuadrics[bestInd].color; */
+
+    /*   // computing depth from world space hit coordinates */
+    /*   vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit; */
+    /*   gl_FragDepth = ndcHit.z / ndcHit.w * 0.5 + 0.5; */
+    /* } else { */
+    /*   // nothing hit by ray, return enviroment color */
+    /*   fragmentColor = texture(u_skybox, rayDirection.xyz); */
+    /*   gl_FragDepth = 0.9999999; */
+    /* } */
   }
 
 
