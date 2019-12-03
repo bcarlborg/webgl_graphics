@@ -199,6 +199,12 @@ export default class GameEntity {
     );
   }
 
+  scaleVec(x, y, z) {
+    glMatrix.vec3.set(
+      this.position.scale, x, y, z,
+    );
+  }
+
   // UPDATE METHODS
   setPositionMatrix() {
     glMatrix.vec3.add(

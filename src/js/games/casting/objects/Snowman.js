@@ -43,7 +43,10 @@ export default class Snowman extends SceneGraphEntity {
     nose.scale(0.64);
     nose.moveAlongUp(8);
     nose.setParent(this);
-    nose.setColor(...this.snowColor);
+    nose.scaleVec(0.1, 0.1, 0.5);
+    nose.moveAlongForward(-2);
+    nose.moveAlongUp(-2.5);
+    nose.setColor(...this.noseColor);
   }
 
   hop() {
