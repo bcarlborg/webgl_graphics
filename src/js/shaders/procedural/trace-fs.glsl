@@ -125,14 +125,14 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
         // check for reflective
         if (clippedQuadrics[bestInd].reflective > 0.0) {
-          top++;
           vec3 rayDir_in = rayDirectionStack[top].xyz;
           vec4 rayRGB_in = rayRGBStack[top];
           rayOriginStack[top] = hit;
           rayOriginStack[top].xyz += normal * 0.01;
           rayDirectionStack[top] = vec4(reflect(rayDir_in, normal), 0);
-          rayRGBStack[top].rgb = rayRGB_in.rgb * clippedQuadrics[bestInd].reflective;
+          rayRGBStack[top].rgb = rayRGB_in.rgb * vec3(1,1,1);
           rayRGBStack[top].a = rayRGB_in.a + 1.0;
+          top++;
         }
 
         vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit;

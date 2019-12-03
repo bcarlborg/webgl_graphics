@@ -17,7 +17,7 @@ export default class Bauble extends ClippedQuadric {
   }
 
   update() {
-    this.hop();
+    // this.hop();
     super.update();
   }
 }
