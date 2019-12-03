@@ -15,7 +15,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec3 color;
     float reflective;
   };
-  uniform u_clippedQuadrics clippedQuadrics[8];
+  uniform u_clippedQuadrics clippedQuadrics[16];
 
   struct u_camera {
     mat4 viewMatrix;
@@ -65,7 +65,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     bestT = 100000.0;
     bestIndex = 0;
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 16; i++) {
       float t = intersectClippedQuadric(
         clippedQuadrics[i].surface, clippedQuadrics[i].clipper, rayOrigin, rayDirection
       );

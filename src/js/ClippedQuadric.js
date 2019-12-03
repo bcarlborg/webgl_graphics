@@ -52,6 +52,39 @@ export default class ClippedQuadric extends SceneGraphEntity {
     );
   }
 
+  setToSphereWithHole() {
+    glMatrix.mat4.set(
+      this.surface,
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, -4,
+    );
+    glMatrix.mat4.set(
+      this.clipper,
+      0, 0, 0, 0,
+      0, 0, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, -2.5,
+    );
+  }
+
+  setToHoleFilling() {
+    glMatrix.mat4.set(
+      this.surface,
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 0, 0,
+      0, 0, 0, -1.5,
+    );
+    glMatrix.mat4.set(
+      this.clipper,
+      0, 0, 0, 0,
+      0, 0, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, -2.5,
+    );
+  }
 
   setToHorizontalCone() {
     glMatrix.mat4.set(

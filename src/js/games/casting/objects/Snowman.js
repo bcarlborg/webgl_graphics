@@ -11,6 +11,7 @@ export default class Snowman extends SceneGraphEntity {
     this.noseColor = [1.0, 0.5, 0.2];
     this.moveAlongUp(-1);
     this.scale(0.5);
+    this.moveAlongLateral(-4);
     this.initBody();
   }
 
@@ -21,13 +22,21 @@ export default class Snowman extends SceneGraphEntity {
     bodyLower.setParent(this);
     bodyLower.setColor(...this.snowColor);
 
-    const bodyMid = new ClippedQuadric(this.nextIndex);
+    const sphereWithHole = new ClippedQuadric(this.nextIndex);
     this.nextIndex++;
-    bodyMid.setToSphere();
-    bodyMid.scale(0.8);
-    bodyMid.moveAlongUp(3);
-    bodyMid.setParent(this);
-    bodyMid.setColor(...this.snowColor);
+    sphereWithHole.setParent(this);
+    sphereWithHole.setToSphereWithHole();
+    sphereWithHole.scale(0.8);
+    sphereWithHole.moveAlongUp(3);
+    sphereWithHole.setColor(...this.snowColor);
+
+    const sphereWithHoleFilling = new ClippedQuadric(this.nextIndex);
+    this.nextIndex++;
+    sphereWithHoleFilling.setParent(this);
+    sphereWithHoleFilling.setToHoleFilling();
+    sphereWithHoleFilling.scale(0.8);
+    sphereWithHoleFilling.moveAlongUp(3);
+    sphereWithHoleFilling.setColor(...this.snowColor);
 
     const bodyUpper = new ClippedQuadric(this.nextIndex);
     this.nextIndex++;
@@ -77,7 +86,7 @@ export default class Snowman extends SceneGraphEntity {
   }
 
   update() {
-    this.hop();
+    // this.hop();
     super.update();
   }
 
