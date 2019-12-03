@@ -24,12 +24,10 @@ export default class FreeMovingCamera extends Camera {
 
     // rotations
     if (this.KeyHandler.keysPressed.UP) {
-      // this.relativePitch(1);
-      this.moveAlongYAxis(0.1);
+      this.relativePitch(1);
     }
     if (this.KeyHandler.keysPressed.DOWN) {
-      // this.relativePitch(-1);
-      this.moveAlongYAxis(-0.1);
+      this.relativePitch(-1);
     }
     if (this.KeyHandler.keysPressed.LEFT) {
       this.relativeYaw(1);
