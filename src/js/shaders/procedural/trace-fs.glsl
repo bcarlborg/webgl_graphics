@@ -13,6 +13,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     mat4 surface;
     mat4 clipper;
     vec3 color;
+    float reflective;
   };
   uniform u_clippedQuadrics clippedQuadrics[8];
 
@@ -96,8 +97,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     int bestInd = 0;
 
     fragmentColor = vec4(0, 0, 0, 1);
-    // this for loop will set bestT and bestIndex to be equal to the bounced ray
-    for(int i=0; i<1; i++) {
+    for(int i=0; i<2; i++) {
       float bestT; int bestIndex;
 
       bool hasHit = findBestHit(rayOriginStack[top], rayDirectionStack[top], bestInd, bestT);
@@ -106,6 +106,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
         vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz);
         vec4 normalShiftedHit = hit + vec4(normal.xyz, 0) * 0.1;
 
+        // gather lighting
         for (int j = 0; j < 3; j++) {
           vec3 lightDiff = lights[j].position.xyz - hit.xyz / hit.w * lights[j].position.w;
           vec3 lightDir = normalize(lightDiff);
@@ -120,6 +121,18 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
           if( !shadowRayHitSomething || bestShadowT * lights[j].position.w > sqrt(dot(lightDiff, lightDiff)) ) {
             fragmentColor.rgb += shade(normal, lightDir, powerDensity, clippedQuadrics[bestInd].color);
           }
+        }
+
+        // check for reflective
+        if (clippedQuadrics[bestInd].reflective > 0.0) {
+          top++;
+          vec3 rayDir_in = rayDirectionStack[top].xyz;
+          vec4 rayRGB_in = rayRGBStack[top];
+          rayOriginStack[top] = hit;
+          rayOriginStack[top].xyz += normal * 0.01;
+          rayDirectionStack[top] = vec4(reflect(rayDir_in, normal), 0);
+          rayRGBStack[top].rgb = rayRGB_in.rgb * clippedQuadrics[bestInd].reflective;
+          rayRGBStack[top].a = rayRGB_in.a + 1.0;
         }
 
         vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit;

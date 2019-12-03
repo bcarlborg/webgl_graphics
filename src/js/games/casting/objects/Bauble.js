@@ -1,11 +1,12 @@
 import ClippedQuadric from '../../../ClippedQuadric.js';
 import GameTime from '../../../GameTime.js';
 
-export default class Snowman extends ClippedQuadric {
+export default class Bauble extends ClippedQuadric {
   constructor(index) {
     super(index);
     this.setToSphere();
     this.timeInfo = (new GameTime()).timeInfo;
+    this.uniforms.reflective = 1.0;
   }
 
   hop() {
