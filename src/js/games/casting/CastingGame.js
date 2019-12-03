@@ -4,13 +4,13 @@ import Geometry from '../../Geometry.js';
 import primitiveBuilders from '../../primitiveBuilders.js';
 import DrawableEntity from '../../DrawableEntity.js';
 import Snowman from './objects/Snowman.js';
+import ClippedQuadric from '../../ClippedQuadric.js';
 
 export default class CastingGame extends Game {
   constructor(gl, camera) {
     super();
     this.gl = gl;
     this.camera = camera;
-    // this.initLights();
     this.initSkyBox();
     this.initInfiniteGround();
     this.initQuadrics();
@@ -35,15 +35,10 @@ export default class CastingGame extends Game {
   }
 
   initInfiniteGround() {
-    const planeMaterial = new Material(this.gl, 'infinite-ground-vs.glsl', 'infinite-ground-fs.glsl');
-
-    const homogeneousPlane = primitiveBuilders.buildHomogeneousPlane();
-    const planeGeometry = new Geometry(this.gl, homogeneousPlane);
-    planeMaterial.setTextureFromFile('wavyGrid.jpg');
-
-    const infinitePlane = new DrawableEntity(this.gl, planeGeometry, planeMaterial);
-    infinitePlane.moveAlongUp(-10);
-    this.gameObjects.push(infinitePlane);
+    const infiniteFloor = new ClippedQuadric(2);
+    infiniteFloor.setToInfinitePlane();
+    infiniteFloor.moveAlongUp(-10);
+    this.gameObjects.push(infiniteFloor);
   }
 
   initQuadrics() {
