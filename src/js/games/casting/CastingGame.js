@@ -5,6 +5,7 @@ import primitiveBuilders from '../../primitiveBuilders.js';
 import DrawableEntity from '../../DrawableEntity.js';
 import Snowman from './objects/Snowman.js';
 import Bauble from './objects/Bauble.js';
+import Wauble from './objects/Wauble.js';
 import ClippedQuadric from '../../ClippedQuadric.js';
 import LightSource from '../../LightSource.js';
 
@@ -86,5 +87,11 @@ export default class CastingGame extends Game {
     bauble2.moveAlongLateral(-5);
     bauble2.moveAlongForward(-5);
     this.gameObjects.push(bauble2);
+
+    const wauble = new Wauble(5);
+    wauble.setColor(0.9, 0.9, 0.9);
+    wauble.moveAlongLateral(5);
+    wauble.moveAlongForward(-5);
+    this.gameObjects.push(wauble);
   }
 }

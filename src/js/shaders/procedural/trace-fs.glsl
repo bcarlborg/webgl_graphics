@@ -14,6 +14,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     mat4 clipper;
     vec3 color;
     float reflective;
+    float mu;
   };
   uniform u_clippedQuadrics clippedQuadrics[8];
 
@@ -80,9 +81,9 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   }
 
   void main(void) {
-    vec4 rayOriginStack[2];  //< ray stack, origins
-    vec4 rayDirectionStack[2];  //< ray stack, directions
-    vec4 rayRGBStack[2]; //< ray stack, rgb: product of reflectances/transmittances, a: light path length
+    vec4 rayOriginStack[3];  //< ray stack, origins
+    vec4 rayDirectionStack[3];  //< ray stack, directions
+    vec4 rayRGBStack[3]; //< ray stack, rgb: product of reflectances/transmittances, a: light path length
 
     int top = 0; //< index of element on top of stack
 
@@ -97,6 +98,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     int bestInd = 0;
 
     fragmentColor = vec4(0, 0, 0, 1);
+    // RAY Stack for loop
     for(int i=0; i<3; i++) {
       float bestT; int bestIndex;
 
@@ -130,7 +132,25 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
           rayOriginStack[top] = hit;
           rayOriginStack[top].xyz += normal * 0.01;
           rayDirectionStack[top] = vec4(reflect(rayDir_in, normal), 0);
-          rayRGBStack[top].rgb = rayRGB_in.rgb * vec3(1.0,1.0,1.0);
+
+          int ott = top;
+          vec3 R = vec3(0, 0, 0);
+
+          if (top < 3 -1) {
+            float mu = 1.0 / clippedQuadrics[bestInd].mu;
+            vec3 tr = refract(rayDir_in, normal, mu);
+            if (dot(tr, tr) < 0.1) { // TOTAL INTERNAL REFLECTION
+              R = vec3(1, 1, 1); //and let reflection do the job
+            } else {
+              ott++; //push refracted ray to stack
+              rayOriginStack[ott] = vec4(hit.xyz - normal * 0.01, 1);
+              rayDirectionStack[ott] = vec4(tr, 0);
+              rayRGBStack[ott].rgb = rayRGB_in.rgb * bestT;
+              rayRGBStack[ott].a = rayRGB_in.a + 1.0;
+            }
+          }
+
+          rayRGBStack[top].rgb = rayRGB_in.rgb * R;
           rayRGBStack[top].a = rayRGB_in.a + 1.0;
           top++;
         }
