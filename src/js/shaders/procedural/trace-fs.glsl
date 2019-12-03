@@ -110,19 +110,21 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
           vec3 lightDir = lights[j].position.xyz;
           vec3 powerDensity = lights[j].powerDensity;
 
-          fragmentColor.rgb += shade(normal, lightDir, powerDensity, clippedQuadrics[bestInd].color);
-          /* int shadowIntersectInd; */
-          /* float bestShadowT; */
-          /* bool shadowRayHitSomething = findBestHit(normalShiftedHit, lights[j].reverseLightDirection, shadowIntersectInd, bestShadowT); */
+          vec3 lightDiff = lights[j].position.xyz - hit.xyz;
 
+          int shadowIntersectInd;
+          float bestShadowT;
+          bool shadowRayHitSomething = findBestHit(normalShiftedHit, lights[j].position, shadowIntersectInd, bestShadowT);
 
-          /* if( !shadowRayHitSomething || bestShadowT * lights[j].position.w > sqrt(dot(lightDiff, lightDiff)) ) { */
-            // add light source contribution
+          if( !shadowRayHitSomething || bestShadowT * lights[j].position.w > sqrt(dot(lightDiff, lightDiff)) ) {
+            fragmentColor.rgb += shade(normal, lightDir, powerDensity, clippedQuadrics[bestInd].color);
+          }
         }
+
         vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit;
         gl_FragDepth = ndcHit.z / ndcHit.w * 0.5 + 0.5;
-
         top--;
+
       } else {
         fragmentColor = texture(u_skybox, rayDirectionStack[top].xyz);
         gl_FragDepth = 0.9999999;
