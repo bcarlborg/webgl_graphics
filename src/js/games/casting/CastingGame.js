@@ -64,6 +64,10 @@ export default class CastingGame extends Game {
     infiniteFloor.moveAlongUp(-2.9);
     infiniteFloor.setColor(0.5, 0.8, 0.8);
     infiniteFloor.setUniform('wood', true);
+    infiniteFloor.setUniform('freq', 0.4);
+    infiniteFloor.setUniform('noiseFreq', 10.0);
+    infiniteFloor.setUniform('noiseAmp', 10.0);
+    infiniteFloor.setUniform('noiseExp', 0.5);
     this.gameObjects.push(infiniteFloor);
   }
 

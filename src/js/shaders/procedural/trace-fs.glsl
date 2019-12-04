@@ -14,9 +14,14 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     mat4 clipper;
     vec3 color;
     float reflective;
+    float freq;
+    float noiseFreq;
+    float noiseAmp;
+    float noiseExp;
     bool wood;
   };
   uniform u_clippedQuadrics clippedQuadrics[16];
+
 
   struct u_camera {
     mat4 viewMatrix;
@@ -80,6 +85,16 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     return bestT != 100000.0;
   }
 
+  float snoise(vec3 r) {
+    vec3 s = vec3(7502, 22777, 4767);
+    float f = 0.0;
+    for(int i=0; i<16; i++) {
+      f += sin( dot(s - vec3(32768, 32768, 32768), r) / 65536.0);
+      s = mod(s, 32768.0) * 2.0 + floor(s / 32768.0);
+    }
+    return f / 32.0 + 0.5;
+  }
+
   void main(void) {
     vec4 rayOriginStack[2];  //< ray stack, origins
     vec4 rayDirectionStack[2];  //< ray stack, directions
@@ -122,7 +137,10 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
           if( !shadowRayHitSomething || bestShadowT * lights[j].position.w > sqrt(dot(lightDiff, lightDiff)) ) {
             vec3 color = clippedQuadrics[bestInd].color;
             if (clippedQuadrics[bestInd].wood) {
-              float w = fract( hit.x );
+              float w = fract( hit.x * clippedQuadrics[bestInd].freq
+                      + pow( snoise(hit.xyz * clippedQuadrics[bestInd].noiseFreq), clippedQuadrics[bestInd].noiseExp)
+                      * clippedQuadrics[bestInd].noiseAmp
+              );
               color = mix(vec3(0.1, 0.1, 0.1), vec3(1.0, 0.1, 0.1), w);
             }
             fragmentColor.rgb += shade(normal, lightDir, powerDensity, color);
@@ -152,24 +170,5 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
       }
       if(top < 0) break;
     }
-
-    /* if (hasHit) { */
-    /*   vec4 hit = rayOrigin + rayDirection * bestT; */
-    /*   vec3 normal = normalize( (hit * clippedQuadrics[bestInd].surface + clippedQuadrics[bestInd].surface * hit).xyz); */
-    /*   fragmentColor.rgb = clippedQuadrics[bestInd].color; */
-
-    /*   // computing depth from world space hit coordinates */
-    /*   vec4 ndcHit = camera.projectionMatrix * camera.viewMatrix * hit; */
-    /*   gl_FragDepth = ndcHit.z / ndcHit.w * 0.5 + 0.5; */
-    /* } else { */
-    /*   // nothing hit by ray, return enviroment color */
-    /*   fragmentColor = texture(u_skybox, rayDirection.xyz); */
-    /*   gl_FragDepth = 0.9999999; */
-    /* } */
   }
-
-
-
-
-
 `;
