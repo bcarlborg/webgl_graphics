@@ -53,7 +53,7 @@ export default class CastingGame extends Game {
 
     // point light
     const light3 = new LightSource(2);
-    light3.setLightLocation(0, 1, -10);
+    light3.setLightLocation(0, 10, -10);
     light3.setPowerDensity(250, 250, 250);
     this.gameObjects.push(light3);
   }
