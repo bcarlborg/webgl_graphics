@@ -46,7 +46,17 @@ export default class Fir extends SceneGraphEntity {
     bodyUpper.moveAlongUp(4.4);
   }
 
+  move() {
+    const curr = this.timeInfo.t / 500;
+    this.setPosition(
+      Math.cos(curr) * 10,
+      -1.2,
+      Math.sin(curr) * 10,
+    );
+  }
+
   update() {
+    this.move();
     super.update();
   }
 
