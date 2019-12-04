@@ -18,6 +18,10 @@ export default class ClippedQuadric extends SceneGraphEntity {
     };
   }
 
+  setUniform(uniformName, value) {
+    this.uniforms[uniformName] = value;
+  }
+
   setToUnitCylinder() {
     glMatrix.mat4.set(
       this.surface,

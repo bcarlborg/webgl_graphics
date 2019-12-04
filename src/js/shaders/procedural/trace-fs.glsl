@@ -14,6 +14,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     mat4 clipper;
     vec3 color;
     float reflective;
+    bool wood;
   };
   uniform u_clippedQuadrics clippedQuadrics[16];
 
@@ -119,7 +120,12 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
           bool shadowRayHitSomething = findBestHit(normalShiftedHit, lights[j].position, shadowIntersectInd, bestShadowT);
 
           if( !shadowRayHitSomething || bestShadowT * lights[j].position.w > sqrt(dot(lightDiff, lightDiff)) ) {
-            fragmentColor.rgb += shade(normal, lightDir, powerDensity, clippedQuadrics[bestInd].color);
+            vec3 color = clippedQuadrics[bestInd].color;
+            if (clippedQuadrics[bestInd].wood) {
+              float w = fract( hit.x );
+              color = mix(vec3(0.1, 0.1, 0.1), vec3(1.0, 0.1, 0.1), w);
+            }
+            fragmentColor.rgb += shade(normal, lightDir, powerDensity, color);
           }
         }
 

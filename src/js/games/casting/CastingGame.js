@@ -63,6 +63,7 @@ export default class CastingGame extends Game {
     infiniteFloor.setToInfinitePlane();
     infiniteFloor.moveAlongUp(-2.9);
     infiniteFloor.setColor(0.5, 0.8, 0.8);
+    infiniteFloor.setUniform('wood', true);
     this.gameObjects.push(infiniteFloor);
   }
 
