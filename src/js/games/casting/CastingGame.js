@@ -4,7 +4,7 @@ import Geometry from '../../Geometry.js';
 import primitiveBuilders from '../../primitiveBuilders.js';
 import DrawableEntity from '../../DrawableEntity.js';
 import Snowman from './objects/Snowman.js';
-// import Bauble from './objects/Bauble.js';
+import Bauble from './objects/Bauble.js';
 import ClippedQuadric from '../../ClippedQuadric.js';
 import LightSource from '../../LightSource.js';
 
@@ -69,15 +69,10 @@ export default class CastingGame extends Game {
     const snowman1 = new Snowman(1);
     this.gameObjects.push(snowman1);
 
-    // const snowman2 = new Snowman(1);
-    // snowman2.moveAlongLateral(10);
-    // snowman2.setColor(0.8, 0.1, 0.1);
-    // this.gameObjects.push(snowman2);
-
-    // const bauble = new Bauble(3);
-    // bauble.setColor(0.1, 0.8, 0.1);
-    // bauble.moveAlongLateral(5);
-    // bauble.moveAlongForward(5);
-    // this.gameObjects.push(bauble);
+    const bauble = new Bauble(8);
+    bauble.setColor(0.5, 0.5, 0.5);
+    bauble.moveAlongLateral(5);
+    bauble.moveAlongForward(5);
+    this.gameObjects.push(bauble);
   }
 }

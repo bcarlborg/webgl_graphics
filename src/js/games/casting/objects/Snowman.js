@@ -86,7 +86,7 @@ export default class Snowman extends SceneGraphEntity {
   }
 
   update() {
-    // this.hop();
+    this.hop();
     super.update();
   }
 
