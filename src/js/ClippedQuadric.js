@@ -103,6 +103,23 @@ export default class ClippedQuadric extends SceneGraphEntity {
     );
   }
 
+  setToVerticalCone() {
+    glMatrix.mat4.set(
+      this.surface,
+      1, 0, 0, 0,
+      0, -1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 0,
+    );
+    glMatrix.mat4.set(
+      this.clipper,
+      0, 0, 0, 0,
+      0, 1, 0, 2,
+      0, 0, 0, 0,
+      0, 0, 0, -0.0001,
+    );
+  }
+
   setToInfinitePlane() {
     glMatrix.mat4.set(
       this.surface,

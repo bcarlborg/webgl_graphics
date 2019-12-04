@@ -5,6 +5,7 @@ import primitiveBuilders from '../../primitiveBuilders.js';
 import DrawableEntity from '../../DrawableEntity.js';
 import Snowman from './objects/Snowman.js';
 import Bauble from './objects/Bauble.js';
+import Fir from './objects/Fir.js';
 import ClippedQuadric from '../../ClippedQuadric.js';
 import LightSource from '../../LightSource.js';
 
@@ -74,5 +75,8 @@ export default class CastingGame extends Game {
     bauble.moveAlongLateral(5);
     bauble.moveAlongForward(5);
     this.gameObjects.push(bauble);
+
+    const fir = new Fir(9);
+    this.gameObjects.push(fir);
   }
 }
