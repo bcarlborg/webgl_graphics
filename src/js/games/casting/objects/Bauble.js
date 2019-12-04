@@ -16,8 +16,14 @@ export default class Bauble extends ClippedQuadric {
     this.moveAlongUp(vertDelta);
   }
 
+  move() {
+    const curr = this.timeInfo.t / 500;
+    this.moveAlongLateral(Math.sin(curr * 0.10) * -0.09);
+    this.moveAlongForward(Math.cos(curr * 0.10) * -0.09);
+  }
+
   update() {
-    // this.hop();
+    this.move();
     super.update();
   }
 }
