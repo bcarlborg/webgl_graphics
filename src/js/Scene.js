@@ -1,6 +1,6 @@
 import ClickListener from './ClickListener.js';
 import KeyHandler from './KeyHandler.js';
-import CastingGame from './games/casting/CastingGame.js';
+import PerlinGame from './games/perlinNoise/PerlinGame.js';
 import GameTime from './GameTime.js';
 import FreeMovingCamera from './FreeMovingCamera.js';
 
@@ -13,7 +13,7 @@ export default class Scene {
     this.GameTime = new GameTime();
     this.camera = new FreeMovingCamera(this.canvas);
     // this.camera.setPosition(0, 0, -10);
-    this.game = new CastingGame(this.gl, this.camera);
+    this.game = new PerlinGame(this.gl, this.camera);
   }
 
   update() {
