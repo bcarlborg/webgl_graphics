@@ -1,5 +1,6 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
-  precision mediump float;
+  precision highp float;
+
   in vec4 v_fragmentColor;
 
   uniform float u_time;
@@ -7,7 +8,6 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   out vec4 outColor;
 
   void main() {
-    float timeColorValue = abs(sin(u_time / 5000.0));
-    outColor = vec4(timeColorValue, timeColorValue, timeColorValue, 1.0);
+    outColor = vec4(1.0, 0.0, 0.0, 1.0);
   }
 `;

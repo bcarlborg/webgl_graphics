@@ -12,7 +12,6 @@ export default class Scene {
     this.keyHandler = new KeyHandler(this.canvas);
     this.GameTime = new GameTime();
     this.camera = new FreeMovingCamera(this.canvas);
-    // this.camera.setPosition(0, 0, -10);
     this.game = new PerlinGame(this.gl, this.camera);
   }
 

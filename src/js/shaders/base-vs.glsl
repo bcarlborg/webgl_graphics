@@ -1,18 +1,24 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
+  precision highp float;
+
   in vec4 a_position;
   in vec4 a_color;
   in vec4 a_homogeneous;
 
-  uniform mat4 worldMatrix;
-  uniform mat4 u_viewMatrix;
-  uniform mat4 u_projectionMatrix;
+  struct cameraStruct {
+    mat4 viewMatrix;
+    mat4 projectionMatrix;
+    mat4 viewDirectionProjectionInverse;
+    vec3 cameraPosition;
+  };
+  uniform cameraStruct camera;
 
-  out vec4 v_homogeneous;
+  uniform mat4 u_worldMatrix;
+
   out vec4 v_fragmentColor;
 
   void main() {
-    v_homogeneous = a_homogeneous;
     v_fragmentColor = a_color;
-    gl_Position = u_projectionMatrix * u_viewMatrix * worldMatrix * a_position;
+    gl_Position = camera.projectionMatrix * camera.viewMatrix * u_worldMatrix * a_position;
   }
 `;
