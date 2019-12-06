@@ -22,6 +22,6 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   void main() {
     v_fragmentColor = a_color;
     gl_Position = camera.projectionMatrix * camera.viewMatrix * u_worldMatrix * a_position;
-    v_vertexPosition = gl_Position.xyz;
+    v_vertexPosition = a_position.xyz;
   }
 `;

@@ -46,7 +46,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   }
 
   void main() {
-    vec2 st = v_vertexPosition.xy;
+    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z);
     vec3 color = vec3(0.0);
     color += fbm(st*3.0);
 
