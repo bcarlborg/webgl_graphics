@@ -47,10 +47,9 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   void main() {
     vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z);
-    vec3 color = vec3(0.0);
-    color += fbm(st*3.0);
+    float perlinOut = fbm(st*3.0);
 
-    outColor = vec4(color,1.0);
+    outColor = vec4(perlinOut, perlinOut, perlinOut, 1.0);
     /* outColor = v_fragmentColor; */
   }
 `;
