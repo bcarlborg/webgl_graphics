@@ -27,7 +27,38 @@ export default class primitiveBuilders {
   static buildPlane(size) {
     const planeVerts = twgl.primitives.createPlaneVertices(size, size);
     const deindexedPlane = this.deindexVertices(planeVerts);
+    console.log(deindexedPlane);
     return deindexedPlane;
+  }
+
+  static buildTriangleStripPlane() {
+    const positionVerts = [];
+    positionVerts.push(-0.5, 0, -0.5);
+    positionVerts.push(-0.5, 0, 0.5);
+    positionVerts.push(0.5, 0, -0.5);
+    const typedPositionArray = twgl.primitives.createAugmentedTypedArray(3, positionVerts.length);
+    typedPositionArray.push(...positionVerts);
+
+
+    const normalVerts = [];
+    normalVerts.push(0, 1.0, 0);
+    normalVerts.push(0, 1.0, 0);
+    normalVerts.push(0, 1.0, 0);
+    const typedNormalArray = twgl.primitives.createAugmentedTypedArray(3, normalVerts.length);
+    typedNormalArray.push(...normalVerts);
+
+
+    const colorVerts = [];
+    colorVerts.push(255, 0, 0, 255);
+    colorVerts.push(255, 0, 0, 255);
+    colorVerts.push(255, 0, 0, 255);
+    const typedColorArray = twgl.primitives.createAugmentedTypedArray(3, colorVerts.length);
+    typedColorArray.push(...colorVerts);
+
+    const trianglePlane = {
+      color: typedColorArray, normal: typedNormalArray, position: typedPositionArray,
+    };
+    return trianglePlane;
   }
 
   static buildSkyBoxPlane() {

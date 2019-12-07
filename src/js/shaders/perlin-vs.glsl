@@ -63,10 +63,11 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   void main() {
     v_vertexPosition = a_position.xyz;
 
-    /* vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z); */
-    /* float perlinOut = fbm(st*3.0); */
+    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z);
+    float perlinOut = fbm(st*3.0);
 
     v_fragmentColor = a_color;
     gl_Position = camera.projectionMatrix * camera.viewMatrix * u_worldMatrix * a_position;
+    /* gl_Position.y += perlinOut * 10.0; */
   }
 `;
