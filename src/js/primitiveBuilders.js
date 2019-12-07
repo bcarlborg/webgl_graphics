@@ -64,10 +64,35 @@ export default class primitiveBuilders {
         zStart + (0 * triangleWidth),
       );
 
+      // triangle 2
+      positionVerts.push(
+        xStart + (i * triangleWidth),
+        0,
+        zStart + (0 * triangleWidth) + triangleWidth,
+      );
+
+      positionVerts.push(
+        xStart + (i * triangleWidth) + triangleWidth,
+        0,
+        zStart + (0 * triangleWidth) + triangleWidth,
+      );
+
+      positionVerts.push(
+        xStart + (i * triangleWidth) + triangleWidth,
+        0,
+        zStart + (0 * triangleWidth),
+      );
+
+      normalVerts.push(0, 1.0, 0);
+      normalVerts.push(0, 1.0, 0);
+      normalVerts.push(0, 1.0, 0);
       normalVerts.push(0, 1.0, 0);
       normalVerts.push(0, 1.0, 0);
       normalVerts.push(0, 1.0, 0);
 
+      colorVerts.push(255, 0, 0, 255);
+      colorVerts.push(255, 0, 0, 255);
+      colorVerts.push(255, 0, 0, 255);
       colorVerts.push(255, 0, 0, 255);
       colorVerts.push(255, 0, 0, 255);
       colorVerts.push(255, 0, 0, 255);
