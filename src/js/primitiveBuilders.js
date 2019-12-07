@@ -31,9 +31,9 @@ export default class primitiveBuilders {
     return deindexedPlane;
   }
 
-  static buildTriangleStripPlane() {
-    const subDivisions = 10;
-    const totalWidth = 1;
+  static buildTriangleStripPlane(totalWidth, subDivisions) {
+    // const subDivisions = 10;
+    // const totalWidth = 1;
 
     const xStart = -(0.5 * totalWidth);
     const zStart = -(0.5 * totalWidth);

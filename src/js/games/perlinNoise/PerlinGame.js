@@ -13,7 +13,7 @@ export default class PerlinGame extends Game {
   }
 
   initPlane() {
-    const planeVerts = primitiveBuilders.buildTriangleStripPlane(1);
+    const planeVerts = primitiveBuilders.buildTriangleStripPlane(1, 50);
     // const planeVerts = primitiveBuilders.buildPlane(1);
     const planeGeometry = new Geometry(this.gl, planeVerts);
     const planeMaterial = new Material(this.gl, 'perlin-vs.glsl', 'perlin-fs.glsl');
