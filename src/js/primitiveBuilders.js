@@ -32,9 +32,6 @@ export default class primitiveBuilders {
   }
 
   static buildTriangleStripPlane(totalWidth, subDivisions) {
-    // const subDivisions = 10;
-    // const totalWidth = 1;
-
     const xStart = -(0.5 * totalWidth);
     const zStart = -(0.5 * totalWidth);
     const triangleWidth = totalWidth / subDivisions;
@@ -42,6 +39,7 @@ export default class primitiveBuilders {
     const positionVerts = [];
     const normalVerts = [];
     const colorVerts = [];
+    const barycentricVerts = [];
     // for loop that pushes two triangles forming a square in each row and column
     // of the total square
     for (let i = 0; i < subDivisions; i++) {
@@ -62,6 +60,10 @@ export default class primitiveBuilders {
           0,
           zStart + (j * triangleWidth),
         );
+
+        barycentricVerts.push(0, 0);
+        barycentricVerts.push(1, 0);
+        barycentricVerts.push(0, 1);
 
         normalVerts.push(0, 1.0, 0);
         normalVerts.push(0, 1.0, 0);
@@ -88,6 +90,10 @@ export default class primitiveBuilders {
           zStart + (j * triangleWidth),
         );
 
+        barycentricVerts.push(0, 0);
+        barycentricVerts.push(1, 0);
+        barycentricVerts.push(0, 1);
+
         normalVerts.push(0, 1.0, 0);
         normalVerts.push(0, 1.0, 0);
         normalVerts.push(0, 1.0, 0);
@@ -98,32 +104,31 @@ export default class primitiveBuilders {
       }
     }
 
-
-    // const positionVerts = [];
-    // positionVerts.push(-0.5, 0, -0.5);
-    // positionVerts.push(-0.5, 0, 0.5);
-    // positionVerts.push(0.5, 0, -0.5);
-    const typedPositionArray = twgl.primitives.createAugmentedTypedArray(3, positionVerts.length);
+    const typedPositionArray = twgl.primitives.createAugmentedTypedArray(
+      3, positionVerts.length / 3,
+    );
     typedPositionArray.push(...positionVerts);
 
-
-    // const normalVerts = [];
-    // normalVerts.push(0, 1.0, 0);
-    // normalVerts.push(0, 1.0, 0);
-    // normalVerts.push(0, 1.0, 0);
-    const typedNormalArray = twgl.primitives.createAugmentedTypedArray(3, normalVerts.length);
+    const typedNormalArray = twgl.primitives.createAugmentedTypedArray(
+      3, normalVerts.length / 3,
+    );
     typedNormalArray.push(...normalVerts);
 
-
-    // const colorVerts = [];
-    // colorVerts.push(255, 0, 0, 255);
-    // colorVerts.push(255, 0, 0, 255);
-    // colorVerts.push(255, 0, 0, 255);
-    const typedColorArray = twgl.primitives.createAugmentedTypedArray(4, colorVerts.length);
+    const typedColorArray = twgl.primitives.createAugmentedTypedArray(
+      4, colorVerts.length / 4,
+    );
     typedColorArray.push(...colorVerts);
 
+    const typedBarycentricArray = twgl.primitives.createAugmentedTypedArray(
+      2, barycentricVerts.length / 2,
+    );
+    typedBarycentricArray.push(...barycentricVerts);
+
     const trianglePlane = {
-      color: typedColorArray, normal: typedNormalArray, position: typedPositionArray,
+      color: typedColorArray,
+      normal: typedNormalArray,
+      position: typedPositionArray,
+      barycentric: typedBarycentricArray,
     };
     return trianglePlane;
   }
