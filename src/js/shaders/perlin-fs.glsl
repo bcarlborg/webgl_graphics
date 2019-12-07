@@ -1,4 +1,5 @@
 ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#version 300 es
+  #extension GL_OES_standard_derivatives : enable
   precision highp float;
 
   in vec4 v_fragmentColor;
@@ -7,13 +8,17 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   out vec4 outColor;
 
+  float edgeFactor(){
+    vec3 d = fwidth(v_barycentric);
+    vec3 a3 = smoothstep(vec3(0.0), d*1.5, v_barycentric);
+    return min(min(a3.x, a3.y), a3.z);
+  }
+
   void main() {
     /* outColor = v_fragmentColor; */
-    if( any(lessThan(v_barycentric, vec3(0.02))) ) {
-      outColor = vec4(0.0, 0.0, 0.0, 1.0);
-    }
-    else {
-      outColor = vec4(0.5, 0.5, 0.5, 1.0);
-    }
+    // non transparent faces
+    outColor.rgb = mix(vec3(0.0), vec3(0.9), edgeFactor());
+    // transparent faces
+
   }
 `;
