@@ -104,25 +104,31 @@ export default class primitiveBuilders {
       }
     }
 
+    const copyVerts = (sink, source) => {
+      for (let i = 0; i < source.length; i++) {
+        sink.push(source[i]);
+      }
+    };
+
     const typedPositionArray = twgl.primitives.createAugmentedTypedArray(
       3, positionVerts.length / 3,
     );
-    typedPositionArray.push(...positionVerts);
+    copyVerts(typedPositionArray, positionVerts);
 
     const typedNormalArray = twgl.primitives.createAugmentedTypedArray(
       3, normalVerts.length / 3,
     );
-    typedNormalArray.push(...normalVerts);
+    copyVerts(typedNormalArray, normalVerts);
 
     const typedColorArray = twgl.primitives.createAugmentedTypedArray(
       4, colorVerts.length / 4,
     );
-    typedColorArray.push(...colorVerts);
+    copyVerts(typedColorArray, colorVerts);
 
     const typedBarycentricArray = twgl.primitives.createAugmentedTypedArray(
       3, barycentricVerts.length / 3,
     );
-    typedBarycentricArray.push(...barycentricVerts);
+    copyVerts(typedBarycentricArray, barycentricVerts);
 
     const trianglePlane = {
       color: typedColorArray,
