@@ -61,9 +61,9 @@ export default class primitiveBuilders {
           zStart + (j * triangleWidth),
         );
 
-        barycentricVerts.push(0, 0);
-        barycentricVerts.push(1, 0);
-        barycentricVerts.push(0, 1);
+        barycentricVerts.push(1, 0, 0);
+        barycentricVerts.push(0, 1, 0);
+        barycentricVerts.push(0, 0, 1);
 
         normalVerts.push(0, 1.0, 0);
         normalVerts.push(0, 1.0, 0);
@@ -90,9 +90,9 @@ export default class primitiveBuilders {
           zStart + (j * triangleWidth),
         );
 
-        barycentricVerts.push(0, 0);
-        barycentricVerts.push(1, 0);
-        barycentricVerts.push(0, 1);
+        barycentricVerts.push(1, 0, 0);
+        barycentricVerts.push(0, 1, 0);
+        barycentricVerts.push(0, 0, 1);
 
         normalVerts.push(0, 1.0, 0);
         normalVerts.push(0, 1.0, 0);
@@ -120,7 +120,7 @@ export default class primitiveBuilders {
     typedColorArray.push(...colorVerts);
 
     const typedBarycentricArray = twgl.primitives.createAugmentedTypedArray(
-      2, barycentricVerts.length / 2,
+      3, barycentricVerts.length / 3,
     );
     typedBarycentricArray.push(...barycentricVerts);
 

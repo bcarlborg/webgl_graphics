@@ -4,7 +4,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec4 a_position;
   in vec4 a_color;
   in vec4 a_homogeneous;
-  in vec2 a_barycentric;
+  in vec3 a_barycentric;
 
 
   struct cameraStruct {
@@ -19,7 +19,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   out vec4 v_fragmentColor;
   out vec3 v_vertexPosition;
-  out vec2 v_barycentric;
+  out vec3 v_barycentric;
 
   float rand(vec2 c){
     return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
