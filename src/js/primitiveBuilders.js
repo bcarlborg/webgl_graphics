@@ -32,27 +32,69 @@ export default class primitiveBuilders {
   }
 
   static buildTriangleStripPlane() {
+    const subDivisions = 10;
+    const totalWidth = 1;
+
+    const xStart = -(0.5 * totalWidth);
+    const zStart = -(0.5 * totalWidth);
+    const triangleWidth = totalWidth / subDivisions;
+
     const positionVerts = [];
-    positionVerts.push(-0.5, 0, -0.5);
-    positionVerts.push(-0.5, 0, 0.5);
-    positionVerts.push(0.5, 0, -0.5);
+    const normalVerts = [];
+    const colorVerts = [];
+    for (let i = 0; i < subDivisions; i++) {
+      // positionVerts.push(-0.5, 0, -0.5);
+      positionVerts.push(
+        xStart + (i * triangleWidth),
+        0,
+        zStart + (0 * triangleWidth),
+      );
+
+      // positionVerts.push(-0.5, 0, 0.5);
+      positionVerts.push(
+        xStart + (i * triangleWidth),
+        0,
+        zStart + (0 * triangleWidth) + triangleWidth,
+      );
+
+      // positionVerts.push(0.5, 0, -0.5);
+      positionVerts.push(
+        xStart + (i * triangleWidth) + triangleWidth,
+        0,
+        zStart + (0 * triangleWidth),
+      );
+
+      normalVerts.push(0, 1.0, 0);
+      normalVerts.push(0, 1.0, 0);
+      normalVerts.push(0, 1.0, 0);
+
+      colorVerts.push(255, 0, 0, 255);
+      colorVerts.push(255, 0, 0, 255);
+      colorVerts.push(255, 0, 0, 255);
+    }
+
+
+    // const positionVerts = [];
+    // positionVerts.push(-0.5, 0, -0.5);
+    // positionVerts.push(-0.5, 0, 0.5);
+    // positionVerts.push(0.5, 0, -0.5);
     const typedPositionArray = twgl.primitives.createAugmentedTypedArray(3, positionVerts.length);
     typedPositionArray.push(...positionVerts);
 
 
-    const normalVerts = [];
-    normalVerts.push(0, 1.0, 0);
-    normalVerts.push(0, 1.0, 0);
-    normalVerts.push(0, 1.0, 0);
+    // const normalVerts = [];
+    // normalVerts.push(0, 1.0, 0);
+    // normalVerts.push(0, 1.0, 0);
+    // normalVerts.push(0, 1.0, 0);
     const typedNormalArray = twgl.primitives.createAugmentedTypedArray(3, normalVerts.length);
     typedNormalArray.push(...normalVerts);
 
 
-    const colorVerts = [];
-    colorVerts.push(255, 0, 0, 255);
-    colorVerts.push(255, 0, 0, 255);
-    colorVerts.push(255, 0, 0, 255);
-    const typedColorArray = twgl.primitives.createAugmentedTypedArray(3, colorVerts.length);
+    // const colorVerts = [];
+    // colorVerts.push(255, 0, 0, 255);
+    // colorVerts.push(255, 0, 0, 255);
+    // colorVerts.push(255, 0, 0, 255);
+    const typedColorArray = twgl.primitives.createAugmentedTypedArray(4, colorVerts.length);
     typedColorArray.push(...colorVerts);
 
     const trianglePlane = {
