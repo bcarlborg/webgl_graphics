@@ -42,60 +42,60 @@ export default class primitiveBuilders {
     const positionVerts = [];
     const normalVerts = [];
     const colorVerts = [];
+    // for loop that pushes two triangles forming a square in each row and column
+    // of the total square
     for (let i = 0; i < subDivisions; i++) {
-      // positionVerts.push(-0.5, 0, -0.5);
-      positionVerts.push(
-        xStart + (i * triangleWidth),
-        0,
-        zStart + (0 * triangleWidth),
-      );
+      for (let j = 0; j < subDivisions; j++) {
+        // triangle 1
+        positionVerts.push(
+          xStart + (i * triangleWidth),
+          0,
+          zStart + (j * triangleWidth),
+        );
+        positionVerts.push(
+          xStart + (i * triangleWidth),
+          0,
+          zStart + (j * triangleWidth) + triangleWidth,
+        );
+        positionVerts.push(
+          xStart + (i * triangleWidth) + triangleWidth,
+          0,
+          zStart + (j * triangleWidth),
+        );
 
-      // positionVerts.push(-0.5, 0, 0.5);
-      positionVerts.push(
-        xStart + (i * triangleWidth),
-        0,
-        zStart + (0 * triangleWidth) + triangleWidth,
-      );
+        normalVerts.push(0, 1.0, 0);
+        normalVerts.push(0, 1.0, 0);
+        normalVerts.push(0, 1.0, 0);
 
-      // positionVerts.push(0.5, 0, -0.5);
-      positionVerts.push(
-        xStart + (i * triangleWidth) + triangleWidth,
-        0,
-        zStart + (0 * triangleWidth),
-      );
+        colorVerts.push(255, 0, 0, 255);
+        colorVerts.push(255, 0, 0, 255);
+        colorVerts.push(255, 0, 0, 255);
 
-      // triangle 2
-      positionVerts.push(
-        xStart + (i * triangleWidth),
-        0,
-        zStart + (0 * triangleWidth) + triangleWidth,
-      );
+        // triangle 2
+        positionVerts.push(
+          xStart + (i * triangleWidth),
+          0,
+          zStart + (j * triangleWidth) + triangleWidth,
+        );
+        positionVerts.push(
+          xStart + (i * triangleWidth) + triangleWidth,
+          0,
+          zStart + (j * triangleWidth) + triangleWidth,
+        );
+        positionVerts.push(
+          xStart + (i * triangleWidth) + triangleWidth,
+          0,
+          zStart + (j * triangleWidth),
+        );
 
-      positionVerts.push(
-        xStart + (i * triangleWidth) + triangleWidth,
-        0,
-        zStart + (0 * triangleWidth) + triangleWidth,
-      );
+        normalVerts.push(0, 1.0, 0);
+        normalVerts.push(0, 1.0, 0);
+        normalVerts.push(0, 1.0, 0);
 
-      positionVerts.push(
-        xStart + (i * triangleWidth) + triangleWidth,
-        0,
-        zStart + (0 * triangleWidth),
-      );
-
-      normalVerts.push(0, 1.0, 0);
-      normalVerts.push(0, 1.0, 0);
-      normalVerts.push(0, 1.0, 0);
-      normalVerts.push(0, 1.0, 0);
-      normalVerts.push(0, 1.0, 0);
-      normalVerts.push(0, 1.0, 0);
-
-      colorVerts.push(255, 0, 0, 255);
-      colorVerts.push(255, 0, 0, 255);
-      colorVerts.push(255, 0, 0, 255);
-      colorVerts.push(255, 0, 0, 255);
-      colorVerts.push(255, 0, 0, 255);
-      colorVerts.push(255, 0, 0, 255);
+        colorVerts.push(255, 0, 0, 255);
+        colorVerts.push(255, 0, 0, 255);
+        colorVerts.push(255, 0, 0, 255);
+      }
     }
 
 
