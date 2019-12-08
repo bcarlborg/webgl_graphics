@@ -17,7 +17,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   void main() {
     /* outColor = v_fragmentColor; */
     // non transparent faces
-    outColor.rgb = mix(vec3(0.0), vec3(0.9), edgeFactor());
+    outColor.rgb = mix(vec3(0.1), vec3(1.0), edgeFactor());
     // transparent faces
 
   }

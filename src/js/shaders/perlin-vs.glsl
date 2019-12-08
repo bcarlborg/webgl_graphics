@@ -58,7 +58,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     for (int i = 0; i < octaves; i++) {
       value += amplitude * noise(st);
       st *= 0.6;
-      amplitude *= 4.0;
+      amplitude *= 4.3;
     }
     return value;
   }

@@ -12,8 +12,14 @@ export default class App {
 
     this.backgroundColor = [];
     // const blueish = [0.36036185288255385, 0.5779662266214443, 0.7534269165876528, 0];
-    const palePurple = [0.564959718936457, 0.5279194427974914, 0.7639249358691695, 0];
-    this.backgroundColor = palePurple;
+    // this.backgroundColor = blueish;
+
+    // const palePurple = [0.564959718936457, 0.5279194427974914, 0.7639249358691695, 0];
+    // this.backgroundColor = palePurple;
+
+    const salmonish = [255 / 255, 134 / 255, 128 / 255];
+    this.backgroundColor = salmonish;
+
     this.backgroundColor.push(0);
 
     this.gl.pendingResources = {};
