@@ -59,7 +59,9 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     // Loop of octaves
     for (int i = 0; i < octaves; i++) {
       value += amplitude * noise(st);
-      st *= 0.6;
+      // st *= 0.6;
+      st.y *= 0.7;
+      st.x *= 0.55;
       amplitude *= 4.3;
     }
     return value;
@@ -67,12 +69,13 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
 
   void main() {
+    float timeOffset = time * 0.003;
     v_barycentric = a_barycentric;
     v_vertexPosition = a_position.xyz;
     v_vertexPosition.z += perlinOffsetZ;
     v_vertexPosition.x += perlinOffsetX;
 
-    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z - time * 0.003);
+    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z - timeOffset);
     float perlinOut = fbm(st);
 
     v_fragmentColor = a_color;
