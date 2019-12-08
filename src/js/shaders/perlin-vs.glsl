@@ -48,7 +48,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
               (d - b) * u.x * u.y;
   }
 
-  # define OCTAVES 2
+  # define OCTAVES 4
   float fbm (in vec2 st) {
     // Initial values
     float value = 0.0;
@@ -57,8 +57,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     // Loop of octaves
     for (int i = 0; i < OCTAVES; i++) {
       value += amplitude * noise(st);
-      st *= 1.;
-      amplitude *= 30.0;
+      st *= 0.6;
+      amplitude *= 4.0;
     }
     return value;
   }
@@ -68,7 +68,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     v_barycentric = a_barycentric;
     v_vertexPosition = a_position.xyz;
 
-    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z - time * 0.001);
+    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z - time * 0.003);
     float perlinOut = fbm(st);
 
     v_fragmentColor = a_color;
