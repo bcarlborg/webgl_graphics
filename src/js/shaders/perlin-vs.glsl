@@ -54,14 +54,16 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     // Initial values
     float value = 0.0;
     float amplitude = .5;
-    float frequency = 0.;
+    float frequency = 1.0;
+    float ruggedness = 1.0;
     int octaves = 4;
     // Loop of octaves
     for (int i = 0; i < octaves; i++) {
-      value += amplitude * noise(st);
+      value += amplitude * noise(frequency * st);
+      frequency *= ruggedness;
       // st *= 0.6;
-      st.y *= 0.7;
-      st.x *= 0.55;
+      st.y *= 0.71;
+      st.x *= 0.6;
       amplitude *= 4.3;
     }
     return value;
