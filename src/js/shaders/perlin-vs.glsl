@@ -48,14 +48,14 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
               (d - b) * u.x * u.y;
   }
 
-  # define OCTAVES 4
   float fbm (in vec2 st) {
     // Initial values
     float value = 0.0;
     float amplitude = .5;
     float frequency = 0.;
+    int octaves = 4;
     // Loop of octaves
-    for (int i = 0; i < OCTAVES; i++) {
+    for (int i = 0; i < octaves; i++) {
       value += amplitude * noise(st);
       st *= 0.6;
       amplitude *= 4.0;
