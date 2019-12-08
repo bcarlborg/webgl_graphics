@@ -42,11 +42,11 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec2 u = f * f * (3.0 - 2.0 * f);
 
     return mix(a, b, u.x) +
-            (c - a)* u.y * (1.0 - u.x) +
-            (d - b) * u.x * u.y;
+              (c - a)* u.y * (1.0 - u.x) +
+              (d - b) * u.x * u.y;
   }
 
-  # define OCTAVES 6
+  # define OCTAVES 2
   float fbm (in vec2 st) {
     // Initial values
     float value = 0.0;
@@ -55,8 +55,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     // Loop of octaves
     for (int i = 0; i < OCTAVES; i++) {
       value += amplitude * noise(st);
-      st *= 2.;
-      amplitude *= .5;
+      st *= 1.;
+      amplitude *= 30.0;
     }
     return value;
   }
@@ -67,7 +67,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     v_vertexPosition = a_position.xyz;
 
     vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z);
-    float perlinOut = fbm(st*3.0);
+    float perlinOut = fbm(st);
 
     v_fragmentColor = a_color;
     gl_Position = camera.projectionMatrix * camera.viewMatrix * u_worldMatrix * a_position;
