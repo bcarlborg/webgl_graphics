@@ -15,6 +15,10 @@ export default class DrawableEntity extends SceneGraphEntity {
     this.buildMesh();
   }
 
+  setUniform(key, value) {
+    this.virtualUniforms[key] = value;
+  }
+
   setGeometry(geometry) {
     this.geometry = geometry;
     this.buildMesh();
@@ -30,10 +34,6 @@ export default class DrawableEntity extends SceneGraphEntity {
       this.gl, this.geometry, this.material,
     );
   }
-
-  // maybe will want a function
-  // get virtualUniformsFromParent() {} that checks if
-  // the parent has virtual uniforms, and if so, grabs them
 
   update() {
     this.mesh.update();

@@ -15,6 +15,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   };
   uniform cameraStruct camera;
 
+  uniform float time;
+
   uniform mat4 u_worldMatrix;
 
   out vec4 v_fragmentColor;
@@ -66,7 +68,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     v_barycentric = a_barycentric;
     v_vertexPosition = a_position.xyz;
 
-    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z);
+    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z - time * 0.001);
     float perlinOut = fbm(st);
 
     v_fragmentColor = a_color;
