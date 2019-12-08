@@ -16,6 +16,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   uniform cameraStruct camera;
 
   uniform float time;
+  uniform float perlinOffsetZ;
+  uniform float perlinOffsetX;
 
   uniform mat4 u_worldMatrix;
 
@@ -67,6 +69,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   void main() {
     v_barycentric = a_barycentric;
     v_vertexPosition = a_position.xyz;
+    v_vertexPosition.z += perlinOffsetZ;
+    v_vertexPosition.x += perlinOffsetX;
 
     vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z - time * 0.003);
     float perlinOut = fbm(st);
