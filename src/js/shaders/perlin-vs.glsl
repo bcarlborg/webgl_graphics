@@ -71,13 +71,18 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
 
   void main() {
-    float timeOffset = time * 0.003;
     v_barycentric = a_barycentric;
     v_vertexPosition = a_position.xyz;
+
+    vec3 direction = vec3(0, 0, -1);
+    float timeOffset = time * 0.003;
+    direction *= timeOffset;
+
+    v_vertexPosition += direction;
     v_vertexPosition.z += perlinOffsetZ;
     v_vertexPosition.x += perlinOffsetX;
 
-    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z - timeOffset);
+    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z);
     float perlinOut = fbm(st);
 
     v_fragmentColor = a_color;
