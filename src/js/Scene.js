@@ -2,7 +2,7 @@ import ClickListener from './ClickListener.js';
 import KeyHandler from './KeyHandler.js';
 import PerlinGame from './games/perlinNoise/PerlinGame.js';
 import GameTime from './GameTime.js';
-import FreeMovingCamera from './FreeMovingCamera.js';
+import StationaryCamera from './StationaryCamera.js';
 
 export default class Scene {
   constructor(gl, canvas) {
@@ -11,7 +11,7 @@ export default class Scene {
     this.clickListener = new ClickListener(this.canvas);
     this.keyHandler = new KeyHandler(this.canvas);
     this.GameTime = new GameTime();
-    this.camera = new FreeMovingCamera(this.canvas);
+    this.camera = new StationaryCamera(this.canvas);
     this.game = new PerlinGame(this.gl, this.camera);
   }
 
