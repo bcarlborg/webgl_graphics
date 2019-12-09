@@ -192,6 +192,18 @@ export default class GameEntity {
     this.updateLateral();
   }
 
+  rotateAroundYAxis(delta) {
+    const rad = glMatrix.glMatrix.toRadian(delta);
+    glMatrix.quat.setAxisAngle(
+      this.intermediates.rotation,
+      [0, 1, 0],
+      rad,
+    );
+    this.updateRotation(this.intermediates.rotation);
+    this.updateForward();
+    this.updateLateral();
+  }
+
   // TRANSFORMATIONS
   scale(factor) {
     glMatrix.vec3.set(
