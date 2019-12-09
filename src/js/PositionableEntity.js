@@ -140,7 +140,7 @@ export default class GameEntity {
       this.position.rotation,
     );
     glMatrix.vec3.normalize(
-      this.position.up, this.position.up,
+      this.position.lateral, this.position.lateral,
     );
   }
 
@@ -151,6 +151,9 @@ export default class GameEntity {
       this.position.rotation,
     );
     glMatrix.vec3.normalize(
+      this.position.up, this.position.up,
+    );
+    glMatrix.vec3.round(
       this.position.up, this.position.up,
     );
   }
@@ -174,6 +177,10 @@ export default class GameEntity {
       this.intermediates.rotation,
       this.position.up,
       rad,
+    );
+    glMatrix.vec3.round(
+      this.position.up,
+      this.position.up,
     );
     this.updateRotation(this.intermediates.rotation);
     this.updateForward();

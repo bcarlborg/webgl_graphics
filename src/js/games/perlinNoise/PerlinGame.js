@@ -12,7 +12,6 @@ export default class PerlinGame extends Game {
     this.camera = camera;
     this.initPlane();
     this.gameTime = new GameTime();
-    console.log(this.gameTime);
   }
 
   initPlane() {
