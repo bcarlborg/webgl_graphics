@@ -21,7 +21,7 @@ export default class Camera extends PositionableEntity {
     );
 
     this.setPositionInformation({
-      location: glMatrix.vec3.fromValues(0, 0, -10),
+      location: glMatrix.vec3.fromValues(0, 0, 0),
       forward: glMatrix.vec3.fromValues(0, 0, 1),
       lateral: glMatrix.vec3.fromValues(-1, 0, 0),
       up: glMatrix.vec3.fromValues(0, 1, 0),

@@ -9,24 +9,31 @@ export default class StationaryCamera extends Camera {
     // pass in forward and the magnitude
     // steps
     // pass magnitude
-    this.directionMagnitude = 0;
+    this.movementMagnitude = 0;
   }
 
   processKeysPressed() {
+    // movement
     if (this.KeyHandler.keysPressed.W) {
-      // move forward
+      this.moveAlongForward(0.3);
     }
     if (this.KeyHandler.keysPressed.S) {
-      // move backward
+      this.moveAlongForward(-0.3);
     }
     if (this.KeyHandler.keysPressed.A) {
-      // move backward
+      this.moveAlongLateral(-0.3);
     }
     if (this.KeyHandler.keysPressed.D) {
-      // move backward
+      this.moveAlongLateral(0.3);
     }
 
     // rotations
+    if (this.KeyHandler.keysPressed.UP) {
+      this.relativePitch(1);
+    }
+    if (this.KeyHandler.keysPressed.DOWN) {
+      this.relativePitch(-1);
+    }
     if (this.KeyHandler.keysPressed.LEFT) {
       this.relativeYaw(1);
     }
@@ -37,6 +44,7 @@ export default class StationaryCamera extends Camera {
 
   update() {
     this.processKeysPressed();
+    this.globalUniforms.setUniform('cameraPosition', this.position.location);
     super.update();
   }
 }
