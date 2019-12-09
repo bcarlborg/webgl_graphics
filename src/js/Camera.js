@@ -12,6 +12,7 @@ export default class Camera extends PositionableEntity {
       viewDirectionProjectionInverse: glMatrix.mat4.create(),
       projectionMatrix: glMatrix.mat4.create(),
       viewMatrix: glMatrix.mat4.create(),
+      viewMatrixWithoutPosition: glMatrix.mat4.create(),
       cameraPosition: glMatrix.vec3.create(),
     };
 
@@ -46,6 +47,15 @@ export default class Camera extends PositionableEntity {
       this.cameraUniforms.viewMatrix,
       this.positionMatrix,
     );
+
+    glMatrix.mat4.copy(
+      this.cameraUniforms.viewMatrixWithoutPosition,
+      this.cameraUniforms.viewMatrix,
+    );
+
+    this.cameraUniforms.viewMatrixWithoutPosition[12] = 0;
+    this.cameraUniforms.viewMatrixWithoutPosition[13] = 0;
+    this.cameraUniforms.viewMatrixWithoutPosition[14] = 0;
 
     glMatrix.vec3.copy(
       this.cameraUniforms.cameraPosition,

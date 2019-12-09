@@ -16,7 +16,6 @@ export default class StationaryCamera extends Camera {
   }
 
   resetY(previousY) {
-    this.moveAlongForward(0.3);
     glMatrix.vec3.set(
       this.position.location,
       this.position.location[0],
@@ -27,21 +26,24 @@ export default class StationaryCamera extends Camera {
 
   processKeysPressed() {
     // movement
+    const movementSpeed = 0.15;
     const previousY = this.position.location[1];
     if (this.KeyHandler.keysPressed.W) {
-      this.moveAlongForward(0.3);
+      this.moveAlongForward(movementSpeed);
       this.resetY(previousY);
+      console.log(this.position.location);
     }
     if (this.KeyHandler.keysPressed.S) {
-      this.moveAlongForward(-0.3);
+      this.moveAlongForward(-1 * movementSpeed);
       this.resetY(previousY);
+      console.log(this.position.location);
     }
     if (this.KeyHandler.keysPressed.A) {
-      this.moveAlongLateral(-0.3);
+      this.moveAlongLateral(-movementSpeed);
       this.resetY(previousY);
     }
     if (this.KeyHandler.keysPressed.D) {
-      this.moveAlongLateral(0.3);
+      this.moveAlongLateral(movementSpeed);
       this.resetY(previousY);
     }
 

@@ -20,8 +20,7 @@ export default class PerlinGame extends Game {
     const planeMaterial = new Material(this.gl, 'perlin-vs.glsl', 'perlin-fs.glsl');
     const plane = new MountainPlane(this.gl, planeGeometry, planeMaterial);
     plane.scale(30);
-    plane.moveAlongUp(-25);
-    this.camera.moveAlongUp(300);
+    plane.moveAlongUp(-330);
     this.gameObjects.push(plane);
   }
 }

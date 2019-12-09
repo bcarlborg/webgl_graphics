@@ -9,6 +9,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   struct cameraStruct {
     mat4 viewMatrix;
+    mat4 viewMatrixWithoutPosition;
     mat4 projectionMatrix;
     mat4 viewDirectionProjectionInverse;
     vec3 cameraPosition;
@@ -83,7 +84,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     float perlinOut = fbm(st);
 
     v_fragmentColor = a_color;
-    gl_Position = camera.projectionMatrix * camera.viewMatrix * u_worldMatrix * a_position;
+    gl_Position = camera.projectionMatrix * camera.viewMatrixWithoutPosition * u_worldMatrix * a_position;
     gl_Position.y += perlinOut * 10.0;
   }
 `;
