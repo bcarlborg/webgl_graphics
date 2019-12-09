@@ -10,6 +10,9 @@ export default class StationaryCamera extends Camera {
     // steps
     // pass magnitude
     this.movementMagnitude = 0;
+
+    this.angleDown = -17;
+    this.relativePitch(this.angleDown);
   }
 
   resetY(previousY) {
@@ -50,10 +53,14 @@ export default class StationaryCamera extends Camera {
       // this.relativePitch(-1);
     }
     if (this.KeyHandler.keysPressed.LEFT) {
-      this.rotateAroundYAxis(1);
+      this.relativePitch(-this.angleDown);
+      this.relativeYaw(1);
+      this.relativePitch(this.angleDown);
     }
     if (this.KeyHandler.keysPressed.RIGHT) {
-      this.rotateAroundYAxis(-1);
+      this.relativePitch(-this.angleDown);
+      this.relativeYaw(-1);
+      this.relativePitch(this.angleDown);
     }
   }
 

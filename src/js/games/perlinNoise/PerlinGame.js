@@ -23,7 +23,6 @@ export default class PerlinGame extends Game {
     plane.scale(30);
     plane.moveAlongUp(-25);
     this.camera.moveAlongUp(300);
-    this.camera.relativePitch(-17);
     this.gameObjects.push(plane);
   }
 }
