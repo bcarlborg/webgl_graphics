@@ -26,6 +26,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   out vec4 v_fragmentColor;
   out vec3 v_vertexPosition;
   out vec3 v_barycentric;
+  out float v_perlinOut;
 
   float rand(vec2 c){
     return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -82,9 +83,12 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z);
     float perlinOut = fbm(st);
+    v_perlinOut = perlinOut;
 
     v_fragmentColor = a_color;
+
     gl_Position = camera.projectionMatrix * camera.viewMatrixWithoutPosition * u_worldMatrix * a_position;
     gl_Position.y += perlinOut * 10.0;
+
   }
 `;

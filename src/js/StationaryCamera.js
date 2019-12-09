@@ -31,12 +31,10 @@ export default class StationaryCamera extends Camera {
     if (this.KeyHandler.keysPressed.W) {
       this.moveAlongForward(movementSpeed);
       this.resetY(previousY);
-      console.log(this.position.location);
     }
     if (this.KeyHandler.keysPressed.S) {
       this.moveAlongForward(-1 * movementSpeed);
       this.resetY(previousY);
-      console.log(this.position.location);
     }
     if (this.KeyHandler.keysPressed.A) {
       this.moveAlongLateral(-movementSpeed);
