@@ -23,12 +23,10 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   uniform mat4 u_worldMatrix;
 
-  out vec3 v_vertexNormal;
+  out vec3 v_normal;
   out vec4 v_fragmentColor;
   out vec3 v_vertexPosition;
   out vec3 v_barycentric;
-  out float v_perlinOutAlitude;
-  out float v_perlinOut1;
 
   vec2 random (in vec2 st) {
     float x = fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123);
@@ -54,6 +52,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     return mod289(((x*34.0)+1.0)*x);
   }
 
+  // https://github.com/ashima/webgl-noise/blob/master/src/noise2D.glsl
   float snoise(vec2 v) {
     const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
                         0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
@@ -102,9 +101,9 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     return 130.0 * dot(m, g);
   }
 
-  float fbm (in vec2 st, float amplitude, float frequency, float ruggedness) {
+  float noiseModifier(in vec2 st, float amplitude, float frequency, float ruggedness) {
     float noise = snoise(frequency * st);
-    noise = pow(noise, 2.0);
+    noise = pow(noise, 1.33);
     return amplitude * noise;
   }
 
@@ -112,18 +111,20 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     v_vertexPosition = a_position.xyz;
     v_barycentric = a_barycentric;
     v_fragmentColor = a_color;
+    v_normal = a_normal;
 
     v_vertexPosition -= camera.cameraPosition;
+    v_vertexPosition *= 0.01;
     v_vertexPosition.z += perlinOffsetZ;
     v_vertexPosition.x += perlinOffsetX;
 
     vec2 altitudeInput = vec2(v_vertexPosition.x, v_vertexPosition.z);
 
-    float amplitude = 30.0;
-    float frequency = 0.025;
+    float amplitude = 20.0;
+    float frequency = 2.5;
     float ruggedness = 1.7;
 
-    float perlinOut = fbm(altitudeInput, amplitude, frequency, ruggedness);
+    float perlinOut = noiseModifier(altitudeInput, amplitude, frequency, ruggedness);
 
     gl_Position = camera.projectionMatrix * camera.viewMatrixWithY * u_worldMatrix * a_position;
     gl_Position.y += perlinOut;

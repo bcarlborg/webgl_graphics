@@ -5,6 +5,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec4 v_fragmentColor;
   in vec3 v_vertexPosition;
   in vec3 v_barycentric;
+  in vec3 v_normal;
 
   out vec4 outColor;
 
@@ -16,6 +17,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   void main() {
     outColor.rgb = mix(vec3(0.1), vec3(1.0), edgeFactor());
+    /* outColor.rgb = normalize(v_normal); */
     /* outColor.rgb = biom(v_perlinOutAlitude, v_perlinOut1); */
   }
 `;
