@@ -119,11 +119,10 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     noise *= (1.0 / octavesf);
     noise = amplitude * noise;
 
-    /* // adding some high frequency very quite noise ontop of the noise */
-    /* // in order to create a more rocky aesthetic */
-    float rockyHeightPercent = 0.01;
-    /* noise += amplitude * rockyHeightPercent * snoise(10.0 * st) - rockyHeightPercent * 0.5; */
-    noise += amplitude * rockyHeightPercent * snoise(10.0 * st);
+    // adding some high frequency very quite noise ontop of the noise
+    // in order to create a more rocky aesthetic
+    float rockyHeightPercent = 0.0015;
+    noise += amplitude * rockyHeightPercent * snoise(110.0 * st) - rockyHeightPercent * 0.5;
 
     return noise;
 

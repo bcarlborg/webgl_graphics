@@ -20,6 +20,9 @@ export default class App {
     const salmonish = [255 / 255, 134 / 255, 128 / 255];
     this.backgroundColor = salmonish;
 
+    // const greyish = [16 / 255, 36 / 255, 40 / 255];
+    // this.backgroundColor = greyish;
+
     this.backgroundColor.push(0);
 
     this.gl.pendingResources = {};
