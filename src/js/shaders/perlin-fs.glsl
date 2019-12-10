@@ -5,6 +5,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec4 v_fragmentColor;
   in vec3 v_vertexPosition;
   in vec3 v_barycentric;
+  in vec3 v_vertexNormal;
   in float v_perlinOutAlitude;
   in float v_perlinOut1;
 
