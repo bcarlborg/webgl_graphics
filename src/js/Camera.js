@@ -54,7 +54,7 @@ export default class Camera extends PositionableEntity {
     );
 
     this.cameraUniforms.viewMatrixWithoutPosition[12] = 0;
-    this.cameraUniforms.viewMatrixWithoutPosition[13] = 0;
+    // this.cameraUniforms.viewMatrixWithoutPosition[13] = 0;
     this.cameraUniforms.viewMatrixWithoutPosition[14] = 0;
 
     glMatrix.vec3.copy(

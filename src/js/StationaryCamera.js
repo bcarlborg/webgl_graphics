@@ -47,10 +47,10 @@ export default class StationaryCamera extends Camera {
 
     // rotations
     if (this.KeyHandler.keysPressed.UP) {
-      // this.moveAlongYAxis(movementSpeed);
+      this.moveAlongYAxis(movementSpeed * 10);
     }
     if (this.KeyHandler.keysPressed.DOWN) {
-      // this.moveAlongYAxis(-movementSpeed);
+      this.moveAlongYAxis(-movementSpeed * 10);
     }
     if (this.KeyHandler.keysPressed.LEFT) {
       this.relativePitch(-this.angleDown);

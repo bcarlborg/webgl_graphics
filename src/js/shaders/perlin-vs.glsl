@@ -27,8 +27,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   out vec4 v_fragmentColor;
   out vec3 v_vertexPosition;
   out vec3 v_barycentric;
-  out float v_perlinOutSnow;
-  out float v_perlinOutRock;
+  out float v_perlinOutAlitude;
+  out float v_perlinOut1;
 
   float rand(vec2 c){
     return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -74,6 +74,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   void main() {
     v_barycentric = a_barycentric;
     v_vertexPosition = a_position.xyz;
+    v_fragmentColor = a_color;
 
     v_vertexPosition -= cameraPosition;
     v_vertexPosition.z += perlinOffsetZ;
@@ -82,7 +83,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec2 altitudeInput = vec2(v_vertexPosition.x, v_vertexPosition.z);
 
     float amplitude = 1.6;
-    float frequency = 0.05;
+    float frequency = 0.055;
     float ruggedness = 2.2;
 
     float perlinOut = fbm(altitudeInput, amplitude, frequency, ruggedness)
@@ -91,13 +92,17 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
       + 0.125 * fbm(vec2(altitudeInput.x * 8.0, altitudeInput.y * 8.0), amplitude, frequency, ruggedness);
       + 0.0625 * fbm(vec2(altitudeInput.x * 16.0, altitudeInput.y * 16.0), amplitude, frequency, ruggedness);
 
-    float perlinOutSnow = fbm(altitudeInput, 0.5, 0.1, 1.5);
-    v_perlinOutSnow = perlinOutSnow;
+    v_perlinOutAlitude = perlinOut;
 
-    float perlinRock = fbm(altitudeInput, 0.5, 0.1, 2.9);
-    v_perlinOutRock = perlinRock;
+    amplitude = 1.6;
+    frequency = 0.055;
+    ruggedness = 1.0;
 
-    v_fragmentColor = a_color;
+    float perlinOut1 = fbm(altitudeInput, amplitude, frequency, ruggedness);
+
+    v_perlinOut1 = perlinOut1;
+
+
 
     gl_Position = camera.projectionMatrix * camera.viewMatrixWithoutPosition * u_worldMatrix * a_position;
     gl_Position.y += perlinOut * 10.0;
