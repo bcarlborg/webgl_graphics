@@ -35,18 +35,21 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     float rockGate = step(0.50001, v_vertexPosition.y);
     biomColor += (rockGate * rockColor);
 
+    //grenery -- flat and low
+
+    // snow -- flat and highish
+
     return biomColor;
   }
 
   void main() {
-    /* outColor.rgb = mix(vec3(0.1), vec3(1.0), edgeFactor()); */
+    outColor.rgb = mix(vec3(0.1), vec3(1.0), edgeFactor());
     /* outColor.rgb = v_normal; */
 
-    outColor.rgb = biom();
 
-    /* outColor.rgb = (0.2, 0.2, 0.2); */
-    vec3 color = shade(v_normal, vec3(0.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(0.3, 0.3, 0.3));
-    outColor.rgb += color;
+    /* outColor.rgb = biom(); */
+    /* vec3 color = shade(v_normal, vec3(0.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(0.3, 0.3, 0.3)); */
+    /* outColor.rgb += color; */
 
   }
 `;
