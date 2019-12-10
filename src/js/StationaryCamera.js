@@ -5,12 +5,9 @@ import glMatrix from './helpers/glm.js';
 export default class StationaryCamera extends Camera {
   constructor(canvas) {
     super(canvas);
-    this.KeyHandler = new KeyHandler();
-    // pass in forward and the magnitude
-    // steps
-    // pass magnitude
-    this.movementMagnitude = 0;
+    this.cameraUniforms.viewMatrixWithY = glMatrix.mat4.create();
 
+    this.KeyHandler = new KeyHandler();
     this.angleDown = -17;
     this.relativePitch(this.angleDown);
   }
@@ -47,10 +44,10 @@ export default class StationaryCamera extends Camera {
 
     // rotations
     if (this.KeyHandler.keysPressed.UP) {
-      this.moveAlongYAxis(movementSpeed * 10);
+      this.moveAlongYAxis(movementSpeed);
     }
     if (this.KeyHandler.keysPressed.DOWN) {
-      this.moveAlongYAxis(-movementSpeed * 10);
+      this.moveAlongYAxis(-movementSpeed);
     }
     if (this.KeyHandler.keysPressed.LEFT) {
       this.relativePitch(-this.angleDown);
@@ -64,9 +61,24 @@ export default class StationaryCamera extends Camera {
     }
   }
 
+  updateViewMatrix() {
+    glMatrix.mat4.copy(
+      this.cameraUniforms.viewMatrixWithY,
+      this.positionMatrix,
+    );
+
+    this.cameraUniforms.viewMatrixWithY[12] = 0;
+    this.cameraUniforms.viewMatrixWithY[14] = 0;
+
+    glMatrix.mat4.invert(
+      this.cameraUniforms.viewMatrixWithY,
+      this.cameraUniforms.viewMatrixWithY,
+    );
+  }
+
   update() {
-    this.processKeysPressed();
-    this.globalUniforms.setUniform('cameraPosition', this.position.location);
     super.update();
+    this.updateViewMatrix();
+    this.processKeysPressed();
   }
 }

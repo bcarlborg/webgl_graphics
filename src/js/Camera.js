@@ -30,7 +30,7 @@ export default class Camera extends PositionableEntity {
   }
 
   setPerspective() {
-    const fov = glMatrix.glMatrix.toRadian(60);
+    const fov = glMatrix.glMatrix.toRadian(45);
     const aspect = this.canvas.width / this.canvas.height;
     const near = 0.01;
     const far = 10000;
@@ -47,15 +47,6 @@ export default class Camera extends PositionableEntity {
       this.cameraUniforms.viewMatrix,
       this.positionMatrix,
     );
-
-    glMatrix.mat4.copy(
-      this.cameraUniforms.viewMatrixWithoutPosition,
-      this.cameraUniforms.viewMatrix,
-    );
-
-    this.cameraUniforms.viewMatrixWithoutPosition[12] = 0;
-    // this.cameraUniforms.viewMatrixWithoutPosition[13] = 0;
-    this.cameraUniforms.viewMatrixWithoutPosition[14] = 0;
 
     glMatrix.vec3.copy(
       this.cameraUniforms.cameraPosition,

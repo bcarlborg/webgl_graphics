@@ -10,7 +10,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   struct cameraStruct {
     mat4 viewMatrix;
-    mat4 viewMatrixWithoutPosition;
+    mat4 viewMatrixWithY;
     mat4 projectionMatrix;
     mat4 viewDirectionProjectionInverse;
     vec3 cameraPosition;
@@ -20,7 +20,6 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   uniform float time;
   uniform float perlinOffsetZ;
   uniform float perlinOffsetX;
-  uniform vec3 cameraPosition;
 
   uniform mat4 u_worldMatrix;
 
@@ -66,19 +65,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   float fbm (in vec2 st, float amplitude, float frequency, float ruggedness) {
     // Initial values
-    float value = 0.0;
-    int octaves = 4;
-    // Loop of octaves
-    for (int i = 0; i < octaves; i++) {
-      vec3 noiseVal = noised(frequency * st);
-      value += amplitude * noiseVal.x;
-      frequency *= ruggedness;
-      // st *= 0.6;
-      /* st.y *= 0.71; */
-      /* st.x *= 0.6; */
-      amplitude *= 0.5;
-    }
-    return pow(value, 2.3);
+    vec3 noise = noised(frequency * st);
+    return amplitude * noise.x;
   }
 
   void main() {
@@ -87,24 +75,17 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     v_fragmentColor = a_color;
     v_vertexNormal = a_normal;
 
-    v_vertexPosition -= cameraPosition;
+    v_vertexPosition -= camera.cameraPosition;
     v_vertexPosition.z += perlinOffsetZ;
     v_vertexPosition.x += perlinOffsetX;
 
     vec2 altitudeInput = vec2(v_vertexPosition.x, v_vertexPosition.z);
 
-    float amplitude = 30.0;
-    float frequency = 0.015;
+    float amplitude = 10.0;
+    float frequency = 0.1;
     float ruggedness = 1.7;
 
-    float perlinOut = fbm(altitudeInput, amplitude, frequency, ruggedness)
-      + 0.5 * fbm(vec2(altitudeInput.x * 2.0, altitudeInput.y * 2.0), amplitude, frequency, ruggedness)
-      + 0.25 * fbm(vec2(altitudeInput.x * 4.0, altitudeInput.y * 4.0), amplitude, frequency, ruggedness)
-      + 0.125 * fbm(vec2(altitudeInput.x * 8.0, altitudeInput.y * 8.0), amplitude, frequency, ruggedness);
-      + 0.0625 * fbm(vec2(altitudeInput.x * 16.0, altitudeInput.y * 16.0), amplitude, frequency, ruggedness);
-
-    perlinOut = max(perlinOut, 8.0);
-
+    float perlinOut = fbm(altitudeInput, amplitude, frequency, ruggedness);
     v_perlinOutAlitude = perlinOut;
 
     amplitude = 1.6;
@@ -115,8 +96,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     v_perlinOut1 = perlinOut1;
 
-    gl_Position = camera.projectionMatrix * camera.viewMatrixWithoutPosition * u_worldMatrix * a_position;
-    gl_Position.y += perlinOut;
+    gl_Position = camera.projectionMatrix * camera.viewMatrixWithY * u_worldMatrix * a_position;
+    /* gl_Position.y += perlinOut; */
 
   }
 `;
