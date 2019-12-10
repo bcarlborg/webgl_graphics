@@ -68,7 +68,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
       /* st.x *= 0.6; */
       amplitude *= 0.5;
     }
-    return pow(value, 3.8);
+    return pow(value, 5.0);
   }
 
   void main() {
@@ -81,9 +81,9 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     vec2 altitudeInput = vec2(v_vertexPosition.x, v_vertexPosition.z);
 
-    float amplitude = 2.0;
+    float amplitude = 1.6;
     float frequency = 0.05;
-    float ruggedness = 2.5;
+    float ruggedness = 2.2;
 
     float perlinOut = fbm(altitudeInput, amplitude, frequency, ruggedness)
       + 0.5 * fbm(vec2(altitudeInput.x * 2.0, altitudeInput.y * 2.0), amplitude, frequency, ruggedness)
