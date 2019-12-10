@@ -15,11 +15,11 @@ export default class PerlinGame extends Game {
   }
 
   initPlane() {
-    const planeVerts = primitiveBuilders.buildTriangleStripPlane(100, 300);
+    const planeVerts = primitiveBuilders.buildTriangleStripPlane(100, 500);
     const planeGeometry = new Geometry(this.gl, planeVerts);
     const planeMaterial = new Material(this.gl, 'perlin-vs.glsl', 'perlin-fs.glsl');
     const plane = new MountainPlane(this.gl, planeGeometry, planeMaterial);
-    plane.moveAlongUp(-10);
+    plane.moveAlongUp(-30);
     this.gameObjects.push(plane);
   }
 }
