@@ -168,6 +168,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     float ruggedness = 1.5;
 
     float mountainHeight = mountains(altitudeInput, amplitude, frequency, ruggedness);
+    v_vertexPosition.y = mountainHeight;
     v_normal = mountainNormal(altitudeInput, mountainHeight, amplitude, frequency, ruggedness);
 
     gl_Position = camera.projectionMatrix * camera.viewMatrixWithY * u_worldMatrix * a_position;
