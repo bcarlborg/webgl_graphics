@@ -103,20 +103,18 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   float noiseModifier(in vec2 st, float amplitude, float frequency, float ruggedness) {
     float noise;
-    amplitude *= 0.33;
-    noise += 0.5 * snoise(2.0 * frequency * st);
-    noise += 0.25 * snoise(4.0 * frequency * st);
-    noise += 0.1225 * snoise(4.0 * frequency * st);
+    int octaves = 3;
+    float octavesf = 3.0;
 
-    noise += 0.5 * snoise(2.0 * frequency * st);
-    noise += 0.25 * snoise(4.0 * frequency * st);
-    noise += 0.1225 * snoise(4.0 * frequency * st);
-    
-    noise += 0.5 * snoise(2.0 * frequency * st);
-    noise += 0.25 * snoise(4.0 * frequency * st);
-    noise += 0.1225 * snoise(4.0 * frequency * st);
+    for (int i = 0; i < octaves; i++) {
+      noise += 0.5 * snoise(2.0 * frequency * st);
+      noise += 0.25 * snoise(4.0 * frequency * st);
+      noise += 0.1225 * snoise(4.0 * frequency * st);
+    }
 
-    noise = pow(noise, 1.53);
+    amplitude *= (1.0 / octavesf);
+
+    noise = pow(noise, 1.8);
     return amplitude * noise;
   }
 
@@ -134,7 +132,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec2 altitudeInput = vec2(v_vertexPosition.x, v_vertexPosition.z);
 
     float amplitude = 30.0;
-    float frequency = 1.1;
+    float frequency = 0.9;
     float ruggedness = 1.7;
 
     float perlinOut = noiseModifier(altitudeInput, amplitude, frequency, ruggedness);
