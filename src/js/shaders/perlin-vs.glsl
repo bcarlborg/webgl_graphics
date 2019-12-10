@@ -103,19 +103,30 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   float noiseModifier(in vec2 st, float amplitude, float frequency, float ruggedness) {
     float noise;
-    int octaves = 3;
-    float octavesf = 3.0;
 
+    // generate hills using multiple looped noise calls
+    int octaves = 3;
+    float octavesf = 3.0 + 1.0;
     for (int i = 0; i < octaves; i++) {
       noise += 0.5 * snoise(2.0 * frequency * st);
       noise += 0.25 * snoise(4.0 * frequency * st);
-      noise += 0.1225 * snoise(4.0 * frequency * st);
+      noise += 0.1225 * snoise(8.0 * frequency * st);
+      frequency *= ruggedness;
     }
-
-    amplitude *= (1.0 / octavesf);
+    noise += 0.052 * snoise(16.0 * frequency * st);
 
     noise = pow(noise, 1.8);
-    return amplitude * noise;
+    noise *= (1.0 / octavesf);
+    noise = amplitude * noise;
+
+    /* // adding some high frequency very quite noise ontop of the noise */
+    /* // in order to create a more rocky aesthetic */
+    float rockyHeightPercent = 0.01;
+    /* noise += amplitude * rockyHeightPercent * snoise(10.0 * st) - rockyHeightPercent * 0.5; */
+    noise += amplitude * rockyHeightPercent * snoise(10.0 * st);
+
+    return noise;
+
   }
 
   void main() {
@@ -131,9 +142,9 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     vec2 altitudeInput = vec2(v_vertexPosition.x, v_vertexPosition.z);
 
-    float amplitude = 30.0;
-    float frequency = 0.9;
-    float ruggedness = 1.7;
+    float amplitude = 100.0;
+    float frequency = 0.4;
+    float ruggedness = 1.5;
 
     float perlinOut = noiseModifier(altitudeInput, amplitude, frequency, ruggedness);
 
