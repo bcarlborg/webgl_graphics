@@ -101,7 +101,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     return 130.0 * dot(m, g);
   }
 
-  float noiseModifier(in vec2 st, float amplitude, float frequency, float ruggedness) {
+  float mountains(in vec2 st, float amplitude, float frequency, float ruggedness) {
     float noise;
 
     // generate hills using multiple looped noise calls
@@ -125,14 +125,34 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     noise += amplitude * rockyHeightPercent * snoise(110.0 * st) - rockyHeightPercent * 0.5;
 
     return noise;
+  }
 
+  vec3 mountainNormal(in vec2 st, float stHeight, float amplitude, float frequency, float ruggedness) {
+    float delta = 0.001;
+    vec3 currentPoint = vec3(st.x, stHeight, st.y);
+
+    vec2 xOffsetLoc = st + vec2(delta, 0.0);
+    vec2 yOffsetLoc = st + vec2(0.0, delta);
+
+    float xOffsetHeight = mountains(xOffsetLoc, amplitude, frequency, ruggedness);
+    float yOffsetHeight = mountains(yOffsetLoc, amplitude, frequency, ruggedness);
+
+    vec3 xOffset = vec3(xOffsetLoc.x, xOffsetHeight, xOffsetLoc.y);
+    vec3 yOffset = vec3(yOffsetLoc.x, yOffsetHeight, yOffsetLoc.y);
+
+    vec3 modelXGrad = xOffset - currentPoint;
+    vec3 modelYGrad = yOffset - currentPoint;
+
+    vec3 normal = normalize(cross(modelXGrad, modelYGrad));
+    normal *= -1.0;
+
+    return normal;
   }
 
   void main() {
     v_vertexPosition = a_position.xyz;
     v_barycentric = a_barycentric;
     v_fragmentColor = a_color;
-    v_normal = a_normal;
 
     v_vertexPosition -= camera.cameraPosition;
     v_vertexPosition *= 0.01;
@@ -145,10 +165,11 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     float frequency = 0.4;
     float ruggedness = 1.5;
 
-    float perlinOut = noiseModifier(altitudeInput, amplitude, frequency, ruggedness);
+    float mountainHeight = mountains(altitudeInput, amplitude, frequency, ruggedness);
+    v_normal = mountainNormal(altitudeInput, mountainHeight, amplitude, frequency, ruggedness);
 
     gl_Position = camera.projectionMatrix * camera.viewMatrixWithY * u_worldMatrix * a_position;
-    gl_Position.y += perlinOut;
+    gl_Position.y += mountainHeight;
 
   }
 `;
