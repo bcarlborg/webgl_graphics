@@ -2,6 +2,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   precision highp float;
 
   in vec4 a_position;
+  in vec3 a_normal;
   in vec4 a_color;
   in vec4 a_homogeneous;
   in vec3 a_barycentric;
@@ -27,6 +28,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   out vec3 v_vertexPosition;
   out vec3 v_barycentric;
   out float v_perlinOutSnow;
+  out float v_perlinOutRock;
 
   float rand(vec2 c){
     return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -62,13 +64,12 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
       value += amplitude * noise(frequency * st);
       frequency *= ruggedness;
       // st *= 0.6;
-      st.y *= 0.71;
-      st.x *= 0.6;
-      amplitude *= 4.3;
+      /* st.y *= 0.71; */
+      /* st.x *= 0.6; */
+      amplitude *= 0.5;
     }
-    return value;
+    return pow(value, 3.8);
   }
-
 
   void main() {
     v_barycentric = a_barycentric;
@@ -78,10 +79,23 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     v_vertexPosition.z += perlinOffsetZ;
     v_vertexPosition.x += perlinOffsetX;
 
-    vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z);
-    float perlinOut = fbm(st, 0.5, 1.0, 1.0);
-    float perlinOutSnow = fbm(st, 0.5, 0.1, 1.5);
+    vec2 altitudeInput = vec2(v_vertexPosition.x, v_vertexPosition.z);
+
+    float amplitude = 2.0;
+    float frequency = 0.05;
+    float ruggedness = 2.5;
+
+    float perlinOut = fbm(altitudeInput, amplitude, frequency, ruggedness)
+      + 0.5 * fbm(vec2(altitudeInput.x * 2.0, altitudeInput.y * 2.0), amplitude, frequency, ruggedness)
+      + 0.25 * fbm(vec2(altitudeInput.x * 4.0, altitudeInput.y * 4.0), amplitude, frequency, ruggedness);
+      + 0.125 * fbm(vec2(altitudeInput.x * 8.0, altitudeInput.y * 8.0), amplitude, frequency, ruggedness);
+      + 0.0625 * fbm(vec2(altitudeInput.x * 16.0, altitudeInput.y * 16.0), amplitude, frequency, ruggedness);
+
+    float perlinOutSnow = fbm(altitudeInput, 0.5, 0.1, 1.5);
     v_perlinOutSnow = perlinOutSnow;
+
+    float perlinRock = fbm(altitudeInput, 0.5, 0.1, 2.9);
+    v_perlinOutRock = perlinRock;
 
     v_fragmentColor = a_color;
 

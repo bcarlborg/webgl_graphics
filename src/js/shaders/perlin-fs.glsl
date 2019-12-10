@@ -6,6 +6,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec3 v_vertexPosition;
   in vec3 v_barycentric;
   in float v_perlinOutSnow;
+  in float v_perlinOutRock;
 
   out vec4 outColor;
 
@@ -16,22 +17,15 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   }
 
   void main() {
-    /* outColor = v_fragmentColor; */
-    // non transparent faces
-    /* outColor.rgb = mix(vec3(0.1), vec3(1.0), edgeFactor()); */
-    /* if ((fract(v_vertexPosition.x) < 0.04) || (fract(v_vertexPosition.z) < 0.04)) { */
-    /*   outColor.rgb = vec3(1.0); */
-    /* } else { */
-    /*   outColor.rgb = vec3(0.4, 0.3, 0.9); */
-    /* } */
-    // transparent faces
-    float adjustedPerlin = v_perlinOutSnow / 40.0;
-    if (adjustedPerlin > 0.8) {
-      outColor.rgb = vec3(adjustedPerlin);
-      outColor.rgb += vec3(0.0, 0.0, 0.19);
-    } else {
-      outColor.rgb = vec3(0.2, 0.2, 0.2);
-    }
+    outColor.rgb = mix(vec3(0.1), vec3(1.0), edgeFactor());
 
+    /* float adjustedPerlinRock = v_perlinOutRock / 80.0; */
+    /* outColor.rgb = vec3(adjustedPerlinRock); */
+
+    /* float adjustedPerlinSnow = v_perlinOutSnow / 40.0; */
+    /* if (adjustedPerlinSnow > 0.8) { */
+    /*   outColor.rgb = vec3(adjustedPerlinSnow); */
+    /*   outColor.rgb += vec3(0.0, 0.0, 0.19); */
+    /* } */
   }
 `;
