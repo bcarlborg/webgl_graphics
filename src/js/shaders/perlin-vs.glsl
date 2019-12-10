@@ -66,14 +66,14 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   float fbm (in vec2 st, float amplitude, float frequency, float ruggedness) {
     // Initial values
     vec3 noise = noised(frequency * st);
+    /* noise.x = pow(noise.x, 7.0); */
     return amplitude * noise.x;
   }
 
   void main() {
-    v_barycentric = a_barycentric;
     v_vertexPosition = a_position.xyz;
+    v_barycentric = a_barycentric;
     v_fragmentColor = a_color;
-    v_vertexNormal = a_normal;
 
     v_vertexPosition -= camera.cameraPosition;
     v_vertexPosition.z += perlinOffsetZ;
@@ -86,18 +86,9 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     float ruggedness = 1.7;
 
     float perlinOut = fbm(altitudeInput, amplitude, frequency, ruggedness);
-    v_perlinOutAlitude = perlinOut;
-
-    amplitude = 1.6;
-    frequency = 0.55;
-    ruggedness = 1.0;
-
-    float perlinOut1 = fbm(altitudeInput, amplitude, frequency, ruggedness);
-
-    v_perlinOut1 = perlinOut1;
 
     gl_Position = camera.projectionMatrix * camera.viewMatrixWithY * u_worldMatrix * a_position;
-    /* gl_Position.y += perlinOut; */
+    gl_Position.y += perlinOut;
 
   }
 `;
