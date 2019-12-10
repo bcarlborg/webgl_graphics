@@ -15,9 +15,17 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     return min(min(a3.x, a3.y), a3.z);
   }
 
+  vec3 shade( vec3 normal, vec3 lightDir, vec3 powerDensity, vec3 materialColor) {
+    float cosa = clamp( dot(lightDir, normal),0.0,1.0);
+    return powerDensity * materialColor * cosa;
+  }
+
   void main() {
     /* outColor.rgb = mix(vec3(0.1), vec3(1.0), edgeFactor()); */
-    outColor.rgb = abs(v_normal);
-    /* outColor.rgb = biom(v_perlinOutAlitude, v_perlinOut1); */
+    /* outColor.rgb = v_normal; */
+
+    vec3 color = shade(v_normal, vec3(0.0, 1.0, 1.0), vec3(100.0, 100.0, 100.0), vec3(0.3, 0.3, 0.3));
+    outColor.rgb = color;
+
   }
 `;
