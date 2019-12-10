@@ -124,11 +124,13 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     float rockyHeightPercent = 0.0015;
     noise += amplitude * rockyHeightPercent * snoise(110.0 * st) - rockyHeightPercent * 0.5;
 
+    noise = max(0.5, noise);
+
     return noise;
   }
 
   vec3 mountainNormal(in vec2 st, float stHeight, float amplitude, float frequency, float ruggedness) {
-    float delta = 0.001;
+    float delta = 0.005;
     vec3 currentPoint = vec3(st.x, stHeight, st.y);
 
     vec2 xOffsetLoc = st + vec2(delta, 0.0);
