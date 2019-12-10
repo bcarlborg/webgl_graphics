@@ -27,7 +27,6 @@ export default class primitiveBuilders {
   static buildPlane(size) {
     const planeVerts = twgl.primitives.createPlaneVertices(size, size);
     const deindexedPlane = this.deindexVertices(planeVerts);
-    console.log(deindexedPlane);
     return deindexedPlane;
   }
 

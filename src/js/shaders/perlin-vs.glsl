@@ -26,7 +26,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   out vec4 v_fragmentColor;
   out vec3 v_vertexPosition;
   out vec3 v_barycentric;
-  out float v_perlinOut;
+  out float v_perlinOutSnow;
 
   float rand(vec2 c){
     return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -53,12 +53,9 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
               (d - b) * u.x * u.y;
   }
 
-  float fbm (in vec2 st) {
+  float fbm (in vec2 st, float amplitude, float frequency, float ruggedness) {
     // Initial values
     float value = 0.0;
-    float amplitude = .5;
-    float frequency = 1.0;
-    float ruggedness = 1.0;
     int octaves = 4;
     // Loop of octaves
     for (int i = 0; i < octaves; i++) {
@@ -82,8 +79,9 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     v_vertexPosition.x += perlinOffsetX;
 
     vec2 st = vec2(v_vertexPosition.x, v_vertexPosition.z);
-    float perlinOut = fbm(st);
-    v_perlinOut = perlinOut;
+    float perlinOut = fbm(st, 0.5, 1.0, 1.0);
+    float perlinOutSnow = fbm(st, 0.5, 0.1, 1.5);
+    v_perlinOutSnow = perlinOutSnow;
 
     v_fragmentColor = a_color;
 
