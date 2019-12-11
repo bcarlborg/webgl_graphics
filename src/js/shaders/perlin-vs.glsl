@@ -104,47 +104,73 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   float mountains(in vec2 st, float amplitude, float frequency, float ruggedness) {
     float noise;
 
-    // generate hills using multiple looped noise calls
-    int octaves = 3;
-    float octavesf = 3.0 + 1.0;
+    // boring noise
+    float boringGate = 0.0;
+    float boringNoise = 0.2 * snoise(4.0 * st);
+    noise += boringNoise * boringGate;
+
+    // Use octaved noise to generate more rugged mountains
+    // fractals yay
+    int octavesGate = 1;
+    int octaves = 1;
+    octaves = 2;
+    octaves = 3;
+
+    octaves *= octavesGate;
+    float octavesf = float(octaves) + 1.0;
     for (int i = 0; i < octaves; i++) {
       noise += 0.5 * snoise(2.0 * frequency * st);
       noise += 0.25 * snoise(4.0 * frequency * st);
       noise += 0.1225 * snoise(8.0 * frequency * st);
       frequency *= ruggedness;
     }
-    noise += 0.052 * snoise(16.0 * frequency * st);
 
-    noise = pow(noise, 1.8);
+    // Sprinkle in some special sauce ;^)
+    float secretSauceGate = 1.0;
+    float secretSauce = 0.052 * snoise(16.0 * frequency * st);
+    noise += secretSauce * secretSauceGate;
+
+    // use exponent to make mountains steeper
+    float exponentGate = 1.0;
+    float exponentNoise = pow(noise, 1.8);
+    noise += exponentNoise * exponentGate;
+
+    // scale noise back down before applying amplitude
     noise *= (1.0 / octavesf);
     noise = amplitude * noise;
 
-    // adding some high frequency very quite noise ontop of the noise
-    // in order to create a more rocky aesthetic
+    // adding some very high frequency noise with a small amplitude
+    // ontop of the noise in order to create a more rocky aesthetic
+    float extraRockyGate = 1.0;
     float rockyHeightPercent = 0.0015;
-    noise += amplitude * rockyHeightPercent * snoise(110.0 * st) - rockyHeightPercent * 0.5;
+    float extraRockNoise = amplitude * rockyHeightPercent * snoise(110.0 * st) - rockyHeightPercent * 0.5;
+    noise += extraRockNoise * extraRockyGate;
 
-    noise = max(0.5, noise);
+    // use a min height to create a space for the water
+    float waterHeightGate = 1.0;
+    float inverseWaterHeightGate = 1.0 - waterHeightGate;
+    float waterHeightNoise = max(0.5, noise);
+    noise = waterHeightNoise * waterHeightGate + noise * inverseWaterHeightGate;
 
     return noise;
   }
 
   vec3 mountainNormal(in vec2 st, float stHeight, float amplitude, float frequency, float ruggedness) {
+    // delta offset for normal sampling
     float delta = 0.005;
     vec3 currentPoint = vec3(st.x, stHeight, st.y);
 
+    // calculate vertices of the offset points
     vec2 xOffsetLoc = st + vec2(delta, 0.0);
     vec2 yOffsetLoc = st + vec2(0.0, delta);
-
     float xOffsetHeight = mountains(xOffsetLoc, amplitude, frequency, ruggedness);
     float yOffsetHeight = mountains(yOffsetLoc, amplitude, frequency, ruggedness);
-
     vec3 xOffset = vec3(xOffsetLoc.x, xOffsetHeight, xOffsetLoc.y);
     vec3 yOffset = vec3(yOffsetLoc.x, yOffsetHeight, yOffsetLoc.y);
 
+    // use the offset points to approximate normals
     vec3 modelXGrad = xOffset - currentPoint;
     vec3 modelYGrad = yOffset - currentPoint;
-
     vec3 normal = normalize(cross(modelXGrad, modelYGrad));
     normal *= -1.0;
 
@@ -153,22 +179,29 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   void main() {
     v_vertexPosition = a_position.xyz;
-    v_barycentric = a_barycentric;
     v_fragmentColor = a_color;
+    v_barycentric = a_barycentric;
 
+    // move noise inputs to camera location
     v_vertexPosition -= camera.cameraPosition;
+
+    // scale noise inputs for sanity
     v_vertexPosition *= 0.01;
+
+    // translate to a random location for maximum fun on refresh
     v_vertexPosition.z += perlinOffsetZ;
     v_vertexPosition.x += perlinOffsetX;
 
-    vec2 altitudeInput = vec2(v_vertexPosition.x, v_vertexPosition.z);
-
+    // MOUNTAINS
     float amplitude = 100.0;
     float frequency = 0.4;
     float ruggedness = 1.5;
 
+    vec2 altitudeInput = vec2(v_vertexPosition.x, v_vertexPosition.z);
     float mountainHeight = mountains(altitudeInput, amplitude, frequency, ruggedness);
     v_vertexPosition.y = mountainHeight;
+
+    // Add normals
     v_normal = mountainNormal(altitudeInput, mountainHeight, amplitude, frequency, ruggedness);
 
     gl_Position = camera.projectionMatrix * camera.viewMatrixWithY * u_worldMatrix * a_position;

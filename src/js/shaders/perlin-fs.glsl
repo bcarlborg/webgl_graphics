@@ -75,6 +75,13 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     return color;
   }
 
+  vec3 heightScaledSnow() {
+    vec3 rockColor = vec3(0.1, 0.1, 0.1);
+    float snowiness = v_vertexPosition.y / 2.0;
+    rockColor *= snowiness;
+    return rockColor;
+  }
+
   void main() {
     outColor = vec4(0.0);
 
@@ -82,21 +89,19 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec3 gridColor = mix(vec3(0.1), vec3(1.0), edgeFactor());
     outColor.rgb += gridColor * gridGate;
 
+    float heightScaledGate = 1.0;
+    vec3 heightScaledColor = heightScaledSnow();
+    outColor.rbg += heightScaledColor * heightScaledGate;
+
     float normalsGate = 0.0;
     outColor.rgb += v_normal * normalsGate;
 
-    float biomGate = 1.0;
+    float biomGate = 0.0;
     vec3 biomColor = biom();
     outColor.rgb += biomColor * biomGate;
 
-    float lightingGate = 1.0;
+    float lightingGate = 0.0;
     vec3 lightingColors = lighting(outColor.rgb);
     outColor.rgb += lightingColors * lightingGate;
-
-
-    /* outColor.rgb = (0.2, 0.2, 0.2); */
-    /* vec3 color = shade(v_normal, vec3(0.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(0.3, 0.3, 0.3)); */
-    /* outColor.rgb += color; */
-
   }
 `;
