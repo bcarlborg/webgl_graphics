@@ -6,7 +6,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec3 v_vertexPosition;
   in vec3 v_barycentric;
   in vec3 v_normal;
-  in float v_highFrequencyNoise;
+  in float v_snowNoise;
 
   out vec4 outColor;
 
@@ -58,20 +58,11 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     // SNOW
     float midSnowGate = 1.0;
-    vec3 midSnowColor = vec3(0.8, 0.8, 0.8);
-    midSnowGate *= step(8.0 + v_highFrequencyNoise, v_vertexPosition.y);
+    vec3 midSnowColor = vec3(0.7, 0.7, 0.7);
+    midSnowGate *= step(7.0 + v_snowNoise, v_vertexPosition.y);
     midSnowGate *= step(angleToUp, 89.802);
     biomColor *= 1.0 - midSnowGate;
     biomColor += (midSnowColor * midSnowGate);
-
-    /* float upperSnowGate = 1.0; */
-    /* vec3 upperSnowColor = vec3(0.8, 0.8, 0.8); */
-    /* upperSnowGate *= step(12.0, v_vertexPosition.y); */
-    /* upperSnowGate *= step(angleToUp, 89.82); */
-    /* biomColor *= 1.0 - upperSnowGate; */
-    /* biomColor += (upperSnowColor * upperSnowGate); */
-
-
 
     return biomColor;
   }

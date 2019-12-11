@@ -27,7 +27,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   out vec4 v_fragmentColor;
   out vec3 v_vertexPosition;
   out vec3 v_barycentric;
-  out float v_highFrequencyNoise;
+  out float v_snowNoise;
 
   vec2 random (in vec2 st) {
     float x = fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123);
@@ -180,6 +180,13 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     return normal;
   }
 
+  float snowNoise(vec2 st) {
+    float noise = snoise(200.0 * st);
+    /* noise = pow(noise, 1.1); */
+    noise *= 3.0;
+    return noise;
+  }
+
   void main() {
     v_vertexPosition = a_position.xyz;
     v_fragmentColor = a_color;
@@ -204,7 +211,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     float mountainHeight = mountains(altitudeInput, amplitude, frequency, ruggedness);
     v_vertexPosition.y = mountainHeight;
 
-    v_highFrequencyNoise = snoise(100.0 * altitudeInput);
+    v_snowNoise = snowNoise(altitudeInput);
 
     // Add normals
     v_normal = mountainNormal(altitudeInput, mountainHeight, amplitude, frequency, ruggedness);
