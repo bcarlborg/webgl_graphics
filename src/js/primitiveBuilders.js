@@ -31,7 +31,7 @@ export default class primitiveBuilders {
   }
 
   static buildOptimizedTriangleStripPlane(totalWidth, subDivisions) {
-    const fov = Math.PI / 4;
+    const fov = Math.PI / 6;
     const xStart = 0;
     const zStart = 0;
     const triangleWidth = totalWidth / subDivisions;
@@ -44,7 +44,8 @@ export default class primitiveBuilders {
     // of the total square
     for (let i = 0; i < subDivisions; i++) {
       const maxJ = Math.ceil(i * Math.cos(fov));
-      for (let j = 0; j < maxJ; j++) {
+      const minJ = -maxJ;
+      for (let j = minJ; j < maxJ; j++) {
         // triangle 1
         positionVerts.push(
           xStart + (i * triangleWidth),
