@@ -27,6 +27,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   out vec4 v_fragmentColor;
   out vec3 v_vertexPosition;
   out vec3 v_barycentric;
+  out float v_highFrequencyNoise;
 
   vec2 random (in vec2 st) {
     float x = fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123);
@@ -133,7 +134,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     // use exponent to make mountains steeper
     float exponentGate = 1.0;
     float inverseExponentGate = 1.0 - exponentGate;
-    float exponentNoise = pow(noise, 1.1);
+    float exponentNoise = pow(noise, 1.2);
     noise += exponentNoise * exponentGate;
     noise = exponentNoise * exponentGate + noise * inverseExponentGate;
 
@@ -202,6 +203,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec2 altitudeInput = vec2(v_vertexPosition.x, v_vertexPosition.z);
     float mountainHeight = mountains(altitudeInput, amplitude, frequency, ruggedness);
     v_vertexPosition.y = mountainHeight;
+
+    v_highFrequencyNoise = snoise(100.0 * altitudeInput);
 
     // Add normals
     v_normal = mountainNormal(altitudeInput, mountainHeight, amplitude, frequency, ruggedness);

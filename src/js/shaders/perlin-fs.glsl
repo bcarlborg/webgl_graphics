@@ -6,6 +6,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec3 v_vertexPosition;
   in vec3 v_barycentric;
   in vec3 v_normal;
+  in float v_highFrequencyNoise;
 
   out vec4 outColor;
 
@@ -56,12 +57,20 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
 
     // SNOW
-    float snowGate = 1.0;
-    vec3 snowColor = vec3(0.8, 0.8, 0.8);
-    snowGate *= step(8.0, v_vertexPosition.y);
-    snowGate *= step(angleToUp, 89.8);
-    biomColor *= 1.0 - snowGate;
-    biomColor += (snowColor * snowGate);
+    float midSnowGate = 1.0;
+    vec3 midSnowColor = vec3(0.8, 0.8, 0.8);
+    midSnowGate *= step(8.0 + v_highFrequencyNoise, v_vertexPosition.y);
+    midSnowGate *= step(angleToUp, 89.802);
+    biomColor *= 1.0 - midSnowGate;
+    biomColor += (midSnowColor * midSnowGate);
+
+    /* float upperSnowGate = 1.0; */
+    /* vec3 upperSnowColor = vec3(0.8, 0.8, 0.8); */
+    /* upperSnowGate *= step(12.0, v_vertexPosition.y); */
+    /* upperSnowGate *= step(angleToUp, 89.82); */
+    /* biomColor *= 1.0 - upperSnowGate; */
+    /* biomColor += (upperSnowColor * upperSnowGate); */
+
 
 
     return biomColor;
@@ -69,7 +78,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   vec3 lighting(vec3 materialColor) {
     vec3 light1Direction= vec3(1.0, 1.0, 1.0);
-    vec3 light1PowerDensity = vec3(1.0, 1.0, 1.0);
+    vec3 light1PowerDensity = vec3(1.0, 0.9, 0.9);
 
     vec3 color = shade(v_normal, light1Direction, light1PowerDensity, materialColor);
     return color;
@@ -77,7 +86,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   vec3 heightScaledSnow() {
     vec3 rockColor = vec3(0.1, 0.1, 0.1);
-    float snowiness = v_vertexPosition.y / 2.0;
+    float snowiness = v_vertexPosition.y / 2.5;
     rockColor *= snowiness;
     return rockColor;
   }
@@ -89,14 +98,14 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec3 gridColor = mix(vec3(0.1), vec3(1.0), edgeFactor());
     outColor.rgb += gridColor * gridGate;
 
-    float heightScaledGate = 1.0;
+    float heightScaledGate = 0.0;
     vec3 heightScaledColor = heightScaledSnow();
     outColor.rbg += heightScaledColor * heightScaledGate;
 
     float normalsGate = 0.0;
     outColor.rgb += v_normal * normalsGate;
 
-    float biomGate = 0.0;
+    float biomGate = 1.0;
     vec3 biomColor = biom();
     outColor.rgb += biomColor * biomGate;
 
