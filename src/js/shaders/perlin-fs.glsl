@@ -48,7 +48,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     biomColor *= 1.0 - greeneryGate;
     biomColor += (greeneryColor * greeneryGate);
 
-    vec3 snowColor = vec3(1.0, 1.0, 1.0);
+    vec3 snowColor = vec3(0.8, 0.8, 0.8);
     float snowGate = step(8.0, v_vertexPosition.y);
     snowGate *= step(angleToUp, 89.8);
 
