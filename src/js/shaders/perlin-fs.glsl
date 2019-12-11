@@ -27,33 +27,42 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     angleToUp *= 57.2958;
     angleToUp = abs(angleToUp);
 
-    vec3 waterColor = vec3(0.3, 0.3, 1.0);
-    float waterGate = step(v_vertexPosition.y, 0.5001);
-    waterGate *= step(0.4009, v_vertexPosition.y);
 
+    // WATER
+    float waterGate = 1.0;
+    vec3 waterColor = vec3(0.3, 0.3, 1.0);
+    waterGate *= step(v_vertexPosition.y, 0.5001);
+    waterGate *= step(0.4009, v_vertexPosition.y);
     biomColor *= 1.0 - waterGate;
     biomColor += (waterGate * waterColor);
 
-    vec3 rockColor = vec3(0.12, 0.10, 0.12);
-    float rockGate = step(0.50001, v_vertexPosition.y);
 
+    // ROCK
+    float rockGate = 1.0;
+    vec3 rockColor = vec3(0.12, 0.10, 0.12);
+    rockGate *= step(0.50001, v_vertexPosition.y);
     biomColor *= 1.0 - rockGate;
     biomColor += (rockGate * rockColor);
 
+
+    // GREENERY
+    float greeneryGate = 1.0;
     vec3 greeneryColor = vec3(0.2, 0.4, 0.1);
-    float greeneryGate = step(0.50001, v_vertexPosition.y);
+    greeneryGate *= step(0.50001, v_vertexPosition.y);
     greeneryGate *= step(v_vertexPosition.y, 5.50001);
     greeneryGate *= step(angleToUp, 89.0);
-
     biomColor *= 1.0 - greeneryGate;
     biomColor += (greeneryColor * greeneryGate);
 
-    vec3 snowColor = vec3(0.8, 0.8, 0.8);
-    float snowGate = step(8.0, v_vertexPosition.y);
-    snowGate *= step(angleToUp, 89.8);
 
+    // SNOW
+    float snowGate = 1.0;
+    vec3 snowColor = vec3(0.8, 0.8, 0.8);
+    snowGate *= step(8.0, v_vertexPosition.y);
+    snowGate *= step(angleToUp, 89.8);
     biomColor *= 1.0 - snowGate;
     biomColor += (snowColor * snowGate);
+
 
     return biomColor;
   }
