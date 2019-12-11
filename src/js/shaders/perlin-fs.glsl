@@ -100,7 +100,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec3 biomColor = biom();
     outColor.rgb += biomColor * biomGate;
 
-    float lightingGate = 0.0;
+    float lightingGate = 1.0;
     vec3 lightingColors = lighting(outColor.rgb);
     outColor.rgb += lightingColors * lightingGate;
   }

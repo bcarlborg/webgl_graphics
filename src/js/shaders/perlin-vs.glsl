@@ -132,8 +132,10 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     // use exponent to make mountains steeper
     float exponentGate = 1.0;
-    float exponentNoise = pow(noise, 1.8);
+    float inverseExponentGate = 1.0 - exponentGate;
+    float exponentNoise = pow(noise, 1.1);
     noise += exponentNoise * exponentGate;
+    noise = exponentNoise * exponentGate + noise * inverseExponentGate;
 
     // scale noise back down before applying amplitude
     noise *= (1.0 / octavesf);
