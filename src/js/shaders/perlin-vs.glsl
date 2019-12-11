@@ -173,6 +173,5 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     gl_Position = camera.projectionMatrix * camera.viewMatrixWithY * u_worldMatrix * a_position;
     gl_Position.y += mountainHeight;
-
   }
 `;

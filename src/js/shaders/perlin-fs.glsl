@@ -23,17 +23,37 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
   vec3 biom() {
     vec3 biomColor = vec3(0.0, 0.0, 0.0);
+    float angleToUp = acos(dot( normalize(v_normal), vec3(0, 1, 0) ));
+    angleToUp *= 57.2958;
+    angleToUp = abs(angleToUp);
 
     vec3 waterColor = vec3(0.3, 0.3, 1.0);
-    // if vertex v_vertexPosition < water height
     float waterGate = step(v_vertexPosition.y, 0.5001);
     waterGate *= step(0.4009, v_vertexPosition.y);
+
+    biomColor *= 1.0 - waterGate;
     biomColor += (waterGate * waterColor);
 
     vec3 rockColor = vec3(0.2, 0.1, 0.1);
-    // if vertex v_vertexPosition < water height
     float rockGate = step(0.50001, v_vertexPosition.y);
+
+    biomColor *= 1.0 - rockGate;
     biomColor += (rockGate * rockColor);
+
+    vec3 greeneryColor = vec3(0.2, 0.4, 0.1);
+    float greeneryGate = step(0.50001, v_vertexPosition.y);
+    greeneryGate *= step(v_vertexPosition.y, 5.50001);
+    greeneryGate *= step(angleToUp, 88.5);
+ 
+    biomColor *= 1.0 - greeneryGate;
+    biomColor += (greeneryColor * greeneryGate);
+
+    vec3 snowColor = vec3(1.0, 1.0, 1.0);
+    float snowGate = step(8.0, v_vertexPosition.y);
+    snowGate *= step(angleToUp, 89.8);
+
+    biomColor *= 1.0 - snowGate;
+    biomColor += (snowColor * snowGate);
 
     return biomColor;
   }
