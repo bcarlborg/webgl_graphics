@@ -7,6 +7,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   in vec3 v_barycentric;
   in vec3 v_normal;
   in float v_snowNoise;
+  in float v_waterNoise;
+  in float v_rockNoise;
 
   out vec4 outColor;
 
@@ -31,7 +33,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     // WATER
     float waterGate = 1.0;
-    vec3 waterColor = vec3(0.3, 0.3, 1.0);
+    vec3 waterColor = vec3(0.1, 0.3, 0.8);
+    waterColor += v_waterNoise * 0.025;
     waterGate *= step(v_vertexPosition.y, 0.5001);
     waterGate *= step(0.4009, v_vertexPosition.y);
     biomColor *= 1.0 - waterGate;
@@ -41,6 +44,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     // ROCK
     float rockGate = 1.0;
     vec3 rockColor = vec3(0.12, 0.10, 0.12);
+    rockColor += v_rockNoise * 0.05;
     rockGate *= step(0.50001, v_vertexPosition.y);
     biomColor *= 1.0 - rockGate;
     biomColor += (rockGate * rockColor);
@@ -51,7 +55,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec3 greeneryColor = vec3(0.2, 0.4, 0.1);
     greeneryGate *= step(0.50001, v_vertexPosition.y);
     greeneryGate *= step(v_vertexPosition.y, 5.50001);
-    greeneryGate *= step(angleToUp, 89.0);
+    greeneryGate *= step(angleToUp, 89.3);
     biomColor *= 1.0 - greeneryGate;
     biomColor += (greeneryColor * greeneryGate);
 
@@ -76,8 +80,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   }
 
   vec3 heightScaledSnow() {
-    vec3 rockColor = vec3(0.1, 0.1, 0.1);
-    float snowiness = v_vertexPosition.y / 2.5;
+    vec3 rockColor = vec3(0.08, 0.08, 0.08);
+    float snowiness = v_vertexPosition.y / 2.5 + 3.5;
     rockColor *= snowiness;
     return rockColor;
   }
@@ -85,7 +89,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   void main() {
     outColor = vec4(0.0);
 
-    float gridGate = 0.0;
+    float gridGate = 1.0;
     vec3 gridColor = mix(vec3(0.1), vec3(1.0), edgeFactor());
     outColor.rgb += gridColor * gridGate;
 
@@ -96,7 +100,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     float normalsGate = 0.0;
     outColor.rgb += v_normal * normalsGate;
 
-    float biomGate = 1.0;
+    float biomGate = 0.0;
     vec3 biomColor = biom();
     outColor.rgb += biomColor * biomGate;
 

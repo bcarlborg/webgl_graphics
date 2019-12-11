@@ -28,6 +28,12 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   out vec3 v_vertexPosition;
   out vec3 v_barycentric;
   out float v_snowNoise;
+  out float v_waterNoise;
+  out float v_rockNoise;
+
+
+  // ==========================================================================
+  // ==========================================================================
 
   vec2 random (in vec2 st) {
     float x = fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123);
@@ -180,10 +186,28 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     return normal;
   }
 
+  // used to make the snowline look less harsh
   float snowNoise(vec2 st) {
     float noise = snoise(200.0 * st);
     /* noise = pow(noise, 1.1); */
     noise *= 3.0;
+    return noise;
+  }
+
+  // used to make the water look less like a painted on piece of junk
+  float waterNoise(vec2 st) {
+    float noise = snoise(100.0 * st);
+    /* noise = pow(noise, 1.1); */
+    /* noise *= 3.0; */
+    return noise;
+  }
+
+  // used to make the water look less like a painted on piece of junk
+  float rockNoise(vec2 st) {
+    float amplitude = 100.0;
+    float noise = snoise(10.0 * st);
+    /* noise = pow(noise, 1.1); */
+    /* noise *= 3.0; */
     return noise;
   }
 
@@ -212,6 +236,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     v_vertexPosition.y = mountainHeight;
 
     v_snowNoise = snowNoise(altitudeInput);
+    v_waterNoise = waterNoise(altitudeInput);
+    v_rockNoise = rockNoise(altitudeInput);
 
     // Add normals
     v_normal = mountainNormal(altitudeInput, mountainHeight, amplitude, frequency, ruggedness);
