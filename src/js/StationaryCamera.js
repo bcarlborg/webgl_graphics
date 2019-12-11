@@ -10,8 +10,6 @@ export default class StationaryCamera extends Camera {
     this.KeyHandler = new KeyHandler();
     this.angleDown = -17;
     this.relativePitch(this.angleDown);
-
-    this.relativeYaw(-90);
   }
 
   resetY(previousY) {
@@ -60,7 +58,6 @@ export default class StationaryCamera extends Camera {
       this.relativePitch(-this.angleDown);
       this.relativeYaw(-1);
       this.relativePitch(this.angleDown);
-      console.log(this.position.forward);
     }
   }
 

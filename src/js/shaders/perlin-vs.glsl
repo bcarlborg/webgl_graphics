@@ -156,13 +156,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     v_barycentric = a_barycentric;
     v_fragmentColor = a_color;
 
-    // set noise inputs to camera position at start
     v_vertexPosition -= camera.cameraPosition;
-
-    // adjust for the scale of the plane
     v_vertexPosition *= 0.01;
-
-    // move to a random starting location because its more fun that way :^)
     v_vertexPosition.z += perlinOffsetZ;
     v_vertexPosition.x += perlinOffsetX;
 
@@ -177,7 +172,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     v_normal = mountainNormal(altitudeInput, mountainHeight, amplitude, frequency, ruggedness);
 
     gl_Position = camera.projectionMatrix * camera.viewMatrixWithY * u_worldMatrix * a_position;
-    /* gl_Position.y += mountainHeight; */
+    gl_Position.y += mountainHeight;
 
   }
 `;
