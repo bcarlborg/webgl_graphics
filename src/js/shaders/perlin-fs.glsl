@@ -34,7 +34,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     biomColor *= 1.0 - waterGate;
     biomColor += (waterGate * waterColor);
 
-    vec3 rockColor = vec3(0.2, 0.1, 0.1);
+    vec3 rockColor = vec3(0.12, 0.10, 0.12);
     float rockGate = step(0.50001, v_vertexPosition.y);
 
     biomColor *= 1.0 - rockGate;
@@ -43,8 +43,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec3 greeneryColor = vec3(0.2, 0.4, 0.1);
     float greeneryGate = step(0.50001, v_vertexPosition.y);
     greeneryGate *= step(v_vertexPosition.y, 5.50001);
-    greeneryGate *= step(angleToUp, 88.5);
- 
+    greeneryGate *= step(angleToUp, 89.0);
+
     biomColor *= 1.0 - greeneryGate;
     biomColor += (greeneryColor * greeneryGate);
 
@@ -58,15 +58,36 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     return biomColor;
   }
 
-  void main() {
-    /* outColor.rgb = mix(vec3(0.1), vec3(1.0), edgeFactor()); */
-    /* outColor.rgb = v_normal; */
+  vec3 lighting(vec3 materialColor) {
+    vec3 light1Direction= vec3(1.0, 1.0, 1.0);
+    vec3 light1PowerDensity = vec3(1.0, 1.0, 1.0);
 
-    outColor.rgb = biom();
+    vec3 color = shade(v_normal, light1Direction, light1PowerDensity, materialColor);
+    return color;
+  }
+
+  void main() {
+    outColor = vec4(0.0);
+
+    float gridGate = 0.0;
+    vec3 gridColor = mix(vec3(0.1), vec3(1.0), edgeFactor());
+    outColor.rgb += gridColor * gridGate;
+
+    float normalsGate = 0.0;
+    outColor.rgb += v_normal * normalsGate;
+
+    float biomGate = 1.0;
+    vec3 biomColor = biom();
+    outColor.rgb += biomColor * biomGate;
+
+    float lightingGate = 1.0;
+    vec3 lightingColors = lighting(outColor.rgb);
+    outColor.rgb += lightingColors * lightingGate;
+
 
     /* outColor.rgb = (0.2, 0.2, 0.2); */
-    vec3 color = shade(v_normal, vec3(0.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(0.3, 0.3, 0.3));
-    outColor.rgb += color;
+    /* vec3 color = shade(v_normal, vec3(0.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(0.3, 0.3, 0.3)); */
+    /* outColor.rgb += color; */
 
   }
 `;
