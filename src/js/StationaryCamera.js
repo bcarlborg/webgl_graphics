@@ -11,7 +11,7 @@ export default class StationaryCamera extends Camera {
     this.angleDown = -17;
     this.relativePitch(this.angleDown);
 
-    // this.relativeYaw(-90);
+    this.relativeYaw(-90);
   }
 
   resetY(previousY) {
