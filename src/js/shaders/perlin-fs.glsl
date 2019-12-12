@@ -43,7 +43,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     // ROCK
     float rockGate = 1.0;
-    vec3 rockColor = vec3(0.12, 0.10, 0.12);
+    vec3 rockColor = vec3(0.12, 0.12, 0.12);
     rockColor += v_rockNoise * 0.05;
     rockGate *= step(0.50001, v_vertexPosition.y);
     biomColor *= 1.0 - rockGate;
@@ -55,7 +55,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     vec3 greeneryColor = vec3(0.2, 0.4, 0.1);
     greeneryGate *= step(0.50001, v_vertexPosition.y);
     greeneryGate *= step(v_vertexPosition.y, 5.50001);
-    greeneryGate *= step(angleToUp, 89.3);
+    greeneryGate *= step(angleToUp, 89.6);
     biomColor *= 1.0 - greeneryGate;
     biomColor += (greeneryColor * greeneryGate);
 
@@ -63,7 +63,8 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     // SNOW
     float midSnowGate = 1.0;
     vec3 midSnowColor = vec3(0.7, 0.7, 0.7);
-    midSnowGate *= step(7.0 + v_snowNoise, v_vertexPosition.y);
+    midSnowGate *= step(6.0 + v_snowNoise, v_vertexPosition.y);
+    /* midSnowGate *= step(8.0, v_vertexPosition.y); */
     midSnowGate *= step(angleToUp, 89.802);
     biomColor *= 1.0 - midSnowGate;
     biomColor += (midSnowColor * midSnowGate);
