@@ -118,7 +118,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     // Use octaved noise to generate more rugged mountains
     // fractals yay
-    int octavesGate = 0;
+    int octavesGate = 1;
     int octaves = 1;
     octaves = 2;
     octaves = 3;
@@ -133,12 +133,12 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     }
 
     // Sprinkle in some special sauce ;^)
-    float secretSauceGate = 0.0;
+    float secretSauceGate = 1.0;
     float secretSauce = 0.052 * snoise(16.0 * frequency * st);
     noise += secretSauce * secretSauceGate;
 
     // use exponent to make mountains steeper
-    float exponentGate = 0.0;
+    float exponentGate = 1.0;
     float inverseExponentGate = 1.0 - exponentGate;
     float exponentNoise = pow(noise, 1.2);
     noise += exponentNoise * exponentGate;
@@ -150,13 +150,13 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
 
     // adding some very high frequency noise with a small amplitude
     // ontop of the noise in order to create a more rocky aesthetic
-    float extraRockyGate = 0.0;
+    float extraRockyGate = 1.0;
     float rockyHeightPercent = 0.0015;
     float extraRockNoise = amplitude * rockyHeightPercent * snoise(110.0 * st) - rockyHeightPercent * 0.5;
     noise += extraRockNoise * extraRockyGate;
 
     // use a min height to create a space for the water
-    float waterHeightGate = 0.0;
+    float waterHeightGate = 1.0;
     float inverseWaterHeightGate = 1.0 - waterHeightGate;
     float waterHeightNoise = max(0.5, noise);
     noise = waterHeightNoise * waterHeightGate + noise * inverseWaterHeightGate;

@@ -90,7 +90,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
   void main() {
     outColor = vec4(0.0);
 
-    float gridGate = 1.0;
+    float gridGate = 0.0;
     vec3 gridColor = mix(vec3(0.1), vec3(1.0), edgeFactor());
     outColor.rgb += gridColor * gridGate;
 
@@ -101,7 +101,7 @@ ShaderSource.source[document.currentScript.src.split('js/shaders/')[1]] = `#vers
     float normalsGate = 0.0;
     outColor.rgb += v_normal * normalsGate;
 
-    float biomGate = 0.0;
+    float biomGate = 1.0;
     vec3 biomColor = biom();
     outColor.rgb += biomColor * biomGate;
 

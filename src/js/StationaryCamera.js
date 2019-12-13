@@ -23,7 +23,7 @@ export default class StationaryCamera extends Camera {
 
   processKeysPressed() {
     // movement
-    const movementSpeed = 0.15;
+    const movementSpeed = 0.25;
     const previousY = this.position.location[1];
     if (this.KeyHandler.keysPressed.W) {
       this.moveAlongForward(movementSpeed);
