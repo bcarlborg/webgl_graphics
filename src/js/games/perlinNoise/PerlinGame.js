@@ -15,7 +15,7 @@ export default class PerlinGame extends Game {
   }
 
   initPlane() {
-    const planeVerts = primitiveBuilders.buildTriangleStripPlane(500, 800);
+    const planeVerts = primitiveBuilders.buildTriangleStripPlane(500, 1600);
     const planeGeometry = new Geometry(this.gl, planeVerts);
     const planeMaterial = new Material(this.gl, 'perlin-vs.glsl', 'perlin-fs.glsl');
     const plane = new MountainPlane(this.gl, planeGeometry, planeMaterial);
